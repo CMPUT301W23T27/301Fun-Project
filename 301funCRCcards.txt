@@ -1,0 +1,136 @@
+Classes:
+
+NewCodeController
+Collaborators
+CameracodeActivity
+ScannedcodeActivty
+CodeInterpreter
+QRCode
+Responsibilities
+Activate photo camera in CameraCodeActivity and PhotoActivity
+Scan QRCodes in CameraCodeActivity camera view
+Send user from CameraCodeActivity to ScannedcodeActivity on scan
+Send scannedcode to CodeInterpreter and receive new QRCode
+Send new QRCode to ScannedCodeActivity
+Send QRCode from GeoAndCommentActivity to UserCodesDB
+
+CodeInterpreter
+Collaborators
+NewCodeController
+QRCode
+Responsibilities
+Determine the score of any inputed QRCode
+Determine image from any inputed QRCode
+Determine name from any inputed QRCode
+Create QRCode object
+
+CameraCodeActivity
+Collaborators
+NewCodeController
+ScannedCodeActivity
+Responsibilities
+Display phone camera view
+
+ScannedCodeActivity
+Collaborators
+NewCodeController
+CameracodeActivity
+PhotoActivity
+GeoAndCommentActivity
+Responsibilities
+Display score,image, and name of QRcode
+Allow user to take photo of location or not (in PhotoActivity), then finalize code in GeoAndCommentActivity
+
+PhotoActivity
+Collaborators
+NewCodeController
+ScannedCodeActivity
+GeoAndCommentActivity
+Responsibilities
+Allow user to take photo
+Allow user to confirm taken photo and finalize (go to GeoAndCommentAcitivty) or retake
+
+GeoAndCommentActivity
+Collaborators
+ScannedCodeActivity
+PhotoActivity
+QRCode
+Responsibilities
+Display score,image, and name of QRcode
+Allow user to choose whether they want their geolocation recorded
+Allow user to comment on location (or leave blank)
+Allow user to submit QRCode and add it to their stored codes
+
+UserCodesDB
+Collaborators
+NewCodeController
+QRCode
+UserCodesDBConnector
+Responsibilities
+Create and add QRCode to user account in Firebase Firestore database
+Read values of QRCode in Firebase Firestore database
+Delete QRCode from user account in Firebase Firestore database
+
+UserCodesDBConnector
+Collaborators
+UserCodesDB
+Responsibilities
+Connects to the Firebase Firestore database
+
+QRCodes
+Collaborators
+Responsibilities
+Has unique id
+Has unique image
+Has score
+May have geolocation
+May have location comment
+
+
+
+
+
+
+
+AccountActivity
+Collaborators
+Responsibilities
+
+MyCodesActivity
+Collaborators
+Responsibilities
+
+MyCodesOnClickActivity
+Collaborators
+Responsibilities
+
+FriendsActivity
+Collaborators
+Responsibilities
+
+FriendsCodesActivity
+
+LeaderboardsActivity
+Collaborators
+Responsibilities
+
+MapsActivity
+Collaborators
+Responsibilities
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
