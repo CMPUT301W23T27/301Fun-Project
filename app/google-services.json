@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "159846112159",
+    "project_id": "fun-project-daa0f",
+    "storage_bucket": "fun-project-daa0f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:159846112159:android:87bfbe78c49473a6b4fbaa",
+        "android_client_info": {
+          "package_name": "com.example.qrmon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "159846112159-tksajr04bs17u2ci2ji65d3rf8kf4uqu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDB6hFnU8vWuFhmInA22eald4WHquxPxKY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "159846112159-tksajr04bs17u2ci2ji65d3rf8kf4uqu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
