@@ -8,4 +8,14 @@ public class QRCode {
     private ImageView picture;
     private String comment;
     private String geolocation;
+    private int Score;
+
+    public QRCode(String name, int score) {
+        this.name = name;
+        Score = score;
+    }
+
+    public int getScore() {
+        return Score;
+    }
 }
