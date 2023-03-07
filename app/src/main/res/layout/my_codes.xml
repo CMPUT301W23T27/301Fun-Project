@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:backgroundTint="#FCFCFC"
+    android:orientation="vertical">
+
+    <SearchView
+        android:id="@+id/searchBarMyCodes"
+        android:layout_width="381dp"
+        android:layout_height="71dp"
+        android:backgroundTint="#D8D6D6"
+        android:iconifiedByDefault="false"
+        android:queryHint="Search"
+        android:background="@drawable/rounded_corners"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="17dp"
+            android:text="@string/myCodesTitle"
+            android:textSize="20sp"
+            android:textColor="@color/black"/>
+
+        <Button
+            android:id="@+id/myCodesFilterButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="250dp"
+            android:drawableTop="@drawable/filter_button_my_codes"
+            android:contentDescription="Button"/>
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/myCodesListView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <!-- Used as a divider -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal"/>
+
+    <ListView
+        android:id="@+id/sumOfPointsMyCodes"
+        android:layout_width="match_parent"
+        android:layout_height="150dp" />
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom">
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottomNavBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:fabCradleMargin="10dp"
+            app:fabCradleRoundedCornerRadius="10dp"
+            app:fabCradleVerticalOffset="10dp"
+            app:layout_anchor="@+id/bottomNavBar"
+            app:layout_anchorGravity="bottom|center"
+            tools:ignore="ExtraText">
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottomNavView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                app:menu="@menu/bottom_nav_menu" />
+
+        </com.google.android.material.bottomappbar.BottomAppBar>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/message"
+        android:icon="@drawable/friends_navbar_icon"
+        android:title="Friends" />
+
+    <item
+        android:id="@+id/maps"
+        android:icon="@drawable/maps_navbar_icon"
+        android:title="Maps" />
+    <item
+        android:id="@+id/add_button"
+        android:icon="@drawable/add_button_navbar_icon"
+        android:title="Add QR" />
+
+    <item
+        android:id="@+id/my_codes"
+        android:icon="@drawable/my_codes_navbar_icon"
+        android:title="My Codes" />
+
+    <item
+        android:id="@+id/account_settings"
+        android:icon="@drawable/account_navbar_icon"
+        android:title="Account" />
+
+</menu>
