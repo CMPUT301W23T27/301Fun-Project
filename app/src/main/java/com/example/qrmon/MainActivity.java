@@ -15,10 +15,15 @@ import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
 import com.google.zxing.Result;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 public class MainActivity extends AppCompatActivity {
 
     private CodeScanner mCodeScanner;
     private TextView scannedText;
+
+    private String hashedCode;
 
     private static final int MY_CAMERA_REQUEST_CODE = 100;
 
@@ -42,6 +47,12 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        try {
+                            hashedCode = SHAEncryptor.getSHA256Hash(result.getText());
+                            System.out.println("here: " + hashedCode);
+                        } catch (NoSuchAlgorithmException e) {
+                            throw new RuntimeException(e);
+                        }
                         scannedText.setText(result.getText());
                     }
                 });
