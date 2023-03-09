@@ -1,11 +1,15 @@
 package com.example.qrmon;
 
 import android.graphics.Bitmap;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
 
 import java.io.Serializable;
 
-public class QRCode implements Serializable {
+public class QRCode implements Parcelable {
     private String name;
     private Bitmap visual;
     private ImageView picture;
@@ -24,6 +28,32 @@ public class QRCode implements Serializable {
         this.url = url;
         this.score = score;
     }
+
+    protected QRCode(Parcel in) {
+        name = in.readString();
+        visual = in.readParcelable(Bitmap.class.getClassLoader());
+        comment = in.readString();
+        geolocation = in.readString();
+        hash = in.readString();
+        url = in.readString();
+        if (in.readByte() == 0) {
+            score = null;
+        } else {
+            score = in.readInt();
+        }
+    }
+
+    public static final Creator<QRCode> CREATOR = new Creator<QRCode>() {
+        @Override
+        public QRCode createFromParcel(Parcel in) {
+            return new QRCode(in);
+        }
+
+        @Override
+        public QRCode[] newArray(int size) {
+            return new QRCode[size];
+        }
+    };
 
     public String getName() {return name;}
     public Bitmap getVisual() {return visual;}
@@ -45,4 +75,26 @@ public class QRCode implements Serializable {
     public void setUrl(String newUrl) {this.url = newUrl;}
     public void setScore(Integer newScore) {this.score = newScore;}
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+
+
+        parcel.writeString(name);
+        parcel.writeParcelable(visual, i);
+        parcel.writeString(comment);
+        parcel.writeString(geolocation);
+        parcel.writeString(hash);
+        parcel.writeString(url);
+        if (score == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeInt(score);
+        }
+    }
 }
