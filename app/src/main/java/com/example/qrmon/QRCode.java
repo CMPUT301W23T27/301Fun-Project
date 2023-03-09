@@ -12,14 +12,14 @@ import java.io.Serializable;
 public class QRCode implements Parcelable {
     private String name;
     private Bitmap visual;
-    private ImageView picture;
+    private Bitmap picture;
     private String comment;
     private String geolocation;
     private String hash;
     private String url;
     private Integer score;
 
-    QRCode(String name, Bitmap visual, ImageView picture, String comment, String geolocation, String hash, String url, Integer score) {
+    QRCode(String name, Bitmap visual, Bitmap picture, String comment, String geolocation, String hash, String url, Integer score) {
         this.name = name;
         this.visual = visual;
         this.picture = picture;
@@ -32,6 +32,7 @@ public class QRCode implements Parcelable {
     protected QRCode(Parcel in) {
         name = in.readString();
         visual = in.readParcelable(Bitmap.class.getClassLoader());
+        picture = in.readParcelable(Bitmap.class.getClassLoader());
         comment = in.readString();
         geolocation = in.readString();
         hash = in.readString();
@@ -41,6 +42,28 @@ public class QRCode implements Parcelable {
         } else {
             score = in.readInt();
         }
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeParcelable(visual, flags);
+        dest.writeParcelable(picture, flags);
+        dest.writeString(comment);
+        dest.writeString(geolocation);
+        dest.writeString(hash);
+        dest.writeString(url);
+        if (score == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(score);
+        }
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<QRCode> CREATOR = new Creator<QRCode>() {
@@ -57,7 +80,7 @@ public class QRCode implements Parcelable {
 
     public String getName() {return name;}
     public Bitmap getVisual() {return visual;}
-    public ImageView getPicture() {return picture;}
+    public Bitmap getPicture() {return picture;}
     public String getComment() {return comment;}
     public String getGeolocation() {return geolocation;}
     public String getHash() {return hash;}
@@ -68,33 +91,11 @@ public class QRCode implements Parcelable {
 
     public void setName(String newName) {this.name= newName;}
     public void setVisual(Bitmap newVisual) {this.visual = newVisual;}
-    public void setPicture(ImageView newPicture) {this.picture = newPicture;}
+    public void setPicture(Bitmap newPicture) {this.picture = newPicture;}
     public void setComment(String newComment) {this.comment = newComment;}
     public void setGeolocation(String newGeolocation) {this.geolocation = newGeolocation;}
     public void setHash(String newHash) {this.hash = newHash;}
     public void setUrl(String newUrl) {this.url = newUrl;}
     public void setScore(Integer newScore) {this.score = newScore;}
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(@NonNull Parcel parcel, int i) {
-
-
-        parcel.writeString(name);
-        parcel.writeParcelable(visual, i);
-        parcel.writeString(comment);
-        parcel.writeString(geolocation);
-        parcel.writeString(hash);
-        parcel.writeString(url);
-        if (score == null) {
-            parcel.writeByte((byte) 0);
-        } else {
-            parcel.writeByte((byte) 1);
-            parcel.writeInt(score);
-        }
-    }
 }

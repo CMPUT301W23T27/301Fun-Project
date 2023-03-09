@@ -1,11 +1,15 @@
 package com.example.qrmon;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,6 +24,7 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 
 import android.Manifest;
+import android.widget.Toast;
 
 public class geolocation extends AppCompatActivity {
 
@@ -30,12 +35,27 @@ public class geolocation extends AppCompatActivity {
     private LocationCallback locationCallback;
     private static final int REQUEST_LOCATION_PERMISSION = 1;
     private EditText myTextBox;
+    Button postButton;
+    ImageView image;
+
+    QRCode newQRCode;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.geo_comment);
+
+        // Receive QRCode
+        if(getIntent().getExtras() != null) {
+            newQRCode = (QRCode) getIntent().getParcelableExtra("QRCode");
+        }
+
+        latitudeTextView = findViewById(R.id.latitude);
+        postButton = findViewById(R.id.my_rounded_button);
+        image = findViewById(R.id.Image);
+        image.setImageBitmap(newQRCode.getPicture());
+
 
         // Get the FusedLocationProviderClient instance
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -58,8 +78,11 @@ public class geolocation extends AppCompatActivity {
                     double latitude = location.getLatitude();
                     double longitude = location.getLongitude();
                     // Do something with the latitude and longitude coordinates
-                    latitudeTextView.setText("Latitude: " + String.valueOf(latitude));
-                    longitudeTextView.setText("Longitude: " + String.valueOf(longitude));
+                    if (String.valueOf(latitude) != null) {
+                        latitudeTextView.setText("Latitude: " + String.valueOf(latitude));
+                        //longitudeTextView.setText("Longitude: " + String.valueOf(longitude));
+                    }
+
                 }
             }
         };
@@ -93,6 +116,15 @@ public class geolocation extends AppCompatActivity {
                 saveText(s.toString());
             }
         });
+
+    postButton.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            //Firebase stuff
+            //Toast.makeText(getBaseContext(), "Firebase stuff", Toast.LENGTH_SHORT).show();
+
+        }
+    });
 
 
     }
