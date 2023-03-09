@@ -33,9 +33,9 @@ public class ScannedCodePage extends AppCompatActivity {
         Button takePhotoButton = findViewById(R.id.snapAPicButton);
 
         // Set QRCode values
-        //imageView.setImageBitmap(newQRCode.getVisual());
-        //scoreView.setText(Integer.toString(newQRCode.getScore()));
-        //nameView.setText(newQRCode.getName());
+        imageView.setImageBitmap(newQRCode.getVisual());
+        scoreView.setText(Integer.toString(newQRCode.getScore()));
+        nameView.setText(newQRCode.getName());
 
         takePhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
