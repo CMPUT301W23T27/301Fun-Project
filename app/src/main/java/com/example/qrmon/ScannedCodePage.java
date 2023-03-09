@@ -20,7 +20,7 @@ public class ScannedCodePage extends AppCompatActivity {
 
         // Receive QRCode
         if(getIntent().getExtras() != null) {
-            newQRCode = (QRCode) getIntent().getSerializableExtra("QRCode");
+            newQRCode = (QRCode) getIntent().getParcelableExtra("QRCode");
         }
 
         //Assign Views
