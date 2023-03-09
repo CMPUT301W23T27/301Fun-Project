@@ -5,4 +5,5 @@
         <item>Off</item>
     </string-array>
     <string name="myCodesTitle">My Codes</string>
+    <string name="privacyMessage">For Privacy Reasons Your QR Code Has Not Been Saved Or Stored In Any Way By QR Creatures</string>
 </resources>
