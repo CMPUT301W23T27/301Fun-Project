@@ -24,6 +24,11 @@ public class CodeInterpreterActivity extends AppCompatActivity {
 
         String scanned_code = getIntent().getStringExtra("scanned_code");
 
+//        String scanned_code = "a26h90";
+        codeInterpreter = new CodeInterpreter();
+        System.out.println("here in CodeInterpreter: " + scanned_code);
+
+
         //Interpret code in CodeInterpreter and return new QRCode object
         newQRCode = codeInterpreter.interpret(scanned_code);
 
