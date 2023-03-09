@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
@@ -15,14 +16,12 @@ import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
 import com.google.zxing.Result;
 
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class MainActivity extends AppCompatActivity {
+public class ScanCodePage extends AppCompatActivity {
 
     private CodeScanner mCodeScanner;
     private TextView scannedText;
-
     private String hashedCode;
 
     private static final int MY_CAMERA_REQUEST_CODE = 100;
@@ -54,6 +53,9 @@ public class MainActivity extends AppCompatActivity {
                             throw new RuntimeException(e);
                         }
                         scannedText.setText(result.getText());
+                        Intent in = new Intent(getApplicationContext(), CodeInterpreterActivity.class);
+                        in.putExtra("scanned_code", hashedCode);
+                        startActivity(in);
                     }
                 });
             }

@@ -8,7 +8,7 @@
 
     <uses-feature
         android:name="android.hardware.camera"
-        android:required="false" />
+        android:required="false"/>
 
     <application
         android:allowBackup="true"
@@ -23,13 +23,13 @@
             android:name=".CodeInterpreterActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".MyCodesPage"
             android:exported="false" />
         <activity
             android:name=".ScannedCodePage"
             android:exported="false" />
         <activity
-            android:name=".MyCodesPage"
+            android:name=".ScanCodePage"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
