@@ -73,33 +73,36 @@
         android:layout_weight="0.5">
 
         <Button
-            android:id="@+id/button1"
-            android:layout_width="wrap_content"
+            android:id="@+id/snapAPicButton"
+            android:layout_width="92dp"
             android:layout_height="wrap_content"
-            android:text="Snap A Pic"
-            android:textSize="16sp"
+            android:layout_marginEnd="8dp"
             android:layout_weight="1"
             android:padding="10dp"
-            android:layout_marginEnd="8dp"/>
+            android:text="Snap A Pic"
+            android:textSize="16sp"
+            android:drawableTop="@drawable/add_button_navbar_icon"/>
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/scannedCodeNextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Next"
             android:textSize="16sp"
             android:layout_weight="1"
             android:padding="10dp"
-            android:layout_marginStart="8dp"/>
+            android:layout_marginStart="8dp"
+            android:drawableTop="@drawable/add_button_navbar_icon"/>
     </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Privacy"
+        android:text="@string/privacyMessage"
         android:textSize="14sp"
         android:layout_weight="0.1"
         android:paddingTop="1dp"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"
+        android:gravity="center"/>
 
 </LinearLayout>
