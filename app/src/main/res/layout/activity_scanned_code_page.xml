@@ -81,7 +81,7 @@
             android:padding="10dp"
             android:text="Snap A Pic"
             android:textSize="16sp"
-            android:drawableTop="@drawable/add_button_navbar_icon"/>
+            android:drawableTop="@drawable/baseline_add_a_photo_24"/>
 
         <Button
             android:id="@+id/scannedCodeNextButton"
@@ -92,7 +92,7 @@
             android:layout_weight="1"
             android:padding="10dp"
             android:layout_marginStart="8dp"
-            android:drawableTop="@drawable/add_button_navbar_icon"/>
+            android:drawableTop="@drawable/baseline_arrow_forward_24"/>
     </LinearLayout>
 
     <TextView
