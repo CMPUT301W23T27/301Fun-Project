@@ -33,6 +33,9 @@
             android:name=".PhotoPage"
             android:exported="false" />
         <activity
+            android:name=".geolocation"
+            android:exported="false" />
+        <activity
             android:name=".ScanCodePage"
             android:exported="true">
             <intent-filter>

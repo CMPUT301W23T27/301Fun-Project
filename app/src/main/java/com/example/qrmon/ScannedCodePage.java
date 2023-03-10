@@ -40,7 +40,9 @@ public class ScannedCodePage extends AppCompatActivity {
         takePhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Send QRCode to next activity
                 Intent intent = new Intent(ScannedCodePage.this, PhotoPage.class);
+                intent.putExtra("QRCode", newQRCode);
                 startActivity(intent);
             }
         });

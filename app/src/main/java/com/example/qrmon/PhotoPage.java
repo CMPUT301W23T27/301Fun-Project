@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 public class PhotoPage extends AppCompatActivity {
 
+    QRCode newQRCode;
+
     public static final int PHOTO_PERMISSION_CODE = 301;
     public static final int CAM_REQUEST_CODE = 222;
     private ImageView photoImage;
@@ -28,11 +30,17 @@ public class PhotoPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_page);
 
+        // Receive QRCode
+        if(getIntent().getExtras() != null) {
+            newQRCode = (QRCode) getIntent().getParcelableExtra("QRCode");
+        }
+
 
 
         photoImage = findViewById(R.id.photoPreview);
         Button retakePhoto = findViewById(R.id.retakePhotoButton);
         Button backButton = findViewById(R.id.backButton);
+        Button confirmButton = findViewById(R.id.confirmPhotoButton);
 
         cameraPermissionCheck();
 
@@ -46,6 +54,18 @@ public class PhotoPage extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                newQRCode.setPicture(null);
+                finish();
+            }
+        });
+
+        confirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Send QRCode to next activity
+                Intent intent = new Intent(PhotoPage.this, geolocation.class);
+                intent.putExtra("QRCode", newQRCode);
+                startActivity(intent);
                 finish();
             }
         });
@@ -87,6 +107,7 @@ public class PhotoPage extends AppCompatActivity {
         if (requestCode == CAM_REQUEST_CODE && resultCode == RESULT_OK && data != null){
             Bitmap takenPhoto = (Bitmap) data.getExtras().get("data");
             photoImage.setImageBitmap(takenPhoto);
+            newQRCode.setPicture(takenPhoto);
         }
     }
 }
