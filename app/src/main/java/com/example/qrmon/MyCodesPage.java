@@ -3,8 +3,10 @@ package com.example.qrmon;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 
 import java.util.ArrayList;
 
@@ -53,5 +55,32 @@ public class MyCodesPage extends AppCompatActivity {
 
         codeAdapter.notifyDataSetChanged();
 
+
+        filterButton.setOnClickListener(this::showPopupMenu);
+
     }
+
+
+    private void showPopupMenu(View view) {
+        PopupMenu popupMenu = new PopupMenu(this, view);
+        popupMenu.getMenuInflater().inflate(R.menu.sorting_menu, popupMenu.getMenu());
+
+        popupMenu.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.sort_ascending:
+                    codeAdapter.notifyDataSetChanged();
+                    codesList = CodeSorting.ascendingCodeSort(codesList);
+                    return true;
+                case R.id.sort_descending:
+                    codeAdapter.notifyDataSetChanged();
+                    codesList = CodeSorting.descendingCodeSort(codesList);
+                    return true;
+                default:
+                    return false;
+            }
+        });
+
+        popupMenu.show();
+    }
+
 }
