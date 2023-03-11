@@ -11,15 +11,15 @@ import java.io.Serializable;
 
 public class QRCode implements Parcelable {
     private String name;
-    private Bitmap visual;
-    private Bitmap picture;
+    private String visual;
+    private String picture;
     private String comment;
     private String geolocation;
     private String hash;
     private String url;
     private Integer score;
 
-    QRCode(String name, Bitmap visual, Bitmap picture, String comment, String geolocation, String hash, String url, Integer score) {
+    public QRCode(String name, String visual, String picture, String comment, String geolocation, String hash, String url, Integer score) {
         this.name = name;
         this.visual = visual;
         this.picture = picture;
@@ -30,10 +30,13 @@ public class QRCode implements Parcelable {
         this.score = score;
     }
 
+    public QRCode() {
+    }
+
     protected QRCode(Parcel in) {
         name = in.readString();
-        visual = in.readParcelable(Bitmap.class.getClassLoader());
-        picture = in.readParcelable(Bitmap.class.getClassLoader());
+        visual = in.readString();
+        picture = in.readString();
         comment = in.readString();
         geolocation = in.readString();
         hash = in.readString();
@@ -48,8 +51,8 @@ public class QRCode implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
-        dest.writeParcelable(visual, flags);
-        dest.writeParcelable(picture, flags);
+        dest.writeString(visual);
+        dest.writeString(picture);
         dest.writeString(comment);
         dest.writeString(geolocation);
         dest.writeString(hash);
@@ -80,8 +83,8 @@ public class QRCode implements Parcelable {
     };
 
     public String getName() {return name;}
-    public Bitmap getVisual() {return visual;}
-    public Bitmap getPicture() {return picture;}
+    public String getVisual() {return visual;}
+    public String getPicture() {return picture;}
     public String getComment() {return comment;}
     public String getGeolocation() {return geolocation;}
     public String getHash() {return hash;}
@@ -91,8 +94,8 @@ public class QRCode implements Parcelable {
 
 
     public void setName(String newName) {this.name= newName;}
-    public void setVisual(Bitmap newVisual) {this.visual = newVisual;}
-    public void setPicture(Bitmap newPicture) {this.picture = newPicture;}
+    public void setVisual(String newVisual) {this.visual = newVisual;}
+    public void setPicture(String newPicture) {this.picture = newPicture;}
     public void setComment(String newComment) {this.comment = newComment;}
     public void setGeolocation(String newGeolocation) {this.geolocation = newGeolocation;}
     public void setHash(String newHash) {this.hash = newHash;}

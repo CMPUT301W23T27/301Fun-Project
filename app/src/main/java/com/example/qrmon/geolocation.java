@@ -1,11 +1,17 @@
 package com.example.qrmon;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,9 +28,16 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import android.Manifest;
 import android.widget.Toast;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class geolocation extends AppCompatActivity {
 
@@ -54,7 +67,10 @@ public class geolocation extends AppCompatActivity {
         latitudeTextView = findViewById(R.id.latitude);
         postButton = findViewById(R.id.my_rounded_button);
         image = findViewById(R.id.Image);
-        image.setImageBitmap(newQRCode.getPicture());
+
+        //decodePictureFile
+        Bitmap decodedPicture = StringToBitMap(newQRCode.getPicture());
+        image.setImageBitmap(decodedPicture);
 
 
         // Get the FusedLocationProviderClient instance
@@ -122,6 +138,26 @@ public class geolocation extends AppCompatActivity {
         public void onClick(View v) {
             //Firebase stuff
             //Toast.makeText(getBaseContext(), "Firebase stuff", Toast.LENGTH_SHORT).show();
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("item", newQRCode);
+            data.put("ownerId", "temp-user-id");
+
+            // Add the data to the Firestore database
+            db.collection("QRCodes").add(data)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            Log.d(TAG, "Item added with ID: " + documentReference.getId());
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w(TAG, "Error adding item", e);
+                        }
+                    });
 
         }
     });
@@ -148,6 +184,17 @@ public class geolocation extends AppCompatActivity {
         }
     }
     private void saveText(String text) {}
+
+    public Bitmap StringToBitMap(String encodedString){
+        try {
+            byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);
+            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        } catch(Exception e) {
+            e.getMessage();
+            return null;
+        }
+    }
 
 
 }

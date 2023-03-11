@@ -35,7 +35,8 @@ public class CodeAdapter extends ArrayAdapter<QRCode> {
 
         // Set the code image based on the code object
         if (code.getPicture() != null) {
-            codeImageView.setImageBitmap(code.getPicture());
+
+            //codeImageView.setImageBitmap(code.getPicture());
         } else {
             codeImageView.setImageResource(R.drawable.account_navbar_icon);
         }

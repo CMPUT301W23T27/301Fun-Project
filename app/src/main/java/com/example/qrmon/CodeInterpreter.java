@@ -104,8 +104,8 @@ public class CodeInterpreter {
         //"&eyes="+eyes+
         //"&smile="+smile;
 
-        Bitmap visual = null;
-        Bitmap picture = null;
+        String visual = null;
+        String picture = null;
         String comment = "empty";
         String geolocation = "empty";
         String hash = scanned_code;

@@ -3,7 +3,10 @@ package com.example.qrmon;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -26,6 +29,10 @@ public class ScannedCodePage extends AppCompatActivity {
             newQRCode = (QRCode) getIntent().getParcelableExtra("QRCode");
         }
 
+        //decodeImageFile
+        Bitmap image = StringToBitMap(newQRCode.getVisual());
+
+
         //Assign Views
         imageView = findViewById(R.id.monster);
         scoreView = findViewById(R.id.score);
@@ -33,7 +40,7 @@ public class ScannedCodePage extends AppCompatActivity {
         Button takePhotoButton = findViewById(R.id.snapAPicButton);
 
         // Set QRCode values
-        imageView.setImageBitmap(newQRCode.getVisual());
+        imageView.setImageBitmap(image);
         scoreView.setText(Integer.toString(newQRCode.getScore()));
         nameView.setText(newQRCode.getName());
 
@@ -49,4 +56,17 @@ public class ScannedCodePage extends AppCompatActivity {
 
 
     }
+
+    public Bitmap StringToBitMap(String encodedString){
+        try {
+            byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
+            Bitmap bitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        } catch(Exception e) {
+            e.getMessage();
+            return null;
+        }
+    }
+
+
 }
