@@ -25,6 +25,7 @@ public class QRCode implements Parcelable {
         this.picture = picture;
         this.comment = comment;
         this.geolocation = geolocation;
+        this.hash = hash;
         this.url = url;
         this.score = score;
     }

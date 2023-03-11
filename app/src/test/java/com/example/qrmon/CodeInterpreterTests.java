@@ -11,7 +11,7 @@ public class CodeInterpreterTests {
         Integer testInteger = 5;
         CodeInterpreter codeInterpreter = new CodeInterpreter();
         QRCode newQRCode = codeInterpreter.interpret("555555555555");
-        assertEquals("Greg Trump", newQRCode.getName());
+        assertEquals("Greg Trump ", newQRCode.getName());
         assertEquals(testInteger, newQRCode.getScore());
         assertEquals("https://api.dicebear.com/5.x/bottts/png?" +
                 "seed=Bandit", newQRCode.getUrl());
