@@ -106,7 +106,7 @@ public class CodeInterpreter {
 
         Bitmap visual = null;
         Bitmap picture = null;
-        String comment = "empty";
+        String comment = "not_empty";
         String geolocation = "empty";
         String hash = scanned_code;
 
