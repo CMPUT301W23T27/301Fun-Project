@@ -8,7 +8,9 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Base64;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.URL;
 
@@ -16,6 +18,7 @@ public class CodeInterpreterActivity extends AppCompatActivity {
 
     QRCode newQRCode;
     public CodeInterpreter codeInterpreter;
+    Bitmap bitmapImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,11 +38,15 @@ public class CodeInterpreterActivity extends AppCompatActivity {
         // Create image from dicebear based on url
         new LoadImage().execute();
 
+
+
         // Wait for url image to load before next screen
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {
-                Intent intent = new Intent(CodeInterpreterActivity.this,ScannedCodePage.class);
+                String imageEncoded = BitMapToString(bitmapImage);
+                newQRCode.setVisual(imageEncoded);
+                Intent intent = new Intent(CodeInterpreterActivity.this, ScannedCodePage.class);
                 intent.putExtra("QRCode", newQRCode);
                 startActivity(intent);
                 finish();
@@ -49,12 +56,12 @@ public class CodeInterpreterActivity extends AppCompatActivity {
 
     }
 
-    public class LoadImage extends AsyncTask<Void,Void, Bitmap> {
+    public class LoadImage extends AsyncTask<Void, Void, Bitmap> {
         @Override
         protected Bitmap doInBackground(Void... params) {
-            Bitmap bitmap=null;
+            Bitmap bitmap = null;
             try {
-                bitmap= BitmapFactory.decodeStream((InputStream)new URL(newQRCode.getUrl()).getContent());
+                bitmap = BitmapFactory.decodeStream((InputStream) new URL(newQRCode.getUrl()).getContent());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -62,14 +69,26 @@ public class CodeInterpreterActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPreExecute() {}
+        protected void onPreExecute() {
+        }
 
         @Override
         protected void onPostExecute(Bitmap bitmap) {
-            if(bitmap!=null) {
-                newQRCode.setVisual(bitmap);
+            if (bitmap != null) {
+                //newQRCode.setVisual(bitmap);
+                bitmapImage = bitmap;
                 //progress.dismiss();
-            } else {}
+            } else {
+            }
         }
     }
+
+    public String BitMapToString(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] b = baos.toByteArray();
+        String temp = Base64.encodeToString(b, Base64.DEFAULT);
+        return temp;
+    }
 }
+

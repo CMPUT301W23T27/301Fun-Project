@@ -12,10 +12,13 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import java.io.ByteArrayOutputStream;
 
 public class PhotoPage extends AppCompatActivity {
 
@@ -107,7 +110,16 @@ public class PhotoPage extends AppCompatActivity {
         if (requestCode == CAM_REQUEST_CODE && resultCode == RESULT_OK && data != null){
             Bitmap takenPhoto = (Bitmap) data.getExtras().get("data");
             photoImage.setImageBitmap(takenPhoto);
-            newQRCode.setPicture(takenPhoto);
+            String imageEncoded = BitMapToString(takenPhoto);
+            newQRCode.setPicture(imageEncoded);
         }
+    }
+
+    public String BitMapToString(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] b = baos.toByteArray();
+        String temp = Base64.encodeToString(b, Base64.DEFAULT);
+        return temp;
     }
 }
