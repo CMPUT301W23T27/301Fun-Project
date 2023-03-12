@@ -24,25 +24,26 @@ public class ScannedCodePage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scanned_code_page);
 
-        // Receive QRCode
-        if(getIntent().getExtras() != null) {
-            newQRCode = (QRCode) getIntent().getParcelableExtra("QRCode");
-        }
-
-        //decodeImageFile
-        Bitmap image = StringToBitMap(newQRCode.getVisual());
-
-
         //Assign Views
         imageView = findViewById(R.id.monster);
         scoreView = findViewById(R.id.score);
         nameView = findViewById(R.id.name);
         Button takePhotoButton = findViewById(R.id.snapAPicButton);
 
-        // Set QRCode values
-        imageView.setImageBitmap(image);
-        scoreView.setText(Integer.toString(newQRCode.getScore()));
-        nameView.setText(newQRCode.getName());
+        // Receive QRCode
+        if(getIntent().getExtras() != null) {
+            newQRCode = (QRCode) getIntent().getParcelableExtra("QRCode");
+
+            //decodeImageFile
+            Bitmap image = StringToBitMap(newQRCode.getVisual());
+
+            // Set QRCode values
+            imageView.setImageBitmap(image);
+            scoreView.setText(Integer.toString(newQRCode.getScore()));
+            nameView.setText(newQRCode.getName());
+
+        }
+
 
         takePhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
