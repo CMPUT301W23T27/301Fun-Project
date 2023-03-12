@@ -24,7 +24,7 @@
             android:name=".CodeInterpreterActivity"
             android:exported="false" />
         <activity
-            android:name=".MyCodesPage"
+            android:name=".ScanCodePage"
             android:exported="false" />
         <activity
             android:name=".ScannedCodePage"
@@ -36,7 +36,7 @@
             android:name=".geolocation"
             android:exported="false" />
         <activity
-            android:name=".ScanCodePage"
+            android:name=".MyCodesPage"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

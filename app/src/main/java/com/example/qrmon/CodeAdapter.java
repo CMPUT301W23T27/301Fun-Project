@@ -1,6 +1,9 @@
 package com.example.qrmon;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,9 +37,9 @@ public class CodeAdapter extends ArrayAdapter<QRCode> {
         TextView codePointsTextView = convertView.findViewById(R.id.QRCodePoints);
 
         // Set the code image based on the code object
-        if (code.getPicture() != null) {
-
-            //codeImageView.setImageBitmap(code.getPicture());
+        if (code.getVisual() != null) {
+            Bitmap decodedImage = StringToBitMap(code.getVisual());
+            codeImageView.setImageBitmap(decodedImage);
         } else {
             codeImageView.setImageResource(R.drawable.account_navbar_icon);
         }
@@ -46,5 +49,16 @@ public class CodeAdapter extends ArrayAdapter<QRCode> {
         codePointsTextView.setText(String.valueOf(code.getScore()));
 
         return convertView;
+    }
+
+    public Bitmap StringToBitMap(String encodedString){
+        try {
+            byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);
+            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        } catch(Exception e) {
+            e.getMessage();
+            return null;
+        }
     }
 }

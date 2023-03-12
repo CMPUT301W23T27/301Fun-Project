@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
@@ -145,7 +146,7 @@ public class geolocation extends AppCompatActivity {
             data.put("ownerId", "temp-user-id");
 
             // Add the data to the Firestore database
-            db.collection("QRCodes").add(data)
+            db.collection("temp-user-id").add(newQRCode)
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
@@ -158,6 +159,16 @@ public class geolocation extends AppCompatActivity {
                             Log.w(TAG, "Error adding item", e);
                         }
                     });
+
+            Handler handler = new Handler();
+
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    Intent intent = new Intent(geolocation.this, MyCodesPage.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }, 2000);
 
         }
     });
