@@ -3,11 +3,12 @@ package com.example.qrmon;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 
 
-
+@Config(manifest=Config.NONE)
 public class CodeSortingTests {
     @Test
     public void testAscendingCodeSort() {

@@ -12,12 +12,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
+
 import android.graphics.Color;
 
 
 import static org.junit.Assert.assertNotNull;
 
-
+@Config(manifest=Config.NONE)
 @RunWith(RobolectricTestRunner.class)
 public class CodeInterpreterActivityTests {
 
