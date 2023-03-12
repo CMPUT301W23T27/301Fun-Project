@@ -40,22 +40,34 @@
 
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="293dp"
+        android:layout_height="40dp"
+        android:src="@drawable/avatar" />
+
+    <!-- Used as a divider -->
     <ListView
         android:id="@+id/myCodesListView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_height="600dp"
+        android:layout_weight="1" />
 
-    <!-- Used as a divider -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:orientation="horizontal"/>
+        android:layout_height="0dp"
+        android:orientation="horizontal" />
+
+    <Button
+        android:id="@+id/newCodeButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="+" />
 
     <ListView
         android:id="@+id/sumOfPointsMyCodes"
         android:layout_width="match_parent"
-        android:layout_height="150dp" />
+        android:layout_height="100dp" />
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
