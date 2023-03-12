@@ -47,7 +47,7 @@ public class MyCodesPage extends AppCompatActivity {
         codeAdapter = new CodeAdapter(this, R.layout.item_code, codesList);
         codeList.setAdapter(codeAdapter);
 
-        image = findViewById(R.id.imageView);
+        //image = findViewById(R.id.imageView);
 
         Button addCodeButton = findViewById(R.id.newCodeButton);
         testList = new ArrayList<>();
