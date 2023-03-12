@@ -15,6 +15,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -36,6 +37,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import android.Manifest;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -51,6 +53,8 @@ public class geolocation extends AppCompatActivity {
     private EditText myTextBox;
     Button postButton;
     ImageView image;
+
+    public Boolean geo;
 
     QRCode newQRCode;
 
@@ -170,6 +174,21 @@ public class geolocation extends AppCompatActivity {
 
         }
     });
+        ToggleButton tog = findViewById(R.id.on_off_toggle);
+
+
+        tog.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+
+            @Override
+            public void onCheckedChanged(CompoundButton b, boolean On) {
+                if (On) {
+                    geo = true;
+                } else {
+                    geo = false;
+                }
+            }
+        });
 
 
     }
