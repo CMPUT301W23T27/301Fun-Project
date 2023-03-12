@@ -13,11 +13,4 @@ public class SHAEncryptor {
             return bigInt.toString(16);
     }
 
-    // Testing
-    public static void main(String[] args) throws NoSuchAlgorithmException {
-        String input = "BFG5DGW54";
-        String hash = getSHA256Hash(input);
-        System.out.println("Input string: " + input);
-        System.out.println("SHA-256 hash: " + hash);
-    }
 }
