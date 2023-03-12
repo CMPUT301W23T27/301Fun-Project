@@ -117,6 +117,12 @@ public class MyCodesPage extends AppCompatActivity {
             }
         });
 
+
+        codeAdapter.notifyDataSetChanged();
+
+
+        filterButton.setOnClickListener(this::showPopupMenu);
+
         //End of firebase stuff
 
 
@@ -148,15 +154,8 @@ public class MyCodesPage extends AppCompatActivity {
 
         for (QRCode code : codesList) {
             System.out.println(code.getScore());
-        }
+        }*/
 
-        codeAdapter.notifyDataSetChanged();
-
-
-        filterButton.setOnClickListener(this::showPopupMenu);
-
-
-         */
 
     }
 
