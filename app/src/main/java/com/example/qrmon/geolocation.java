@@ -68,19 +68,16 @@ public class geolocation extends AppCompatActivity {
         postButton = findViewById(R.id.my_rounded_button);
         image = findViewById(R.id.Image);
 
-        //decodePictureFile
+
         Bitmap decodedPicture = StringToBitMap(newQRCode.getPicture());
         image.setImageBitmap(decodedPicture);
 
 
-        // Get the FusedLocationProviderClient instance
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
 
-        // Request location updates
-        // Check if the app has permission to access location
 
-
+        //sends a location request
         LocationRequest locationRequest = LocationRequest.create();
         locationRequest.setInterval(1000); // Update location every 1 seconds
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -93,7 +90,7 @@ public class geolocation extends AppCompatActivity {
                 for (Location location : locationResult.getLocations()) {
                     double latitude = location.getLatitude();
                     double longitude = location.getLongitude();
-                    // Do something with the latitude and longitude coordinates
+
                     if (String.valueOf(latitude) != null) {
                         latitudeTextView.setText("Latitude: " + String.valueOf(latitude));
                         //longitudeTextView.setText("Longitude: " + String.valueOf(longitude));
@@ -106,7 +103,7 @@ public class geolocation extends AppCompatActivity {
                 != PackageManager.PERMISSION_GRANTED ||
                 ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
                         != PackageManager.PERMISSION_GRANTED) {
-            // Permission is not granted, request the permission
+            //when permision is not granted
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
                     REQUEST_LOCATION_PERMISSION);
@@ -116,15 +113,16 @@ public class geolocation extends AppCompatActivity {
 
         myTextBox = findViewById(R.id.my_text_box);
 
+        //Im honestly not certain if the code below is important I definately implemented it with the intent of using it later
         myTextBox.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // do nothing
+            public void beforeTextChanged(CharSequence s, int starts, int amount, int aft) {
+
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // do nothing
+            public void onTextChanged(CharSequence s, int starts, int bef, int amount) {
+
             }
 
             @Override
@@ -170,16 +168,14 @@ public class geolocation extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_LOCATION_PERMISSION) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permission granted, request location updates
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
                         ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
                 }
                 
             } else {
-                // Permission denied, show an error message
-                latitudeTextView.setText("Location permission denied");
-                longitudeTextView.setText("Location permission denied");
+                latitudeTextView.setText("Location is denied");
+                longitudeTextView.setText("Location is denied");
             }
         }
     }
