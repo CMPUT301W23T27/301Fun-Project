@@ -213,6 +213,8 @@ public class geolocation extends AppCompatActivity {
     }
     private void saveText(String text) {}
 
+    //Adapted code from https://stackoverflow.com/questions/13562429/how-many-ways-to-convert-bitmap-to-string-and-vice-versa
+
     public Bitmap StringToBitMap(String encodedString){
         try {
             byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);
