@@ -125,9 +125,9 @@ public class MyCodesPage extends AppCompatActivity {
         filterButton.setOnClickListener(this::showPopupMenu);
 
         //End of firebase stuff
-        /**
-         * Adding data to sort codes
-         */
+        
+        /*
+        
         codesList.add(new QRCode("bot1", null, null, null, null, null, null,  10)); //Any of the values can be null for testing
         codesList.add(new QRCode("bot2",null, null, null, null, null, null, 12));
         codesList.add(new QRCode("bot3",null, null, null, null, null, null, 17));
@@ -135,9 +135,7 @@ public class MyCodesPage extends AppCompatActivity {
         codesList.add(new QRCode("bot5",null, null, null, null, null, null, 2));
         codesList.add(new QRCode("bot6",null, null, null, null, null, null, 15));
 
-        /**
-         * Ascending and descending sort for my codes
-         */
+        
         for (QRCode code : codesList) {
             System.out.println(code.getScore());
         }
