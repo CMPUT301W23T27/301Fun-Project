@@ -15,6 +15,12 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+/**
+ This class contains test cases for the ScannedCodePage activity in the QRMon application. It checks
+ that the activity launches successfully, and verifies that the expected text appears on the screen
+ after scanning a code. The tests use the Robotium library for UI testing and the ActivityTestRule
+ class to launch the activity. Before each test, a new Solo instance is created.
+ */
 public class ScannedCodePageTest {
 
     private Solo solo;
@@ -26,16 +32,17 @@ public class ScannedCodePageTest {
 
 
     /**
-     * Runs before all tests and creates solo instance.
-     * @throws Exception
+     *
+     * @throws Exception Runs before all tests and creates solo instance.
      */
     @Before
     public void setUp() throws Exception{
         solo = new Solo(InstrumentationRegistry.getInstrumentation(),rule.getActivity());
     }
+
     /**
-     * Gets the Activity
-     * @throws Exception
+     * Gets the activity
+     * @throws Exception Gets the activity
      */
     @Test
     public void start() throws Exception{

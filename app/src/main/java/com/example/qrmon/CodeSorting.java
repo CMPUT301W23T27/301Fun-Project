@@ -4,8 +4,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+/**
+ * Sorts the codes in my codes based on ascending or descending order
+ * @author Ian H
+ */
 public class CodeSorting {
 
+    /**
+     * Ascending order calculation
+     * @param codes from arraylist
+     * @return new calculated scores of codes or code given
+     */
     public static ArrayList<QRCode> ascendingCodeSort (ArrayList<QRCode> codes){
         Collections.sort(codes, new Comparator<QRCode>() {
             @Override
@@ -16,7 +25,11 @@ public class CodeSorting {
         return codes;
     }
 
-
+    /**
+     * Descending order calculation
+     * @param codes from arraylist
+     * @return new calculated scores of codes or code given
+     */
     public static ArrayList<QRCode> descendingCodeSort (ArrayList<QRCode> codes){
         Collections.sort(codes, new Comparator<QRCode>() {
             @Override

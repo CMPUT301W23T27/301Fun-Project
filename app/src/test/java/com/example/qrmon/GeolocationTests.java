@@ -23,6 +23,15 @@ import android.graphics.Color;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotEquals;
 
+/**
+ This class contains JUnit test cases for the Geolocation class. The test verifies the
+ functionality of the geolocationStringToBitMap() method. The test creates a bitmap image and
+ converts it to a string representation using the BitMapToString() method from the
+ CodeInterpreterActivity class. The test then passes the string to the StringToBitMap() method
+ from the geolocation class to convert it back to a bitmap image. The test ensures that the
+ bitmap images are not null and that the string representation of the bitmap image before and
+ after conversion remains the same.
+ */
 @Config(manifest=Config.NONE)
 @RunWith(RobolectricTestRunner.class)
 public class GeolocationTests {

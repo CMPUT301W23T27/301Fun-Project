@@ -4,12 +4,15 @@ import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.widget.ImageView;
 
+/** CodeIntepreter is an object that is created from scanning a QR Code while instantiating the following attributes
+ * base, score, name1 (first name), name2 (surname), full_name, newCode
+ * @author Joel Weller
+ *
+ */
 public class CodeInterpreter {
 
     private String base;
     private Integer score;
-    private String eyes;
-    private String smile;
     private String name1;
     private String name2;
     private String full_name;
@@ -20,6 +23,10 @@ public class CodeInterpreter {
     public CodeInterpreter() {
     }
 
+    /** Create unique QR Code names based on string from scanned QRCode
+     * @author Joel Weller
+     * @return newCode
+     */
     public QRCode interpret(String scanned_code) {
         // Make robot base from dicebear based on scanned_code position 0
         if (scanned_code.charAt(0) == '0') { base = "Harley"; }
@@ -101,8 +108,6 @@ public class CodeInterpreter {
         // Make url based on generated values
         String url = "https://api.dicebear.com/5.x/bottts/png?" +
                 "seed=" + base;
-        //"&eyes="+eyes+
-        //"&smile="+smile;
 
         String visual = null;
         String picture = null;
@@ -110,9 +115,7 @@ public class CodeInterpreter {
         String geolocation = "empty";
         String hash = scanned_code;
 
-
         newCode = new QRCode(full_name, visual, picture, comment, geolocation, hash, url, score);
-
 
         return newCode;
     }

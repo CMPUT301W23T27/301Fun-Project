@@ -18,6 +18,9 @@ import com.google.zxing.Result;
 
 import java.security.NoSuchAlgorithmException;
 
+/** This page opens and has access to device camera and prompts user to scan a QR Code
+ * @author Martin M
+ */
 public class ScanCodePage extends AppCompatActivity {
 
     private CodeScanner mCodeScanner;

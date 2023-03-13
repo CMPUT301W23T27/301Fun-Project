@@ -9,6 +9,11 @@ import androidx.annotation.NonNull;
 
 import java.io.Serializable;
 
+/**
+ * Creates a QRCode object that associates the QR code scanned with the following attributes:
+ * name, visual, picture, comment, geolocation, hash, url and score
+ * @author Joel Weller
+ */
 public class QRCode implements Parcelable {
     private String name;
     private String visual;
@@ -19,6 +24,17 @@ public class QRCode implements Parcelable {
     private String url;
     private Integer score;
 
+    /**
+     * Constructor for QRCode
+     * @param name name of QRCode
+     * @param visual creature visual for QRCode
+     * @param picture picture for QRCode
+     * @param comment comment for QRCode
+     * @param geolocation geolocation for QRCode
+     * @param hash hash string for QRCode
+     * @param url url for QR Code
+     * @param score score for QRCode
+     */
     public QRCode(String name, String visual, String picture, String comment, String geolocation, String hash, String url, Integer score) {
         this.name = name;
         this.visual = visual;
@@ -70,6 +86,9 @@ public class QRCode implements Parcelable {
         return 0;
     }
 
+    /**
+     * instantiates QR Code
+     */
     public static final Creator<QRCode> CREATOR = new Creator<QRCode>() {
         @Override
         public QRCode createFromParcel(Parcel in) {
@@ -90,7 +109,6 @@ public class QRCode implements Parcelable {
     public String getHash() {return hash;}
     public String getUrl() {return url;}
     public Integer getScore() {return score;}
-
 
 
     public void setName(String newName) {this.name= newName;}

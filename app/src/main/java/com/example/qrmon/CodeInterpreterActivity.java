@@ -14,11 +14,26 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.URL;
 
+/**
+ CodeInterpreterActivity is an activity that displays a QR code image and the interpreted data from the scanned code.
+ It uses an AsyncTask to load the image from a URL obtained from a QR code object created by interpreting the scanned code.
+ The activity also converts the loaded image to a string using the BitMapToString method.
+ The interpreted QR code data is passed to the next activity using an intent.
+ @author Joel Weller
+ */
 public class CodeInterpreterActivity extends AppCompatActivity {
 
     QRCode newQRCode;
     public CodeInterpreter codeInterpreter;
     Bitmap bitmapImage;
+    /**
+     Called when the activity is starting. Retrieves the scanned code from the intent extras and
+     interprets it using the CodeInterpreter object. Creates a LoadImage AsyncTask to load the image
+     from the URL obtained from the interpreted QR code object. After loading the image, the BitMapToString
+     method is used to convert it to a string and set it as the visual data for the interpreted QR code object.
+     The QR code object is then passed to the next activity using an intent.
+     @param savedInstanceState the saved instance state bundle.
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +53,6 @@ public class CodeInterpreterActivity extends AppCompatActivity {
         // Create image from dicebear based on url
         new LoadImage().execute();
 
-
-
         // Wait for url image to load before next screen
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -55,8 +68,13 @@ public class CodeInterpreterActivity extends AppCompatActivity {
 
 
     }
+    /**
+     An AsyncTask to load the image from the URL obtained from the QR code object.
+     Loads the image from the URL.
+     */
 
     public class LoadImage extends AsyncTask<Void, Void, Bitmap> {
+
         @Override
         protected Bitmap doInBackground(Void... params) {
             Bitmap bitmap = null;

@@ -40,6 +40,12 @@ import android.widget.Toast;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This object represents a page within the app that occurs after the user takes a photo when posting a QR code
+ * and prompts user to add their geo location and add a comment to their post
+ * @author Ian M
+ *
+ */
 public class geolocation extends AppCompatActivity {
 
     private FusedLocationProviderClient fusedLocationClient;
@@ -73,11 +79,7 @@ public class geolocation extends AppCompatActivity {
         Bitmap decodedPicture = StringToBitMap(newQRCode.getPicture());
         image.setImageBitmap(decodedPicture);
 
-
-
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
-
 
         LocationRequest locationRequest = LocationRequest.create();
         locationRequest.setInterval(1000); // Update location every 1 seconds
@@ -171,9 +173,12 @@ public class geolocation extends AppCompatActivity {
         }
     });
 
-
     }
 
+    /**
+     * method checks if user grants permission to user location, if so the user can add location using latitude and longitude
+     * @author Ian M
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -191,8 +196,15 @@ public class geolocation extends AppCompatActivity {
             }
         }
     }
+
+
     private void saveText(String text) {}
 
+    /** Takes users photo captured and encodes it to bitmap for storage
+     * @author Joel W
+     * @param encodedString from SHAEncryptor
+     * @return bitmap
+     */
     public Bitmap StringToBitMap(String encodedString){
         try {
             byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);
