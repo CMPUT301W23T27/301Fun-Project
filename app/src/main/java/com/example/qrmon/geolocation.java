@@ -44,13 +44,13 @@ import java.util.Map;
 
 public class geolocation extends AppCompatActivity {
 
-    private FusedLocationProviderClient fusedLocationClient;
+    private FusedLocationProviderClient FLClient;
     private TextView latitudeTextView;
     private TextView longitudeTextView;
-    private LocationRequest locationRequest;
-    private LocationCallback locationCallback;
-    private static final int REQUEST_LOCATION_PERMISSION = 1;
-    private EditText myTextBox;
+    private LocationRequest lRequest;
+    private LocationCallback LCallback;
+    private static final int RLPermission = 1;
+    private EditText TBox;
     Button postButton;
     ImageView image;
 
@@ -78,17 +78,18 @@ public class geolocation extends AppCompatActivity {
         image.setImageBitmap(decodedPicture);
 
 
+        //This grabs location via wifi and data and GPS
+        FLClient = LocationServices.getFusedLocationProviderClient(this);
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
 
-
-        LocationRequest locationRequest = LocationRequest.create();
-        locationRequest.setInterval(1000); // Update location every 1 seconds
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationCallback = new LocationCallback() {
+        LocationRequest LRequest = LocationRequest.create();
+        LRequest.setInterval(1000); // Update location every 1 seconds
+        LRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        LCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
+                //Take the location request and then outputs it to screen ( just to check if its good)
                 if (locationResult == null) {
                     return;
                 }
@@ -104,29 +105,25 @@ public class geolocation extends AppCompatActivity {
                 }
             }
         };
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
-                    REQUEST_LOCATION_PERMISSION);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            //Checks permissions and if not asks for permision otherwise it updates it
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, RLPermission);
         } else {
-            fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
+            FLClient.requestLocationUpdates(LRequest, LCallback, null);
         }
 
-        myTextBox = findViewById(R.id.my_text_box);
+        TBox = findViewById(R.id.my_text_box);
 
-        //Not sure if this has functionality
-        myTextBox.addTextChangedListener(new TextWatcher() {
+
+        TBox.addTextChangedListener(new TextWatcher() {
+            //Not sure if this has functionality I added when trying to make the enter button leave the textbox
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public void beforeTextChanged(CharSequence s, int srt, int cnt, int aft) {
 
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            public void onTextChanged(CharSequence s, int srt, int bef, int cnt) {
 
             }
 
@@ -174,12 +171,10 @@ public class geolocation extends AppCompatActivity {
 
         }
     });
+
         ToggleButton tog = findViewById(R.id.on_off_toggle);
-
-
         tog.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-
+            //Not used now but will be used to check weither geo is on or off
             @Override
             public void onCheckedChanged(CompoundButton b, boolean On) {
                 if (On) {
@@ -193,17 +188,23 @@ public class geolocation extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_LOCATION_PERMISSION) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                        ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
+    @Override
+    public void onRequestPermissionsResult(int RCode, @NonNull String[] permish, @NonNull int[] GResults) {
+        super.onRequestPermissionsResult(RCode, permish, GResults);
+
+        //Basically we call permissions again and then update or say there is not location because we
+        //Dont have permission
+        if (RCode == RLPermission) {
+
+            //If it is granted
+            if (GResults.length > 0 && GResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    FLClient.requestLocationUpdates(lRequest, LCallback, null);
                 }
-                
+
+            //If its not granted
             } else {
                 latitudeTextView.setText("Location permission has been denied");
                 longitudeTextView.setText("Location permission has been denied");
@@ -215,8 +216,8 @@ public class geolocation extends AppCompatActivity {
     public Bitmap StringToBitMap(String encodedString){
         try {
             byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);
-            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
+            Bitmap bmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bmap;
         } catch(Exception e) {
             e.getMessage();
             return null;
