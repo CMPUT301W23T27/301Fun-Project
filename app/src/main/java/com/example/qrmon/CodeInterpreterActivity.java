@@ -73,6 +73,7 @@ public class CodeInterpreterActivity extends AppCompatActivity {
      Loads the image from the URL.
      */
 
+    // Code adapted from https://www.thecrazyprogrammer.com/2015/10/android-load-image-from-url-internet-example.html
     public class LoadImage extends AsyncTask<Void, Void, Bitmap> {
 
         @Override
@@ -101,6 +102,7 @@ public class CodeInterpreterActivity extends AppCompatActivity {
         }
     }
 
+    //Adapted code from https://stackoverflow.com/questions/13562429/how-many-ways-to-convert-bitmap-to-string-and-vice-versa
     public String BitMapToString(Bitmap bitmap) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);

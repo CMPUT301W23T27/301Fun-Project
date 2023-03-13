@@ -45,12 +45,13 @@
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <Spinner
-            android:id="@+id/on_off_spinner"
-            android:layout_width="48dp"
+        <ToggleButton
+            android:id="@+id/on_off_toggle"
+            android:layout_width="63dp"
             android:layout_height="48dp"
             android:layout_marginRight="48dp"
-            android:entries="@array/on_off_spinner_options" />
+            android:textOff="@string/ToggleOff"
+            android:textOn="@string/ToggleOn" />
 
     </LinearLayout>
 

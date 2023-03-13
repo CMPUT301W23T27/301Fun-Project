@@ -51,7 +51,7 @@ public class MyCodesPage extends AppCompatActivity {
         codeAdapter = new CodeAdapter(this, R.layout.item_code, codesList);
         codeList.setAdapter(codeAdapter);
 
-        image = findViewById(R.id.imageView);
+        //image = findViewById(R.id.imageView);
 
         Button addCodeButton = findViewById(R.id.newCodeButton);
         testList = new ArrayList<>();
@@ -118,6 +118,12 @@ public class MyCodesPage extends AppCompatActivity {
             }
         });
 
+
+        codeAdapter.notifyDataSetChanged();
+
+
+        filterButton.setOnClickListener(this::showPopupMenu);
+
         //End of firebase stuff
         /**
          * Adding data to sort codes
@@ -150,11 +156,8 @@ public class MyCodesPage extends AppCompatActivity {
 
         for (QRCode code : codesList) {
             System.out.println(code.getScore());
-        }
+        }*/
 
-        codeAdapter.notifyDataSetChanged();
-
-        filterButton.setOnClickListener(this::showPopupMenu);
 
     }
 
@@ -191,6 +194,7 @@ public class MyCodesPage extends AppCompatActivity {
      * @param encodedString from SHAEncryptor
      * @return bitmap
      */
+
     public Bitmap StringToBitMap(String encodedString){
         try {
             byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);
