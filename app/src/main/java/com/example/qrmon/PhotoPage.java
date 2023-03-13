@@ -20,6 +20,10 @@ import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 
+/**
+ * Functionality behind if the user wants to retake a photo after they have taken one when
+ * capturing QR code
+ */
 public class PhotoPage extends AppCompatActivity {
 
     QRCode newQRCode;

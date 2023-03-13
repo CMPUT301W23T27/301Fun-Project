@@ -12,6 +12,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+/**
+ * Once the user scans the QRCode, it will show the user which creature they got
+ * due to each QR code having unique attributes
+ *
+ * This page allows the user to add a picture or click next while adding comment and/or geolocation
+ * @author Joel Weller
+ */
 public class ScannedCodePage extends AppCompatActivity {
 
     QRCode newQRCode;

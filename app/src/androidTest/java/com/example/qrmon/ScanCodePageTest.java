@@ -19,6 +19,13 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+/**
+ This class contains test cases for the ScanCodePage class of the QRMon Android application.
+ It tests whether the activity starts, whether the text in the scanned_text EditText is correct,
+ and whether a city can be added to and removed from the ListView.
+ It uses the Solo library for testing user interface components, and the ActivityTestRule class to start the activity.
+ @author Martin M
+ */
 public class ScanCodePageTest {
 
     private Solo solo;
@@ -28,10 +35,9 @@ public class ScanCodePageTest {
     public ActivityTestRule<ScanCodePage> rule =
             new ActivityTestRule<>(ScanCodePage.class, true, true);
 
-
     /**
      * Runs before all tests and creates solo instance.
-     * @throws Exception
+     * @throws Exception throws exception if rule does not complete
      */
     @Before
     public void setUp() throws Exception{
@@ -39,7 +45,7 @@ public class ScanCodePageTest {
     }
     /**
      * Gets the Activity
-     * @throws Exception
+     * @throws Exception if it does not get the activity
      */
     @Test
     public void start() throws Exception{

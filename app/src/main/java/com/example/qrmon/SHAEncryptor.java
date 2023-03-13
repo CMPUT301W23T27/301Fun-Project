@@ -4,6 +4,11 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * Transforms data using a hash function - receives string and creates a hash
+ * @author Martin M
+ * @see CodeInterpreter
+ */
 public class SHAEncryptor {
     public static String getSHA256Hash(String input) throws NoSuchAlgorithmException {
 

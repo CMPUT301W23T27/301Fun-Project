@@ -13,6 +13,10 @@ import android.widget.TextView;
 
 import java.util.List;
 
+/**
+ * a bridge between the UI my codes component that helps fill data into a selected code
+ * on my codes page
+ */
 public class CodeAdapter extends ArrayAdapter<QRCode> {
 
     private Context mContext;
@@ -24,6 +28,15 @@ public class CodeAdapter extends ArrayAdapter<QRCode> {
         mResource = resource;
     }
 
+    /**
+     * When the user clicks on a single code from my codes page it sets the code image based on the code object
+     * and sets the name and points of the code object
+     * @author Ian H
+     * @param position position on page where user clicked
+     * @param convertView sets the name and points of the code object
+     * @param parent The parent that this view will eventually be attached to
+     * @return convertView
+     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         QRCode code = getItem(position);

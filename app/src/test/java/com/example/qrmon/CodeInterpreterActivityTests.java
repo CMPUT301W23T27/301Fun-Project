@@ -19,15 +19,26 @@ import android.graphics.Color;
 
 import static org.junit.Assert.assertNotNull;
 
+/**
+ This class contains test cases for CodeInterpreterActivity class
+ */
 @Config(manifest=Config.NONE)
 @RunWith(RobolectricTestRunner.class)
 public class CodeInterpreterActivityTests {
 
-
+    /**
+     This test case tests the asynchronous task of CodeInterpreterActivity class
+     @throws Exception if the async task fails to complete successfully
+     */
     @Test
     public void testAsyncTask() throws Exception {
 
     }
+    /**
+     This test case tests the BitMapToString method of CodeInterpreterActivity class.
+     It creates a square Bitmap object and converts it to a Base64 encoded String.
+     Then it checks the length of the string to ensure that it matches the expected length
+     */
     @Test
     public void CodeInterpreterActivityBitMapToStringTest(){
         CodeInterpreterActivity activity = new CodeInterpreterActivity();

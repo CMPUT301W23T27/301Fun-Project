@@ -28,6 +28,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+/** Functionality behind interacting, sorting and viewing the data on the My Codes page
+ * @author Joel Weller
+ * @see ScanCodePage
+ */
 public class MyCodesPage extends AppCompatActivity {
 
     private CodeAdapter codeAdapter;
@@ -53,7 +57,9 @@ public class MyCodesPage extends AppCompatActivity {
         testList = new ArrayList<>();
 
 
-        // Retrieve QRCode list from Firestore
+        /**
+         * Retrieve code list from firestore
+         */
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String ownerId = "temp-user-id";
         db.collection(ownerId)
@@ -78,11 +84,6 @@ public class MyCodesPage extends AppCompatActivity {
                         Log.e(TAG, "Error getting items with ownerId " + ownerId, e);
                     }
                 });
-
-
-
-
-
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -124,11 +125,9 @@ public class MyCodesPage extends AppCompatActivity {
         filterButton.setOnClickListener(this::showPopupMenu);
 
         //End of firebase stuff
-
-
-
+        
         /*
-
+        
         codesList.add(new QRCode("bot1", null, null, null, null, null, null,  10)); //Any of the values can be null for testing
         codesList.add(new QRCode("bot2",null, null, null, null, null, null, 12));
         codesList.add(new QRCode("bot3",null, null, null, null, null, null, 17));
@@ -136,6 +135,7 @@ public class MyCodesPage extends AppCompatActivity {
         codesList.add(new QRCode("bot5",null, null, null, null, null, null, 2));
         codesList.add(new QRCode("bot6",null, null, null, null, null, null, 15));
 
+        
         for (QRCode code : codesList) {
             System.out.println(code.getScore());
         }
@@ -159,7 +159,11 @@ public class MyCodesPage extends AppCompatActivity {
 
     }
 
-
+    /** When you click on the filter button - a popup menu will display to sort the users codes
+     * @author Ian Harding
+     * @param view
+     * @return Boolean
+     */
     private void showPopupMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(this, view);
         popupMenu.getMenuInflater().inflate(R.menu.sorting_menu, popupMenu.getMenu());
@@ -182,7 +186,13 @@ public class MyCodesPage extends AppCompatActivity {
         popupMenu.show();
     }
 
-    //Adapted code from https://stackoverflow.com/questions/13562429/how-many-ways-to-convert-bitmap-to-string-and-vice-versa
+    /**
+     * Takes encoded QR code string and converts it to bitmap for representing the QR Code as an image
+     * @author Joel Weller
+     * @param encodedString from SHAEncryptor
+     * @return bitmap
+     */
+
     public Bitmap StringToBitMap(String encodedString){
         try {
             byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);

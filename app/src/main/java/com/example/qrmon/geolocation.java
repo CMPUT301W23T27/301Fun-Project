@@ -42,6 +42,12 @@ import android.widget.ToggleButton;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This object represents a page within the app that occurs after the user takes a photo when posting a QR code
+ * and prompts user to add their geo location and add a comment to their post
+ * @author Ian M
+ *
+ */
 public class geolocation extends AppCompatActivity {
 
     private FusedLocationProviderClient FLClient;
@@ -211,10 +217,15 @@ public class geolocation extends AppCompatActivity {
             }
         }
     }
+
+
     private void saveText(String text) {}
 
-    //Adapted code from https://stackoverflow.com/questions/13562429/how-many-ways-to-convert-bitmap-to-string-and-vice-versa
-
+    /** Takes users photo captured and encodes it to bitmap for storage
+     * @author Joel W
+     * @param encodedString from SHAEncryptor
+     * @return bitmap
+     */
     public Bitmap StringToBitMap(String encodedString){
         try {
             byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);

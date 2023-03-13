@@ -13,6 +13,11 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+/**
+ The PhotoPageTest class contains tests that verify the functionality of the PhotoPage activity in the QRMon application.
+ It uses the Robotium testing framework to interact with UI elements and verify their behavior.
+ */
+
 public class PhotoPageTest {
     private Solo solo;
 
@@ -24,7 +29,7 @@ public class PhotoPageTest {
 
     /**
      * Runs before all tests and creates solo instance.
-     * @throws Exception
+     * @throws Exception if it does not create solo instance
      */
     @Before
     public void setUp() throws Exception{
@@ -32,7 +37,7 @@ public class PhotoPageTest {
     }
     /**
      * Gets the Activity
-     * @throws Exception
+     * @throws Exception if it does not get the activity
      */
     @Test
     public void start() throws Exception{
@@ -50,7 +55,6 @@ public class PhotoPageTest {
         assertTrue(solo.searchText("Retake"));
         solo.getView(R.id.confirmPhotoButton);
         assertTrue(solo.searchText("Confirm"));
-
 
     }
 }
