@@ -36,7 +36,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import android.Manifest;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.util.HashMap;
@@ -169,7 +168,7 @@ public class geolocation extends AppCompatActivity {
 
             handler.postDelayed(new Runnable() {
                 public void run() {
-                    Intent intent = new Intent(geolocation.this, MyCodesPage.class);
+                    Intent intent = new Intent(geolocation.this, MainActivity.class);
                     startActivity(intent);
                     finish();
                 }

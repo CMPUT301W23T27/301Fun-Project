@@ -19,11 +19,11 @@ import java.util.List;
  */
 public class CodeAdapter extends ArrayAdapter<QRCode> {
 
-    private Context mContext;
+    private MyCodesFragment mContext;
     private int mResource;
 
-    public CodeAdapter(Context context, int resource, List<QRCode> objects) {
-        super(context, resource, objects);
+    public CodeAdapter(MyCodesFragment context, int resource, List<QRCode> objects) {
+        super(context.getContext(), resource, objects);
         mContext = context;
         mResource = resource;
     }
@@ -42,7 +42,7 @@ public class CodeAdapter extends ArrayAdapter<QRCode> {
         QRCode code = getItem(position);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(mResource, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(mResource, parent, false);
         }
 
         ImageView codeImageView = convertView.findViewById(R.id.QRCodeVisualRepresentation);
