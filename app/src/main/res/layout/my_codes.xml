@@ -54,41 +54,9 @@
         android:layout_height="0dp"
         android:orientation="horizontal" />
 
-    <Button
-        android:id="@+id/newCodeButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="+" />
-
     <ListView
         android:id="@+id/sumOfPointsMyCodes"
         android:layout_width="match_parent"
         android:layout_height="100dp" />
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom">
-
-        <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/bottomNavBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            app:fabCradleMargin="10dp"
-            app:fabCradleRoundedCornerRadius="10dp"
-            app:fabCradleVerticalOffset="10dp"
-            app:layout_anchor="@+id/bottomNavBar"
-            app:layout_anchorGravity="bottom|center"
-            tools:ignore="ExtraText">
-
-            <com.google.android.material.bottomnavigation.BottomNavigationView
-                android:id="@+id/bottomNavView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                app:menu="@menu/bottom_nav_menu" />
-
-        </com.google.android.material.bottomappbar.BottomAppBar>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </LinearLayout>

@@ -1,18 +1,18 @@
 package com.example.qrmon;
 
-import static android.content.ContentValues.TAG;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import static android.content.ContentValues.TAG;
+
+import androidx.fragment.app.Fragment;
+
 import android.os.Handler;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -25,14 +25,28 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
-/** Functionality behind interacting, sorting and viewing the data on the My Codes page
- * @author Joel Weller
- * @see ScanCodePage
+import java.util.ArrayList;
+
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link MyCodesFragment#newInstance} factory method to
+ * create an instance of this fragment.
  */
-public class MyCodesPage extends AppCompatActivity {
+public class MyCodesFragment extends Fragment {
+
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
+
+    private Button filterButton;
+    private ListView codeList;
 
     private CodeAdapter codeAdapter;
     private ArrayList<QRCode> codesList = new ArrayList<>();
@@ -40,22 +54,47 @@ public class MyCodesPage extends AppCompatActivity {
     Bitmap imageBitmap;
     ImageView image;
 
+    public MyCodesFragment() {
+        // Required empty public constructor
+    }
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment MyCodesFragment.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static MyCodesFragment newInstance(String param1, String param2) {
+        MyCodesFragment fragment = new MyCodesFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.my_codes); //This should be my_codes_page, not scan_code
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+    }
 
-        Button filterButton = findViewById(R.id.myCodesFilterButton);
-
-        ListView codeList = findViewById(R.id.myCodesListView);
-        codeAdapter = new CodeAdapter(this, R.layout.item_code, codesList);
-        codeList.setAdapter(codeAdapter);
-
-        //image = findViewById(R.id.imageView);
-
-        Button addCodeButton = findViewById(R.id.newCodeButton);
-        testList = new ArrayList<>();
-
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+       View view = inflater.inflate(R.layout.my_codes, container, false);
+       filterButton = view.findViewById(R.id.myCodesFilterButton);
+       codeList = view.findViewById(R.id.myCodesListView);
+       codeAdapter = new CodeAdapter(this, R.layout.item_code, codesList);
+       codeList.setAdapter(codeAdapter);
+       testList = new ArrayList<>();
 
         /**
          * Retrieve code list from firestore
@@ -72,7 +111,7 @@ public class MyCodesPage extends AppCompatActivity {
                         for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                             QRCode item = documentSnapshot.toObject(QRCode.class);
                             testList.add(item);
-                            Toast.makeText(getBaseContext(), "successful from firebase",Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getContext(), "successful from firebase",Toast.LENGTH_SHORT).show();
                         }
 
                         // Do something with the list of items here
@@ -106,57 +145,14 @@ public class MyCodesPage extends AppCompatActivity {
                             //image.setImageBitmap(imageBitmap);
                         }
                     }}, 1000);
-                }}, 1000);
-
-        addCodeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Send QRCode to next activity
-                Intent intent = new Intent(MyCodesPage.this, ScanCodePage.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
+            }}, 1000);
 
         codeAdapter.notifyDataSetChanged();
 
 
         filterButton.setOnClickListener(this::showPopupMenu);
 
-        //End of firebase stuff
-        
-        /*
-        
-        codesList.add(new QRCode("bot1", null, null, null, null, null, null,  10)); //Any of the values can be null for testing
-        codesList.add(new QRCode("bot2",null, null, null, null, null, null, 12));
-        codesList.add(new QRCode("bot3",null, null, null, null, null, null, 17));
-        codesList.add(new QRCode("bot4",null, null, null, null, null, null, 23));
-        codesList.add(new QRCode("bot5",null, null, null, null, null, null, 2));
-        codesList.add(new QRCode("bot6",null, null, null, null, null, null, 15));
-
-        
-        for (QRCode code : codesList) {
-            System.out.println(code.getScore());
-        }
-
-        codesList = CodeSorting.descendingCodeSort(codesList);
-
-        System.out.println("-------------------");
-
-        for (QRCode code : codesList) {
-            System.out.println(code.getScore());
-        }
-
-        codesList = CodeSorting.ascendingCodeSort(codesList);
-
-        System.out.println("---------------------");
-
-        for (QRCode code : codesList) {
-            System.out.println(code.getScore());
-        }*/
-
-
+        return view;
     }
 
     /** When you click on the filter button - a popup menu will display to sort the users codes
@@ -165,7 +161,7 @@ public class MyCodesPage extends AppCompatActivity {
      * @return Boolean
      */
     private void showPopupMenu(View view) {
-        PopupMenu popupMenu = new PopupMenu(this, view);
+        PopupMenu popupMenu = new PopupMenu(getContext(), view);
         popupMenu.getMenuInflater().inflate(R.menu.sorting_menu, popupMenu.getMenu());
 
         popupMenu.setOnMenuItemClickListener(item -> {
@@ -203,5 +199,4 @@ public class MyCodesPage extends AppCompatActivity {
             return null;
         }
     }
-
 }

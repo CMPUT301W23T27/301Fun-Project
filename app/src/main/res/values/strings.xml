@@ -8,4 +8,6 @@
     <string name="ToggleOn">on</string>
     <string name="myCodesTitle">My Codes</string>
     <string name="privacyMessage">For Privacy Reasons Your QR Code Has Not Been Saved Or Stored In Any Way By QR Creatures</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
