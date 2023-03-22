@@ -20,6 +20,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QRMon"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAUWRB7gzNlDjbuQNazLoJ2AmK_f6hUHPs"/>
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
         <activity
             android:name=".CodeInterpreterActivity"
             android:exported="false" />
