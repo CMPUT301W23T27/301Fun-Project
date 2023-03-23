@@ -30,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:textSize="8sp"
-                android:layout_weight="0"
+                android:layout_weight="0.1"
                 android:padding="0dp"
                 android:layout_gravity="left"
                 android:drawableBottom="@drawable/baseline_arrow_back_ios_24" />
@@ -39,7 +39,7 @@
                 android:id="@+id/leaderboard_title"
                 android:layout_width="261dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight=".09"
                 android:gravity="end"
                 android:text="Leaderboard"
                 android:textSize="24sp" />
