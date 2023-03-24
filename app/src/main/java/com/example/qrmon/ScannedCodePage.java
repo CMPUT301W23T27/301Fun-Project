@@ -36,6 +36,7 @@ public class ScannedCodePage extends AppCompatActivity {
         scoreView = findViewById(R.id.score);
         nameView = findViewById(R.id.name);
         Button takePhotoButton = findViewById(R.id.snapAPicButton);
+        Button skipPhotoButton = findViewById(R.id.scannedCodeNextButton);
 
         // Receive QRCode
         if(getIntent().getExtras() != null) {
@@ -59,6 +60,16 @@ public class ScannedCodePage extends AppCompatActivity {
                 Intent intent = new Intent(ScannedCodePage.this, PhotoPage.class);
                 intent.putExtra("QRCode", newQRCode);
                 startActivity(intent);
+            }
+        });
+
+        skipPhotoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ScannedCodePage.this, geolocation.class);
+                intent.putExtra("QRCode", newQRCode);
+                startActivity(intent);
+                finish();
             }
         });
 
