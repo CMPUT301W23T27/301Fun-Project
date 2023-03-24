@@ -42,7 +42,8 @@
                 android:layout_weight=".09"
                 android:gravity="end"
                 android:text="Leaderboard"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:fontFamily="@font/montserrat_bold"/>
 
         </LinearLayout>
 
@@ -77,19 +78,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="temp"
-            android:layout_weight="3"/>
+            android:layout_weight="3"
+            android:fontFamily="@font/montserrat_semibold"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="temp"
-            android:layout_weight="3"/>
+            android:layout_weight="3"
+            android:fontFamily="@font/montserrat_semibold"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="temp"
-            android:layout_weight="3"/>
+            android:layout_weight="3"
+            android:fontFamily="@font/montserrat_semibold"/>
 
     </LinearLayout>
 
