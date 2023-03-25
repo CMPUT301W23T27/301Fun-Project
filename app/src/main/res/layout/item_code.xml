@@ -25,7 +25,8 @@
             android:text="QR Code Creature Name"
             android:textColor="@color/black"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:fontFamily="@font/montserrat_semibold"/>
 
         <TextView
             android:id="@+id/QRCodePoints"
@@ -33,7 +34,8 @@
             android:layout_height="wrap_content"
             android:text="10 points"
             android:textColor="@color/black"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:fontFamily="@font/montserrat_medium"/>
 
     </LinearLayout>
 
