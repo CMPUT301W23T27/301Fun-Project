@@ -16,7 +16,7 @@ public class QRCodeTest {
      @return QRCode object with a name and score.
      */
     public QRCode mockQRCodeObj() {
-        QRCode qr = new QRCode("testBot", null, null, null, null, null, null,  99);
+        QRCode qr = new QRCode("testBot", null, null, null, null, null, null, null,  99);
         return qr;
     }
 

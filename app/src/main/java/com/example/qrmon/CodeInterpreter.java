@@ -112,10 +112,11 @@ public class CodeInterpreter {
         String visual = null;
         String picture = null;
         String comment = "empty";
-        String geolocation = "empty";
+        Double longitude = null;
+        Double latitude = null;
         String hash = scanned_code;
 
-        newCode = new QRCode(full_name, visual, picture, comment, geolocation, hash, url, score);
+        newCode = new QRCode(full_name, visual, picture, comment, longitude, latitude, hash, url, score);
 
         return newCode;
     }
