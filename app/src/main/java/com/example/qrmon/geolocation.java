@@ -102,8 +102,11 @@ public class geolocation extends AppCompatActivity {
                     double latitude = location.getLatitude();
                     double longitude = location.getLongitude();
 
+                    // Set geolocation to QRCode object
                     if (String.valueOf(latitude) != null) {
                         latitudeTextView.setText("Latitude: " + String.valueOf(latitude));
+                        newQRCode.setLongitude(location.getLongitude());
+                        newQRCode.setLatitude(location.getLatitude());
                         //longitudeTextView.setText("Longitude: " + String.valueOf(longitude));
                     }
 
@@ -149,8 +152,23 @@ public class geolocation extends AppCompatActivity {
             data.put("item", newQRCode);
             data.put("ownerId", "temp-user-id");
 
-            // Add the data to the Firestore database
+            // Add the QRCode object to the user's database
             db.collection("temp-user-id").add(newQRCode)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            Log.d(TAG, "Item added with ID: " + documentReference.getId());
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w(TAG, "Error adding item", e);
+                        }
+                    });
+
+            // Add the QRCode object to the public database
+            db.collection("global-public-QRCodes").add(newQRCode)
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {

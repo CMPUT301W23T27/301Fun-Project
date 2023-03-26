@@ -112,7 +112,6 @@ public class MyCodesFragment extends Fragment {
         String ownerId = "temp-user-id";
 
         db.collection(ownerId)
-                .whereEqualTo("geolocation", "empty")
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
@@ -123,8 +122,6 @@ public class MyCodesFragment extends Fragment {
                             testList.add(item);
 //                            Toast.makeText(getContext(), "successful from firebase",Toast.LENGTH_SHORT).show();
                         }
-
-                        // Do something with the list of items here
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

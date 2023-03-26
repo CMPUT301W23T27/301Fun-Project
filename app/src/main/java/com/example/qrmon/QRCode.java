@@ -19,7 +19,8 @@ public class QRCode implements Parcelable {
     private String visual;
     private String picture;
     private String comment;
-    private String geolocation;
+    private Double longitude;
+    private Double latitude;
     private String hash;
     private String url;
     private Integer score;
@@ -30,17 +31,19 @@ public class QRCode implements Parcelable {
      * @param visual creature visual for QRCode
      * @param picture picture for QRCode
      * @param comment comment for QRCode
-     * @param geolocation geolocation for QRCode
+     * @param longitude longitude for QRCode
+     * @param latitude latitude for QRCode
      * @param hash hash string for QRCode
      * @param url url for QR Code
      * @param score score for QRCode
      */
-    public QRCode(String name, String visual, String picture, String comment, String geolocation, String hash, String url, Integer score) {
+    public QRCode(String name, String visual, String picture, String comment, Double longitude, Double latitude, String hash, String url, Integer score) {
         this.name = name;
         this.visual = visual;
         this.picture = picture;
         this.comment = comment;
-        this.geolocation = geolocation;
+        this.longitude = longitude;
+        this.latitude = latitude;
         this.hash = hash;
         this.url = url;
         this.score = score;
@@ -54,7 +57,16 @@ public class QRCode implements Parcelable {
         visual = in.readString();
         picture = in.readString();
         comment = in.readString();
-        geolocation = in.readString();
+        if (in.readByte() == 0) {
+            longitude = null;
+        } else {
+            longitude = in.readDouble();
+        }
+        if (in.readByte() == 0) {
+            latitude = null;
+        } else {
+            latitude = in.readDouble();
+        }
         hash = in.readString();
         url = in.readString();
         if (in.readByte() == 0) {
@@ -70,7 +82,18 @@ public class QRCode implements Parcelable {
         dest.writeString(visual);
         dest.writeString(picture);
         dest.writeString(comment);
-        dest.writeString(geolocation);
+        if (longitude == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(longitude);
+        }
+        if (latitude == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(latitude);
+        }
         dest.writeString(hash);
         dest.writeString(url);
         if (score == null) {
@@ -86,9 +109,6 @@ public class QRCode implements Parcelable {
         return 0;
     }
 
-    /**
-     * instantiates QR Code
-     */
     public static final Creator<QRCode> CREATOR = new Creator<QRCode>() {
         @Override
         public QRCode createFromParcel(Parcel in) {
@@ -105,7 +125,8 @@ public class QRCode implements Parcelable {
     public String getVisual() {return visual;}
     public String getPicture() {return picture;}
     public String getComment() {return comment;}
-    public String getGeolocation() {return geolocation;}
+    public Double getLongitude() {return longitude;}
+    public Double getLatitude() {return latitude;}
     public String getHash() {return hash;}
     public String getUrl() {return url;}
     public Integer getScore() {return score;}
@@ -115,7 +136,8 @@ public class QRCode implements Parcelable {
     public void setVisual(String newVisual) {this.visual = newVisual;}
     public void setPicture(String newPicture) {this.picture = newPicture;}
     public void setComment(String newComment) {this.comment = newComment;}
-    public void setGeolocation(String newGeolocation) {this.geolocation = newGeolocation;}
+    public void setLongitude(Double newLongitude) {this.longitude = newLongitude;}
+    public void setLatitude(Double newLatitude) {this.latitude = newLatitude;}
     public void setHash(String newHash) {this.hash = newHash;}
     public void setUrl(String newUrl) {this.url = newUrl;}
     public void setScore(Integer newScore) {this.score = newScore;}
