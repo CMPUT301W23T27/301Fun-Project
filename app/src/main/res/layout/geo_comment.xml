@@ -40,7 +40,7 @@
             android:id="@+id/geo"
             android:layout_width="150dp"
             android:layout_height="32dp"
-            android:fontFamily="sans-serif-medium"
+            android:fontFamily="@font/montserrat_regular"
             android:text="Geo Location"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -73,10 +73,11 @@
             android:id="@+id/comment"
             android:layout_width="match_parent"
             android:layout_height="32dp"
-            android:fontFamily="sans-serif-medium"
+            android:fontFamily="@font/montserrat_regular"
             android:text="Add a Comment!"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            />
     </LinearLayout>
 
     <LinearLayout
@@ -92,7 +93,8 @@
             android:id="@+id/my_text_box"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Something Awesome..." />
+            android:hint="Something Awesome..."
+            android:fontFamily="@font/montserrat_regular"/>
 
 
     </LinearLayout>
@@ -139,19 +141,21 @@
             android:layout_height="32dp"
             android:layout_marginLeft="100dp"
             android:layout_marginTop="15dp"
-            android:fontFamily="sans-serif-medium"
-            android:text="Nice Pic"
+            android:fontFamily="@font/montserrat_semibold"
+            android:text="Nice Pic!"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            />
     </androidx.appcompat.widget.Toolbar>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/my_rounded_button"
         android:layout_width="268dp"
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_button"
         android:text="Post Your Find!"
         app:layout_anchor="@+id/linearLayout2"
-        app:layout_anchorGravity="center" />
+        app:layout_anchorGravity="center"
+        app:fontFamily="@font/montserrat_bold"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -34,7 +34,8 @@ public class CodeInterpreterTests {
         assertEquals(null, newQRCode.getVisual());
         assertEquals(null, newQRCode.getPicture());
         assertEquals("empty", newQRCode.getComment());
-        assertEquals("empty", newQRCode.getGeolocation());
+        assertEquals(null, newQRCode.getLongitude());
+        assertEquals(null, newQRCode.getLatitude());
         assertEquals("555555555555", newQRCode.getHash());
     }
 }

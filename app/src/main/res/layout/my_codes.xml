@@ -29,7 +29,8 @@
             android:text="@string/myCodesTitle"
             android:layout_weight="0.6"
             android:textSize="20sp"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:fontFamily="@font/montserrat_bold"/>
 
         <Button
             android:id="@+id/myCodesFilterButton"
@@ -46,7 +47,7 @@
     <ListView
         android:id="@+id/myCodesListView"
         android:layout_width="match_parent"
-        android:layout_height="600dp"
+        android:layout_height="match_parent"
         android:layout_weight="1" />
 
     <LinearLayout

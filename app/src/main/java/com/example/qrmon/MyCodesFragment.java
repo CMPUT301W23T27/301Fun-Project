@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -28,6 +29,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,6 +53,8 @@ public class MyCodesFragment extends Fragment {
 
     private CodeAdapter codeAdapter;
     private ArrayList<QRCode> codesList = new ArrayList<>();
+
+    private int totalScore;
     public ArrayList<QRCode> testList;
     Bitmap imageBitmap;
     ImageView image;
@@ -95,14 +100,18 @@ public class MyCodesFragment extends Fragment {
        codeAdapter = new CodeAdapter(this, R.layout.item_code, codesList);
        codeList.setAdapter(codeAdapter);
        testList = new ArrayList<>();
+       //TODO: change currentUser to reflect who ever is using app
+       String currentUser = "Joel";
+
 
         /**
          * Retrieve code list from firestore
+         *
          */
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String ownerId = "temp-user-id";
+
         db.collection(ownerId)
-                .whereEqualTo("geolocation", "empty")
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
@@ -113,8 +122,6 @@ public class MyCodesFragment extends Fragment {
                             testList.add(item);
 //                            Toast.makeText(getContext(), "successful from firebase",Toast.LENGTH_SHORT).show();
                         }
-
-                        // Do something with the list of items here
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -134,8 +141,14 @@ public class MyCodesFragment extends Fragment {
                     while (count < testList.size()) {
                         codesList.add(testList.get(count));
                         codeAdapter.notifyDataSetChanged();
+                        totalScore += testList.get(count).getScore();
                         count = count + 1;
                     }
+                    //Calls firebaseScoreUpdater with sum of scores
+                    Map<String, Object> totalScoreMap = new HashMap<>();
+                    totalScoreMap.put("score", totalScore);
+                    FirebaseScoreUpdater firebaseScoreUpdater = new FirebaseScoreUpdater();
+                    firebaseScoreUpdater.updateFirebaseScore(totalScoreMap);
                 }
                 Handler handler2 = new Handler();
                 handler2.postDelayed(new Runnable() {
@@ -146,6 +159,7 @@ public class MyCodesFragment extends Fragment {
                         }
                     }}, 1000);
             }}, 1000);
+
 
         codeAdapter.notifyDataSetChanged();
 
@@ -161,6 +175,8 @@ public class MyCodesFragment extends Fragment {
      * @return Boolean
      */
     private void showPopupMenu(View view) {
+        //Toast here for debugging
+        Toast.makeText(getContext(), "Total Score = " + totalScore,Toast.LENGTH_SHORT).show();
         PopupMenu popupMenu = new PopupMenu(getContext(), view);
         popupMenu.getMenuInflater().inflate(R.menu.sorting_menu, popupMenu.getMenu());
 

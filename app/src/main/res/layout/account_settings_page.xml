@@ -15,7 +15,8 @@
         android:background="@color/primary_color"
         app:title="Account Information"
         app:titleTextColor="@color/white"
-        app:titleCentered="true"/>
+        app:titleCentered="true"
+        style="@style/CustomToolbarStyle"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,22 +32,24 @@
         android:layout_marginTop="46dp"
         />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/change_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:translationY="70dp"
-            android:text="Change" />
+            android:text="Change"
+            app:fontFamily="@font/montserrat_bold"/>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/remove_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Remove"
             android:translationY="70dp"
             android:layout_marginStart="10dp"
-            android:textColor="@android:color/white"/>
+            android:textColor="@android:color/white"
+            app:fontFamily="@font/montserrat_bold" />
     </LinearLayout>
 
     <TextView
@@ -57,7 +60,9 @@
         android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:layout_marginTop="24dp" />
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/montserrat_semibold"
+        />
 
 
     <EditText
@@ -78,7 +83,8 @@
         android:text="Email:"
         android:textColor="@color/black"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:fontFamily="@font/montserrat_semibold"/>
 
     <EditText
         android:id="@+id/email_value_edit"
@@ -101,7 +107,8 @@
         android:text="Phone number:"
         android:textColor="@color/black"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:fontFamily="@font/montserrat_semibold"/>
 
     <EditText
         android:id="@+id/phone_value_edit"
@@ -120,21 +127,23 @@
         android:layout_margin="24dp"
         android:orientation="horizontal">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/save_changes_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="Save changes" />
+            android:text="Save changes"
+            app:fontFamily="@font/montserrat_bold"/>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/discard_changes_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="Discard Changes"
             android:layout_marginStart="10dp"
-            android:textColor="@android:color/white"/>
+            android:textColor="@android:color/white"
+            app:fontFamily="@font/montserrat_bold"/>
     </LinearLayout>
 
 

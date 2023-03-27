@@ -28,9 +28,9 @@ public class CodeSortingTests {
     public void testAscendingCodeSort() {
         CodeSorting codeSorting = new CodeSorting();
 
-        QRCode one = new QRCode("Code", "vis", "pic", "comment", "geo", "hash", "url1", 10);
-        QRCode two = new QRCode("Code", "vis", "pic", "comment", "geo", "hash", "url1", 5);
-        QRCode three =  new QRCode("Code", "vis", "pic", "comment", "geo", "hash", "url1", 8);
+        QRCode one = new QRCode("Code", "vis", "pic", "comment", 5.5, 5.5, "hash", "url1", 10);
+        QRCode two = new QRCode("Code", "vis", "pic", "comment", 5.5, 5.5, "hash", "url1", 5);
+        QRCode three =  new QRCode("Code", "vis", "pic", "comment", 5.5, 5.5, "hash", "url1", 8);
 
         ArrayList<QRCode> codes = new ArrayList<>();
         codes.add(one);
@@ -54,9 +54,9 @@ public class CodeSortingTests {
     public void testDescendingCodeSort() {
         CodeSorting codeSorting = new CodeSorting();
 
-        QRCode one = new QRCode("Code", "vis", "pic", "comment", "geo", "hash", "url1", 10);
-        QRCode two = new QRCode("Code", "vis", "pic", "comment", "geo", "hash", "url1", 5);
-        QRCode three =  new QRCode("Code", "vis", "pic", "comment", "geo", "hash", "url1", 8);
+        QRCode one = new QRCode("Code", "vis", "pic", "comment", 5.5, 5.5, "hash", "url1", 10);
+        QRCode two = new QRCode("Code", "vis", "pic", "comment", 5.5, 5.5, "hash", "url1", 5);
+        QRCode three =  new QRCode("Code", "vis", "pic", "comment", 5.5, 5.5, "hash", "url1", 8);
 
         ArrayList<QRCode> codes = new ArrayList<>();
         codes.add(one);

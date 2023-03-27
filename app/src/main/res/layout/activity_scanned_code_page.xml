@@ -26,7 +26,8 @@
         android:textStyle="bold"
         android:layout_weight="0.1"
         android:paddingTop="10dp"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"
+        android:fontFamily="@font/montserrat_semibold"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -34,7 +35,8 @@
         android:text="You Just Caught ...."
         android:textSize="18sp"
         android:layout_weight="0.1"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"
+        android:fontFamily="@font/montserrat_regular"/>
 
     <TextView
         android:id="@+id/name"
@@ -42,7 +44,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="0"
         android:text="Monster name"
-        android:textAlignment="center" />
+        android:textAlignment="center"
+        android:fontFamily="@font/montserrat_regular"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -56,7 +59,8 @@
         android:paddingEnd="40dp"
         android:layout_weight="0.1"
         android:gravity="center"
-        android:background="@drawable/rounded_corner" />
+        android:background="@drawable/rounded_corner"
+        android:fontFamily="@font/montserrat_semibold"/>
 
     <TextView
         android:id="@+id/score"
@@ -72,7 +76,7 @@
         android:gravity="center"
         android:layout_weight="0.5">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/snapAPicButton"
             android:layout_width="92dp"
             android:layout_height="wrap_content"
@@ -81,9 +85,10 @@
             android:padding="10dp"
             android:text="Snap A Pic"
             android:textSize="16sp"
-            android:drawableTop="@drawable/baseline_add_a_photo_24"/>
+            android:drawableTop="@drawable/baseline_add_a_photo_24"
+            app:fontFamily="@font/montserrat_bold"/>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/scannedCodeNextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -92,7 +97,8 @@
             android:layout_weight="1"
             android:padding="10dp"
             android:layout_marginStart="8dp"
-            android:drawableTop="@drawable/baseline_arrow_forward_24"/>
+            android:drawableTop="@drawable/baseline_arrow_forward_24"
+            app:fontFamily="@font/montserrat_bold"/>
     </LinearLayout>
 
     <TextView
@@ -103,6 +109,7 @@
         android:layout_weight="0.1"
         android:paddingTop="1dp"
         android:textColor="@color/black"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:fontFamily="@font/montserrat_regular"/>
 
 </LinearLayout>
