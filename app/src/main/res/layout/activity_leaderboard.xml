@@ -12,7 +12,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="81dp"
         android:layout_gravity="center"
         android:orientation="horizontal"
         android:paddingVertical="10dp">
@@ -21,51 +21,51 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_weight="0.3"
             android:orientation="horizontal"
-            android:paddingVertical="10dp"
-            android:layout_weight="0.3">
+            android:paddingVertical="10dp">
 
             <Button
                 android:id="@+id/leaderboardBackButton"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:textSize="8sp"
-                android:layout_weight="0.1"
-                android:padding="0dp"
+                android:layout_width="51dp"
+                android:layout_height="36dp"
                 android:layout_gravity="left"
-                android:drawableBottom="@drawable/baseline_arrow_back_ios_24" />
+                android:layout_weight="0.1"
+                android:drawableBottom="@drawable/baseline_arrow_back_ios_24"
+                android:padding="0dp"
+                android:textSize="8sp" />
 
             <TextView
                 android:id="@+id/leaderboard_title"
-                android:layout_width="261dp"
-                android:layout_height="wrap_content"
+                android:layout_width="208dp"
+                android:layout_height="76dp"
                 android:layout_weight=".09"
+                android:fontFamily="@font/montserrat_bold"
                 android:gravity="end"
                 android:text="Leaderboard"
-                android:textSize="24sp"
-                android:fontFamily="@font/montserrat_bold"/>
+                android:textSize="24sp" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:orientation="horizontal"
-            android:paddingVertical="10dp"
+            android:layout_weight="0.5"
             android:gravity="start"
-            android:layout_weight="0.5">
+            android:orientation="horizontal"
+            android:paddingVertical="10dp">
 
             <Spinner
                 android:id="@+id/leaderboard_dropdown"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start"/>
+                android:layout_gravity="start"
+                android:layout_weight="0.5" />
 
         </LinearLayout>
 
     </LinearLayout>
-
 
 
     <LinearLayout

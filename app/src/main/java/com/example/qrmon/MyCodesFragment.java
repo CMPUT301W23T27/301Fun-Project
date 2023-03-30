@@ -1,5 +1,6 @@
 package com.example.qrmon;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -49,12 +51,14 @@ public class MyCodesFragment extends Fragment {
     private String mParam2;
 
     private Button filterButton;
+    private Button deleteButton;
     private ListView codeList;
 
     private CodeAdapter codeAdapter;
     private ArrayList<QRCode> codesList = new ArrayList<>();
 
     private int totalScore;
+    int pos;
     public ArrayList<QRCode> testList;
     Bitmap imageBitmap;
     ImageView image;
@@ -90,25 +94,62 @@ public class MyCodesFragment extends Fragment {
         }
     }
 
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
        View view = inflater.inflate(R.layout.my_codes, container, false);
        filterButton = view.findViewById(R.id.myCodesFilterButton);
+       deleteButton = view.findViewById(R.id.myCodesDeleteButton);
        codeList = view.findViewById(R.id.myCodesListView);
        codeAdapter = new CodeAdapter(this, R.layout.item_code, codesList);
        codeList.setAdapter(codeAdapter);
        testList = new ArrayList<>();
+       
+        FirebaseFirestore db1 = FirebaseFirestore.getInstance();
+        CollectionReference collectionReference = db1.collection("temp-user-id");
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (pos == -1){
+                    return;
+                }
+                // accesses objects by getting object, then getting objects name
+                final String code = ((QRCode)codeList.getItemAtPosition(pos)).getName();
+                // The set method sets a unique id for the document
+                collectionReference
+                        .document(code)
+                        .delete()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                // These are a method which gets executed when the task is succeeded
+                                Log.d(TAG,"Data has been deleted successfully!");
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@androidx.annotation.NonNull Exception e) {
+                                // These are a method which gets executed if there’s any problem
+                                Log.d(TAG," Data could not be deleted" + e.toString());
+                            }
+                        });
+                pos = -1;
+
+            }
+        });
+
+
        //TODO: change currentUser to reflect who ever is using app
        String currentUser = "Joel";
-
 
         /**
          * Retrieve code list from firestore
          *
          */
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        
         String ownerId = "temp-user-id";
 
         db.collection(ownerId)
@@ -162,7 +203,6 @@ public class MyCodesFragment extends Fragment {
 
 
         codeAdapter.notifyDataSetChanged();
-
 
         filterButton.setOnClickListener(this::showPopupMenu);
 

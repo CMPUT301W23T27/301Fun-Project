@@ -33,6 +33,15 @@
             android:fontFamily="@font/montserrat_bold"/>
 
         <Button
+            android:id="@+id/myCodesDeleteButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="10dp"
+            android:drawableTop="@drawable/delete_my_codes_icons"
+            android:contentDescription="@string/deleteCode"
+            android:text="" />
+
+        <Button
             android:id="@+id/myCodesFilterButton"
             android:layout_width="50dp"
             android:layout_height="50dp"
