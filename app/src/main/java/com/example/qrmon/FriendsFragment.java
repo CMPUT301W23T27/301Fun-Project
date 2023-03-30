@@ -4,9 +4,11 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -28,14 +30,16 @@ public class FriendsFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private String testList[] = {"jbweller", "iharding", "mullane", "mostafa"};
+    private int friendImages[] = {};
+
     private Button addFriendsButton;
     private ListView friendsListView;
 
-    private CodeAdapter freindsAdapter;
+    private FriendAdapter friendAdapter;
     private ArrayList<QRCode> friendsList = new ArrayList<>();
 
     private int totalScore;
-    public ArrayList<QRCode> testList;
 
     public FriendsFragment() {
         // Required empty public constructor
@@ -76,6 +80,14 @@ public class FriendsFragment extends Fragment {
 
         addFriendsButton = view.findViewById(R.id.addFriendsButton);
         friendsListView = view.findViewById(R.id.myFriendsListView);
+        friendAdapter = new FriendAdapter(getContext(), testList, friendImages );
+        friendsListView.setAdapter(friendAdapter);
+        friendsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.i("Mostafa", "fragment");
+            }
+        });
 
         return view;
     }
