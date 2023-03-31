@@ -153,17 +153,17 @@ public class geolocation extends AppCompatActivity {
             data.put("ownerId", "temp-user-id");
 
             // Add the QRCode object to the user's database
-            db.collection("temp-user-id").add(newQRCode)
-                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            db.collection("temp-user-id").document(newQRCode.getHash()).set(newQRCode)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
-                        public void onSuccess(DocumentReference documentReference) {
-                            Log.d(TAG, "Item added with ID: " + documentReference.getId());
+                        public void onSuccess(Void aVoid) {
+                            Log.d(TAG, "DocumentSnapshot successfully written!");
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Log.w(TAG, "Error adding item", e);
+                            Log.w(TAG, "Error writing document", e);
                         }
                     });
 

@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -62,6 +63,8 @@ public class MyCodesFragment extends Fragment {
     public ArrayList<QRCode> testList;
     Bitmap imageBitmap;
     ImageView image;
+    public QRCode deleteCode;
+
 
     public MyCodesFragment() {
         // Required empty public constructor
@@ -109,6 +112,7 @@ public class MyCodesFragment extends Fragment {
        
         FirebaseFirestore db1 = FirebaseFirestore.getInstance();
         CollectionReference collectionReference = db1.collection("temp-user-id");
+
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -119,7 +123,10 @@ public class MyCodesFragment extends Fragment {
                 final String code = ((QRCode)codeList.getItemAtPosition(pos)).getName();
                 // The set method sets a unique id for the document
                 collectionReference
+//                        .document(code)
+//                        .delete()
                         .document(code)
+                        // .whereEqualTo("name", ((QRCode) codeList.getItemAtPosition(pos)).getName())
                         .delete()
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
@@ -137,6 +144,14 @@ public class MyCodesFragment extends Fragment {
                         });
                 pos = -1;
 
+            }
+        });
+
+        codeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                pos = i;
+                deleteCode = (QRCode)adapterView.getItemAtPosition(i);
             }
         });
 
@@ -182,7 +197,7 @@ public class MyCodesFragment extends Fragment {
                     while (count < testList.size()) {
                         codesList.add(testList.get(count));
                         codeAdapter.notifyDataSetChanged();
-                        totalScore += testList.get(count).getScore();
+                        // totalScore += testList.get(count).getScore();
                         count = count + 1;
                     }
                     //Calls firebaseScoreUpdater with sum of scores
