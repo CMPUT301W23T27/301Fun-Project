@@ -3,6 +3,7 @@ package com.example.qrmon;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 
 import com.google.android.gms.tasks.Task;
@@ -28,11 +29,13 @@ public class Leaderboard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leaderboard);
 
-        collectTopScores(10);
+        collectTopCodes(10);
+        Log.d("Leaderboard", "leaderboard running");
 
     }
 
     private void testList(){
+        Log.d("Leaderboard", "testList called");
         if (rawList.size() >= 2) {
             String name = rawList.get(1).getString("Name");
             System.out.println("The name of the second player is: " + name);
@@ -44,20 +47,17 @@ public class Leaderboard extends AppCompatActivity {
             String name = leaderboardList.get(1).getName();
             System.out.println("The name of the second player is: " + name);
         } else {
-            System.out.println("There are not enough players in the list to access the second element");
+            Log.d("Leaderboard", "leaderboard list empty");
         }
     }
 
 
-    private void collectTopScores(int limit){
+    private void collectTopPlayerScores(int limit){
         CollectionReference playersRef = FirebaseFirestore.getInstance().collection("leaderboard-testing");
         playersRef.orderBy("Score", Query.Direction.DESCENDING).limit(limit).get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                        System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------");
-                        System.out.println("Name: " + documentSnapshot.get("Name"));
-                        System.out.println("Score: " + documentSnapshot.get("Score"));
-                        System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------");
+                        Log.d("Leaderboard", "successfull database pull");
                         leaderboardList.add(new LeaderboardObject(documentSnapshot.getString("Name"), documentSnapshot.getLong("Score").intValue()));
                     }
                     testList();
@@ -68,8 +68,24 @@ public class Leaderboard extends AppCompatActivity {
                 });
     }
 
-    private void collectTopCodes(){
-
+    private void collectTopCodes(int limit){
+        Log.d("Leaderboard", "collectTopCodes run successfully");
+        CollectionReference qrCodeRef = FirebaseFirestore.getInstance().collection("global-public-QRCodes");
+        qrCodeRef.orderBy("score", Query.Direction.DESCENDING).limit(limit).get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    Log.d("Leaderboard", "Number of documents retrieved: " + queryDocumentSnapshots.size());
+                    for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                        Log.d("Leaderboard", "successfull database pull in collectTopCodes");
+                        leaderboardList.add(new LeaderboardObject(documentSnapshot.getString("name"), documentSnapshot.getLong("score").intValue()));
+                        Log.d("Leaderboard", "name = " + documentSnapshot.getString("name"));
+                        Log.d("Leaderboard", "score = " + documentSnapshot.getLong("score").intValue());
+                    }
+                    testList();
+                    updateLeaderboard();
+                })
+                .addOnFailureListener(e -> {
+                    throw new RuntimeException("Failure to retrieve score from firebase");
+                });
     }
 
     private void updateLeaderboard(){
