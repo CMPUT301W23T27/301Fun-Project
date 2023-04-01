@@ -2,7 +2,9 @@ package com.example.qrmon;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -91,6 +93,8 @@ public class geolocation extends AppCompatActivity {
         LocationRequest LRequest = LocationRequest.create();
         LRequest.setInterval(1000); // Update location every 1 seconds
         LRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+
         LCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
@@ -144,16 +148,14 @@ public class geolocation extends AppCompatActivity {
     postButton.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            //Firebase stuff
-            //Toast.makeText(getBaseContext(), "Firebase stuff", Toast.LENGTH_SHORT).show();
+
+            SharedPreferences sharedPref = getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+            String username = sharedPref.getString("username", "no username");
+
             FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-            Map<String, Object> data = new HashMap<>();
-            data.put("item", newQRCode);
-            data.put("ownerId", "temp-user-id");
-
             // Add the QRCode object to the user's database
-            db.collection("temp-user-id").document(newQRCode.getHash()).set(newQRCode)
+            db.collection("user-list").document(username).collection("QRcodes").document(newQRCode.getHash()).set(newQRCode)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
@@ -168,31 +170,33 @@ public class geolocation extends AppCompatActivity {
                     });
 
             // Add the QRCode object to the public database
-            db.collection("global-public-QRCodes").add(newQRCode)
-                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                        @Override
-                        public void onSuccess(DocumentReference documentReference) {
-                            Log.d(TAG, "Item added with ID: " + documentReference.getId());
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.w(TAG, "Error adding item", e);
-                        }
-                    });
+            if (newQRCode.getLatitude() != null) {
+                db.collection("global-public-QRCodes").document(newQRCode.getHash()).set(newQRCode)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
 
-            Handler handler = new Handler();
+                            }
 
-            handler.postDelayed(new Runnable() {
-                public void run() {
-                    Intent intent = new Intent(geolocation.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-            }, 2000);
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "Error adding item", e);
+                            }
+                        });
+            }
 
-        }
+                Handler handler = new Handler();
+
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        Intent intent = new Intent(geolocation.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                }, 2000);
+            }
     });
 
         ToggleButton tog = findViewById(R.id.on_off_toggle);

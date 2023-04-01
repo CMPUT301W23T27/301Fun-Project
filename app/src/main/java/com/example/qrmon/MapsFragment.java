@@ -149,26 +149,32 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         handler.postDelayed(new Runnable() {
             public void run() {
                 //decodeImageFile
-                if (testList.size() != 0) {
-                    int count = 0;
-                    while (count < testList.size()) {
-                        QRCode = testList.get(count);
-                        LatLng coordinates = new LatLng(QRCode.getLatitude(), QRCode.getLongitude());
-                        googleMap.addMarker(new MarkerOptions()
-                                .position(coordinates)
-                                .title(Integer.toString(QRCode.getScore()) + " points"));
-                        count = count + 1;
-                    }
-                }
-                Handler handler2 = new Handler();
-                handler2.postDelayed(new Runnable() {
-                    public void run() {
-                        //decodeImageFile
-                        if (testList.size() != 0) {
-                            //image.setImageBitmap(imageBitmap);
+                try {
+
+                    if (testList.size() != 0) {
+                        int count = 0;
+                        while (count < testList.size()) {
+                            QRCode = testList.get(count);
+                            LatLng coordinates = new LatLng(QRCode.getLatitude(), QRCode.getLongitude());
+                            googleMap.addMarker(new MarkerOptions()
+                                    .position(coordinates)
+                                    .title(Integer.toString(QRCode.getScore()) + " points"));
+                            count = count + 1;
                         }
                     }
-                }, 1000);
+                    Handler handler2 = new Handler();
+                    handler2.postDelayed(new Runnable() {
+                        public void run() {
+                            //decodeImageFile
+                            if (testList.size() != 0) {
+                                //image.setImageBitmap(imageBitmap);
+                            }
+                        }
+                    }, 1000);
+                } catch(Exception e) {
+                    getActivity().finish();
+
+                }
             }
         }, 1000);
         //googleMap.moveCamera(CameraUpdateFactory.newLatLng(coordinates));
