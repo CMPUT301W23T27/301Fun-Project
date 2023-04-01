@@ -38,8 +38,10 @@ import android.content.ContextWrapper;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.CollectionReference;
+
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -73,8 +75,15 @@ public class MyCodesFragment extends Fragment {
     private Button deleteButton;
     private ListView codeList;
 
+    private ListView statList;
+
     private CodeAdapter codeAdapter;
+
+    private StatAdapter statAdapter;
+
     private ArrayList<QRCode> codesList = new ArrayList<>();
+
+    private ArrayList<StatObject> statsList = new ArrayList<>();
 
     private int totalScore;
     int pos;
@@ -129,6 +138,14 @@ public class MyCodesFragment extends Fragment {
        codeAdapter = new CodeAdapter(this, R.layout.item_code, codesList);
        codeList.setAdapter(codeAdapter);
        testList = new ArrayList<>();
+
+
+       //stat adapter set up
+        statList = view.findViewById(R.id.sumOfPointsMyCodes);
+        statAdapter = new StatAdapter(this, R.layout.item_my_codes_stats, statsList);
+        statList.setAdapter(statAdapter);
+        statList.setClickable(false);
+
        pos = -1;
 
         FirebaseFirestore db1 = FirebaseFirestore.getInstance();
@@ -228,16 +245,20 @@ public class MyCodesFragment extends Fragment {
                     //imageBitmap = StringToBitMap(testList.get(0).getVisual());
                     int count = 0;
                     while (count < testList.size()) {
-                        codesList.add(testList.get(count));
-                        codeAdapter.notifyDataSetChanged();
-                        // totalScore += testList.get(count).getScore();
-                        count = count + 1;
+                        QRCode code = testList.get(count);
+                        if (code != null && code.getScore() != null) {
+                            codesList.add(code);
+                            codeAdapter.notifyDataSetChanged();
+                            totalScore += code.getScore();
+                        }
+                        count++;
                     }
                     //Calls firebaseScoreUpdater with sum of scores
                     Map<String, Object> totalScoreMap = new HashMap<>();
                     totalScoreMap.put("score", totalScore);
                     FirebaseScoreUpdater firebaseScoreUpdater = new FirebaseScoreUpdater();
                     firebaseScoreUpdater.updateFirebaseScore(totalScoreMap);
+                    updateCodeStats();
                 }
                 Handler handler2 = new Handler();
                 handler2.postDelayed(new Runnable() {
@@ -284,6 +305,21 @@ public class MyCodesFragment extends Fragment {
         });
 
         popupMenu.show();
+    }
+
+    private void updateCodeStats(){
+        if (statsList.size() < 2){
+            StatObject score = new StatObject("Sum of Points", totalScore);
+            StatObject count = new StatObject("Number of QR Codes", codesList.size());
+            statsList.add(score);
+            statsList.add(count);
+            statAdapter.notifyDataSetChanged();
+            Log.d("MyCodes", "Not Otherwise");
+        }
+        else{
+            Log.d("MyCodes", "Otherwise");
+        }
+
     }
 
     /**
