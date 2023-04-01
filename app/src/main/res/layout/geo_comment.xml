@@ -131,7 +131,7 @@
             android:id="@+id/my_image_button"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/screenshot__897__removebg_preview"
+            android:src="@drawable/geo_comment_back_arrow"
             android:scaleType="fitCenter"
             android:background="@android:color/transparent" />
 
@@ -143,7 +143,7 @@
             android:layout_marginTop="15dp"
             android:fontFamily="@font/montserrat_semibold"
             android:text="Nice Pic!"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             />
     </androidx.appcompat.widget.Toolbar>
