@@ -52,7 +52,7 @@ import java.util.jar.Attributes;
  * @author Joel Weller
  * @see ScanCodePage
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements FriendDetailsFragment.OnFriendDetailsActionListener {
 
     private final static int SCAN_ACTIVITY_REQUEST_CODE = 1;
     private CodeAdapter codeAdapter;
@@ -69,6 +69,11 @@ public class MainActivity extends AppCompatActivity {
     // Get the SharedPreferences object
 
 
+
+    @Override
+    public void onFriendDetailsAction(int action, String friendUsername) {
+        // forward it to the FriendsFragment.
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
