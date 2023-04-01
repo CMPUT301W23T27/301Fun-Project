@@ -121,8 +121,8 @@ public class MainActivity extends AppCompatActivity {
                                 Newuser.put("username:", newUserName);
 
 
-                                Newuser.put("phone:", "");
-                                Newuser.put("email:", "");
+                                Newuser.put("PhoneNumber", "");
+                                Newuser.put("Email", "");
                                 Newuser.put("friends", myList);
 
 
