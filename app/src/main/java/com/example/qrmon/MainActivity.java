@@ -24,17 +24,17 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+//import com.google.firebase.auth.AuthResult;
+//import com.google.firebase.auth.FirebaseAuth;
+//import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.auth.FirebaseAuth;
+//import com.google.firebase.auth.FirebaseAuth;
 import android.view.View.OnFocusChangeListener;
 import android.text.TextUtils;
-import com.google.firebase.auth.FirebaseAuth;
+//import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -133,11 +133,11 @@ public class MainActivity extends AppCompatActivity {
                                             @Override
                                             //This is for the sub collection in the new user
                                             public void onSuccess(Void aVoid) {
-                                                db.collection("user-list")
-                                                        .document(newUserName)
-                                                        .collection("QRcodes")
-                                                        .document("first-QR")
-                                                        .set(new HashMap<String, Object>());
+                                                //db.collection("user-list")
+                                                        //.document(newUserName)
+                                                        //.collection("QRcodes")
+                                                        //.document("first-QR")
+                                                        //.set(new HashMap<String, Object>());
 
                                             }
                                         })
@@ -203,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void replaceFragment (Fragment fragment) {
+    public void replaceFragment (Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.bottomNavBar, fragment );
