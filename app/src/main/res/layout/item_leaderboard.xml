@@ -18,7 +18,7 @@
         android:fontFamily="@font/montserrat_regular"/>
 
     <ImageView
-        android:id="@+id/QRCodeVisualRepresentation"
+        android:id="@+id/leaderboard_visual"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:src="@drawable/account_navbar_icon"/>
