@@ -1,11 +1,23 @@
 package com.example.qrmon;
 
+import static android.content.ContentValues.TAG;
+import android.content.pm.PackageManager;
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import static android.content.ContentValues.TAG;
 
+import android.Manifest;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Handler;
 import android.util.Base64;
@@ -13,14 +25,23 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
+import android.content.ContextWrapper;
+
+
+
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.CollectionReference;
+
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -30,6 +51,8 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,12 +65,14 @@ public class MyCodesFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final int RLPermission = 1;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     private Button filterButton;
+    private Button deleteButton;
     private ListView codeList;
 
     private ListView statList;
@@ -61,9 +86,12 @@ public class MyCodesFragment extends Fragment {
     private ArrayList<StatObject> statsList = new ArrayList<>();
 
     private int totalScore;
+    int pos;
     public ArrayList<QRCode> testList;
     Bitmap imageBitmap;
     ImageView image;
+    public QRCode deleteCode;
+
 
     public MyCodesFragment() {
         // Required empty public constructor
@@ -87,6 +115,8 @@ public class MyCodesFragment extends Fragment {
         return fragment;
     }
 
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,16 +126,19 @@ public class MyCodesFragment extends Fragment {
         }
     }
 
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
        View view = inflater.inflate(R.layout.my_codes, container, false);
        filterButton = view.findViewById(R.id.myCodesFilterButton);
+       deleteButton = view.findViewById(R.id.myCodesDeleteButton);
        codeList = view.findViewById(R.id.myCodesListView);
        codeAdapter = new CodeAdapter(this, R.layout.item_code, codesList);
        codeList.setAdapter(codeAdapter);
        testList = new ArrayList<>();
+
 
        //stat adapter set up
         statList = view.findViewById(R.id.sumOfPointsMyCodes);
@@ -113,18 +146,78 @@ public class MyCodesFragment extends Fragment {
         statList.setAdapter(statAdapter);
         statList.setClickable(false);
 
+       pos = -1;
+
+        FirebaseFirestore db1 = FirebaseFirestore.getInstance();
+        CollectionReference collectionReference = db1.collection("temp-user-id");
+
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            //Checks permissions and if not asks for permision otherwise it updates it
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, RLPermission);
+        }
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (pos == -1){
+                    return;
+                }
+                // accesses objects by getting object, then getting objects name
+                String code_document = ((QRCode)codeList.getItemAtPosition(pos)).getHash();
+                // The set method sets a unique id for the document
+                SharedPreferences sharedPref = getActivity().getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+                String username = sharedPref.getString("username", "no username");
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+                db.collection("user-list").document(username).collection("QRcodes")
+                        .document(code_document)
+                        // .whereEqualTo("name", ((QRCode) codeList.getItemAtPosition(pos)).getName())
+                        .delete()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                // These are a method which gets executed when the task is succeeded
+                                Log.d(TAG,"Data has been deleted successfully!");
+                                codeAdapter.notifyDataSetChanged();
+                                ((MainActivity)getActivity()).replaceFragment(new MyCodesFragment());
+
+
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@androidx.annotation.NonNull Exception e) {
+                                // These are a method which gets executed if there’s any problem
+                                Log.d(TAG," Data could not be deleted" + e.toString());
+                            }
+                        });
+                pos = -1;
+
+            }
+        });
+
+        codeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                pos = i;
+                deleteCode = (QRCode)adapterView.getItemAtPosition(i);
+            }
+        });
+
+
        //TODO: change currentUser to reflect who ever is using app
        String currentUser = "Joel";
-
 
         /**
          * Retrieve code list from firestore
          *
          */
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String ownerId = "temp-user-id";
 
-        db.collection(ownerId)
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+        String username = sharedPref.getString("username", "no username");
+
+        db.collection("user-list").document(username).collection("QRcodes")
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
@@ -140,7 +233,7 @@ public class MyCodesFragment extends Fragment {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.e(TAG, "Error getting items with ownerId " + ownerId, e);
+                        Log.e(TAG, "Error getting items with ownerId " + username, e);
                     }
                 });
 
@@ -179,7 +272,6 @@ public class MyCodesFragment extends Fragment {
 
 
         codeAdapter.notifyDataSetChanged();
-
 
         filterButton.setOnClickListener(this::showPopupMenu);
 

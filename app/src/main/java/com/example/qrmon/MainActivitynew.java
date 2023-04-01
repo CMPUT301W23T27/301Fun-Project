@@ -82,7 +82,7 @@ public class MainActivitynew extends AppCompatActivity  {
             return true;
         });
     }
-    private void replaceFragment (Fragment fragment) {
+    public void replaceFragment (Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.bottomNavBar, fragment );
