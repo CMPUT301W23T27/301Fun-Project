@@ -145,15 +145,20 @@ public class MainActivity extends AppCompatActivity {
                                         .addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
-
                                             }
                                         });
                                 //Intent intent = new Intent(MainActivity.this, MainActivitynew.class);
                                 //startActivity(intent);
                                 ifUserHasAName = newUserName;
                                 appStart();
-                            } else {
-
+                            }
+                            else if (newUserName.equals("TestUser")) {
+                                editingTool.putString("username", newUserName);
+                                editingTool.apply();
+                                ifUserHasAName = newUserName;
+                                appStart();
+                            }
+                            else {
                             }
                         } else {
                             //Intent intent = new Intent(MainActivity.this, MainActivitynew.class);
@@ -199,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.add_button:
                     if (ifUserHasAName.equals("TestUser")) {
                         Intent in = new Intent(MainActivity.this, CodeInterpreterActivity.class);
-                        in.putExtra("scanned_code", "44444444444444444444444444");
+                        in.putExtra("scanned_code", "99999999999999999999999999");
                         startActivity(in);
                     } else {
                         Intent scanIntent = new Intent(MainActivity.this, ScanCodePage.class);
