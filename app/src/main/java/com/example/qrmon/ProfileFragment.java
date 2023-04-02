@@ -20,9 +20,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -76,6 +79,7 @@ public class ProfileFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+
     }
 
 
@@ -86,10 +90,43 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.account_settings_page, container, false);
         TextView userNameForXML = view.findViewById(R.id.username_value);
         confirmButton = view.findViewById(R.id.save_changes_btn);
-        EditText emailValueEdit = view.findViewById(R.id.email_value_edit);
-        EditText phoneValueEdit = view.findViewById(R.id.phone_value_edit);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String collectionPath = "user-list";
         SharedPreferences sharedPref = getActivity().getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
         String CurrentUserName = sharedPref.getString("username", "no username");
+        String documentId = CurrentUserName;
+        DocumentReference docRef = db.collection("user-list").document(documentId);
+        EditText emailValueEdit = view.findViewById(R.id.email_value_edit);
+        EditText phoneValueEdit = view.findViewById(R.id.phone_value_edit);
+        EditText nameValueEdit = view.findViewById(R.id.name_value_edit);
+        TextView pointsvalueText= view.findViewById(R.id.points_textview);
+        String fieldNameEmail = "Email";
+        String fieldNamePhone = "PhoneNumber";
+        String fieldNameName = "FullName";
+        String fieldNamePoints = "AccountScore";
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        String EmailValueOne = document.getString(fieldNameEmail);
+                        String PhoneValueOne = document.getString(fieldNamePhone);
+                        String NameValueOne = document.getString(fieldNameName);
+                        String pointsValueOne = document.getString(fieldNamePoints);
+                        emailValueEdit.setText(EmailValueOne);
+                        phoneValueEdit.setText(PhoneValueOne);
+                        nameValueEdit.setText(NameValueOne);
+                        pointsvalueText.setText(new StringBuilder().append("Points: ").append(pointsValueOne).toString());
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+
 
         userNameForXML.setText(CurrentUserName);
         confirmButton.setOnClickListener(new View.OnClickListener() {
@@ -98,10 +135,12 @@ public class ProfileFragment extends Fragment {
                 Log.d(TAG, "onClick() called");
                 String emailValue = emailValueEdit.getText().toString();
                 String phoneValue = phoneValueEdit.getText().toString();
+                String nameValue = nameValueEdit.getText().toString();
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                 String collectionPath = "user-list";
                 String documentId = CurrentUserName;
                 String fieldNamePhone = "PhoneNumber";
+                String fieldNameName = "FullName";
                 DocumentReference docRef = db.collection("user-list").document(documentId);
                 String fieldNameEmail = "Email";
 
@@ -109,6 +148,7 @@ public class ProfileFragment extends Fragment {
                 Map<String, Object> User = new HashMap<>();
                 User.put(fieldNamePhone, phoneValue);
                 User.put(fieldNameEmail, emailValue);
+                User.put(fieldNameName, nameValue);
                 docRef.update(User)
                         .addOnSuccessListener(aVoid -> Log.d(TAG, "DocumentSnapshot successfully updated!"))
                         .addOnFailureListener(new OnFailureListener() {

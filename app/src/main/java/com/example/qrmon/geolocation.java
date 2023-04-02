@@ -186,6 +186,22 @@ public class geolocation extends AppCompatActivity {
                             }
                         });
             }
+            EditText comment = findViewById(R.id.my_text_box);
+            String commentValue = comment.getText().toString();
+            if(commentValue != null) {
+                DocumentReference docRef = db.collection("user-list").document(newQRCode.getHash());
+                Map<String, Object> User = new HashMap<>();
+                String fieldNameComment = "Comment";
+                User.put(fieldNameComment, commentValue);
+                docRef.update(User)
+                        .addOnSuccessListener(aVoid -> Log.d(TAG, "Comment added "))
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "Error updating document", e);
+                            }
+                        });
+            }
 
                 Handler handler = new Handler();
 
