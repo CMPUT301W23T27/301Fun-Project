@@ -60,7 +60,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    public ArrayList<QRCode> testList;
+    public ArrayList<QRCode> testList = new ArrayList<>();
     public QRCode QRCode;
 
     Location currentLocation;
@@ -128,7 +128,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        testList = new ArrayList<>();
                         for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                             QRCode item = documentSnapshot.toObject(QRCode.class);
                             testList.add(item);
@@ -150,7 +149,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             public void run() {
                 //decodeImageFile
                 try {
-
                     if (testList.size() != 0) {
                         int count = 0;
                         while (count < testList.size()) {
@@ -162,23 +160,11 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                             count = count + 1;
                         }
                     }
-                    Handler handler2 = new Handler();
-                    handler2.postDelayed(new Runnable() {
-                        public void run() {
-                            //decodeImageFile
-                            if (testList.size() != 0) {
-                                //image.setImageBitmap(imageBitmap);
-                            }
-                        }
-                    }, 1000);
                 } catch(Exception e) {
                     getActivity().finish();
-
                 }
             }
-        }, 1000);
-        //googleMap.moveCamera(CameraUpdateFactory.newLatLng(coordinates));
-
+        }, 2000);
 
         // Get permissions
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
