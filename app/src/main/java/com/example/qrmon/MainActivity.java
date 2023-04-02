@@ -34,6 +34,7 @@ import com.google.firebase.firestore.Query;
 //import com.google.firebase.auth.FirebaseAuth;
 import android.view.View.OnFocusChangeListener;
 import android.text.TextUtils;
+import android.widget.TextView;
 //import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -124,6 +125,8 @@ public class MainActivity extends AppCompatActivity {
                                 Newuser.put("PhoneNumber", "");
                                 Newuser.put("Email", "");
                                 Newuser.put("friends", myList);
+                                Newuser.put("AccountScore","0");
+                                Newuser.put("FullName","");
 
 
                                 db.collection("user-list")
@@ -150,6 +153,8 @@ public class MainActivity extends AppCompatActivity {
                                 Intent intent = new Intent(MainActivity.this, MainActivitynew.class);
                                 startActivity(intent);
                             } else {
+                                TextView pleaseEnter = findViewById(R.id.Please);
+                                pleaseEnter.setText("Please enter a unique non empty username");
 
                             }
                         } else {

@@ -21,9 +21,10 @@
 
         <TextView
             android:id="@+id/Please"
-            android:layout_width="218dp"
-            android:layout_height="39dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:fontFamily="sans-serif-medium"
+            android:gravity="center_horizontal"
             android:text="Please enter a Username"
             android:textColor="#32B768"
             android:textSize="18sp"
