@@ -4,12 +4,15 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
 
 import java.util.List;
 
@@ -22,6 +25,8 @@ public class LeaderboardAdapter extends ArrayAdapter<LeaderboardObject> {
     private Leaderboard mContext;
     private int mResource;
 
+    private int playerPlacementPosition = 2;
+
     public LeaderboardAdapter(Leaderboard context, int resource, List<LeaderboardObject> objects) {
         super(context, resource, objects);
         mContext = context;
@@ -30,6 +35,12 @@ public class LeaderboardAdapter extends ArrayAdapter<LeaderboardObject> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
+        if (getCount() == 0) {
+            // Return an empty view if the list is empty
+            return new View(getContext());
+        }
+
         LeaderboardObject leaderboardObject = getItem(position);
 
         if (convertView == null) {
@@ -41,7 +52,7 @@ public class LeaderboardAdapter extends ArrayAdapter<LeaderboardObject> {
         TextView codePointsTextView = convertView.findViewById(R.id.thirdColumn);
         TextView codeRankTextView = convertView.findViewById(R.id.rank);
 
-        // Set the code image based on the code object
+        //setting image
         if (leaderboardObject.getImage() != null) {
             Bitmap decodedImage = StringToBitMap(leaderboardObject.getImage());
             codeImageView.setImageBitmap(decodedImage);
@@ -49,10 +60,16 @@ public class LeaderboardAdapter extends ArrayAdapter<LeaderboardObject> {
             codeImageView.setImageResource(R.drawable.account_navbar_icon);
         }
 
-        // Set the name and points of the code object
         codeNameTextView.setText(leaderboardObject.getName());
         codePointsTextView.setText(String.valueOf(leaderboardObject.getScore()));
         codeRankTextView.setText(String.valueOf(leaderboardObject.getRank()));
+
+        //setting the colour of the last item to differ from all the other items
+        if (position == getCount() - 1) {
+            convertView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.primary_color));
+        } else {
+            convertView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
+        }
 
         return convertView;
     }
