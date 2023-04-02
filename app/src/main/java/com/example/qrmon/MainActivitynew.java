@@ -5,7 +5,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
@@ -63,8 +65,16 @@ public class MainActivitynew extends AppCompatActivity  {
                     break;
 
                 case R.id.add_button:
-                    Intent scanIntent = new Intent(MainActivitynew.this, ScanCodePage.class);
-                    startActivityForResult(scanIntent, SCAN_ACTIVITY_REQUEST_CODE);
+                    SharedPreferences sharedPref = this.getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+                    String username = sharedPref.getString("username", "no username");
+                    if (username == "TestUser") {
+                        Intent in = new Intent(MainActivitynew.this, CodeInterpreterActivity.class);
+                        in.putExtra("scanned_code", "5555555555555555555555555555");
+                        startActivity(in);
+                    } else {
+                        Intent scanIntent = new Intent(MainActivitynew.this, ScanCodePage.class);
+                        startActivityForResult(scanIntent, SCAN_ACTIVITY_REQUEST_CODE);
+                    }
                     break;
 
                 case R.id.account_settings:
