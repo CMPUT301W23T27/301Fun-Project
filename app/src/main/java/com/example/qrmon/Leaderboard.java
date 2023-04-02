@@ -2,9 +2,11 @@ package com.example.qrmon;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.ListView;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -21,14 +23,26 @@ import java.util.ArrayList;
 
 public class Leaderboard extends AppCompatActivity {
 
-    ArrayList<DocumentSnapshot> rawList = new ArrayList<>();
-    ArrayList<LeaderboardObject> leaderboardList = new ArrayList<>();
+    private ArrayList<DocumentSnapshot> rawList = new ArrayList<>();
+    private ArrayList<LeaderboardObject> leaderboardList = new ArrayList<>();
+
+    private ListView leaderboardListView;
+
+    private LeaderboardAdapter leaderboardAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leaderboard);
 
+
+        leaderboardListView = findViewById(R.id.leaderboardListView);
+        leaderboardAdapter = new LeaderboardAdapter(this, R.layout.item_leaderboard, leaderboardList);
+        leaderboardListView.setAdapter(leaderboardAdapter);
+
+
+
+        //collectTopPlayerScores(10);
         collectTopCodes(10);
         Log.d("Leaderboard", "leaderboard running");
 
@@ -38,14 +52,12 @@ public class Leaderboard extends AppCompatActivity {
         Log.d("Leaderboard", "testList called");
         if (rawList.size() >= 2) {
             String name = rawList.get(1).getString("Name");
-            System.out.println("The name of the second player is: " + name);
         } else {
-            System.out.println("There are not enough players in the list to access the second element");
+            System.out.println("");
         }
 
         if (leaderboardList.size() >= 2) {
             String name = leaderboardList.get(1).getName();
-            System.out.println("The name of the second player is: " + name);
         } else {
             Log.d("Leaderboard", "leaderboard list empty");
         }
@@ -53,12 +65,21 @@ public class Leaderboard extends AppCompatActivity {
 
 
     private void collectTopPlayerScores(int limit){
-        CollectionReference playersRef = FirebaseFirestore.getInstance().collection("leaderboard-testing");
-        playersRef.orderBy("Score", Query.Direction.DESCENDING).limit(limit).get()
+        CollectionReference playersRef = FirebaseFirestore.getInstance().collection("user-list");
+        playersRef.orderBy("score", Query.Direction.DESCENDING).limit(limit).get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
+                    Log.d("Leaderboard", "Number of documents retrieved: " + queryDocumentSnapshots.size());
+                    int count = 1;
                     for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                         Log.d("Leaderboard", "successfull database pull");
-                        leaderboardList.add(new LeaderboardObject(documentSnapshot.getString("Name"), documentSnapshot.getLong("Score").intValue()));
+                        leaderboardList.add(new LeaderboardObject(documentSnapshot.getString("username"),
+                                documentSnapshot.getLong("score").intValue(), count,
+                                documentSnapshot.getString("visual")));
+                        count++;
+                        Log.d("Leaderboard", "username = " + documentSnapshot.getString("username"));
+                        Log.d("Leaderboard", "score = " + documentSnapshot.getLong("score").intValue());
+                        Log.d("Leaderboard", "rank = " + count);
+                        Log.d("Leaderboard", "visual = " + documentSnapshot.getString("visual"));
                     }
                     testList();
                     updateLeaderboard();
@@ -73,12 +94,19 @@ public class Leaderboard extends AppCompatActivity {
         CollectionReference qrCodeRef = FirebaseFirestore.getInstance().collection("global-public-QRCodes");
         qrCodeRef.orderBy("score", Query.Direction.DESCENDING).limit(limit).get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
+                    int count = 1;
                     Log.d("Leaderboard", "Number of documents retrieved: " + queryDocumentSnapshots.size());
                     for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                         Log.d("Leaderboard", "successfull database pull in collectTopCodes");
-                        leaderboardList.add(new LeaderboardObject(documentSnapshot.getString("name"), documentSnapshot.getLong("score").intValue()));
+                        leaderboardList.add(new LeaderboardObject(documentSnapshot.getString("name"),
+                                documentSnapshot.getLong("score").intValue(),
+                                count,
+                                documentSnapshot.getString("visual")));
                         Log.d("Leaderboard", "name = " + documentSnapshot.getString("name"));
                         Log.d("Leaderboard", "score = " + documentSnapshot.getLong("score").intValue());
+                        Log.d("Leaderboard", "rank = " + count);
+                        Log.d("Leaderboard", "visual = " + documentSnapshot.getString("visual"));
+                        count++;
                     }
                     testList();
                     updateLeaderboard();
@@ -89,7 +117,8 @@ public class Leaderboard extends AppCompatActivity {
     }
 
     private void updateLeaderboard(){
-        //TODO: once adapter is built, update listView with values
+        Log.d("Leaderboard", "UPDATE LEADERBOARD REACHED");
+        leaderboardAdapter.notifyDataSetChanged();
     }
 
 }

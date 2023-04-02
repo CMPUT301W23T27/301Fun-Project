@@ -17,42 +17,42 @@ import java.util.List;
  * a bridge between the UI my leaderboard component that helps fill data into a selected code
  * on my codes page
  */
-public class LeaderboardAdapter extends ArrayAdapter<QRCode> {
+public class LeaderboardAdapter extends ArrayAdapter<LeaderboardObject> {
 
-    private MyCodesFragment mContext;
+    private Leaderboard mContext;
     private int mResource;
 
-    public LeaderboardAdapter(MyCodesFragment context, int resource, List<QRCode> objects) {
-        super(context.getContext(), resource, objects);
+    public LeaderboardAdapter(Leaderboard context, int resource, List<LeaderboardObject> objects) {
+        super(context, resource, objects);
         mContext = context;
         mResource = resource;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        QRCode code = getItem(position);
+        LeaderboardObject leaderboardObject = getItem(position);
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(mResource, parent, false);
         }
 
-        ImageView codeImageView = convertView.findViewById(R.id.QRCodeVisualRepresentation);
-        TextView codeNameTextView = convertView.findViewById(R.id.QRCodeName);
-        TextView codePointsTextView = convertView.findViewById(R.id.QRCodePoints);
+        ImageView codeImageView = convertView.findViewById(R.id.leaderboard_visual);
+        TextView codeNameTextView = convertView.findViewById(R.id.secondColumn);
+        TextView codePointsTextView = convertView.findViewById(R.id.thirdColumn);
         TextView codeRankTextView = convertView.findViewById(R.id.rank);
 
         // Set the code image based on the code object
-        if (code.getVisual() != null) {
-            Bitmap decodedImage = StringToBitMap(code.getVisual());
+        if (leaderboardObject.getImage() != null) {
+            Bitmap decodedImage = StringToBitMap(leaderboardObject.getImage());
             codeImageView.setImageBitmap(decodedImage);
         } else {
             codeImageView.setImageResource(R.drawable.account_navbar_icon);
         }
 
         // Set the name and points of the code object
-        codeNameTextView.setText(code.getName());
-        codePointsTextView.setText(String.valueOf(code.getScore()));
-        // codeRankTextView.setText(code.getRank());
+        codeNameTextView.setText(leaderboardObject.getName());
+        codePointsTextView.setText(String.valueOf(leaderboardObject.getScore()));
+        codeRankTextView.setText(String.valueOf(leaderboardObject.getRank()));
 
         return convertView;
     }

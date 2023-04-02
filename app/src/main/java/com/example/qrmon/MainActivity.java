@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements FriendDetailsFrag
     public static final String Name = "nameKey";
     public static final String pass = "passKey";
     public Boolean first_time = true;
+    String ifUserHasAName;
     //public String newUserName = "bobby";
     // Get the SharedPreferences object
 
@@ -81,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements FriendDetailsFrag
         SharedPreferences sharedPref = getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
 
         // Save a value
-        String ifUserHasAName = sharedPref.getString("username", "no username");
+        ifUserHasAName = sharedPref.getString("username", "no username");
 
         //If you have logged in before you will not go to the login page
         if (ifUserHasAName.equals("no username")){
@@ -126,8 +127,8 @@ public class MainActivity extends AppCompatActivity implements FriendDetailsFrag
                                 Newuser.put("username:", newUserName);
 
 
-                                Newuser.put("phone:", "");
-                                Newuser.put("email:", "");
+                                Newuser.put("PhoneNumber", "");
+                                Newuser.put("Email", "");
                                 Newuser.put("friends", myList);
 
 
@@ -149,13 +150,20 @@ public class MainActivity extends AppCompatActivity implements FriendDetailsFrag
                                         .addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
-
                                             }
                                         });
-                                Intent intent = new Intent(MainActivity.this, MainActivitynew.class);
-                                startActivity(intent);
-                            } else {
-
+                                //Intent intent = new Intent(MainActivity.this, MainActivitynew.class);
+                                //startActivity(intent);
+                                ifUserHasAName = newUserName;
+                                appStart();
+                            }
+                            else if (newUserName.equals("TestUser")) {
+                                editingTool.putString("username", newUserName);
+                                editingTool.apply();
+                                ifUserHasAName = newUserName;
+                                appStart();
+                            }
+                            else {
                             }
                         } else {
                             //Intent intent = new Intent(MainActivity.this, MainActivitynew.class);
@@ -170,39 +178,7 @@ public class MainActivity extends AppCompatActivity implements FriendDetailsFrag
 
         }else {
             // this was here before and it gets to here if you have already logged in before
-            setContentView(R.layout.activity_main); //This should be my_codes_page, not scan_code
-
-
-            replaceFragment(new MyCodesFragment());
-            bnView = findViewById(R.id.bottomNavView);
-            bnView.setSelectedItemId(R.id.my_codes);
-            bnView.setOnItemSelectedListener(item -> {
-
-                switch (item.getItemId()) {
-
-                    case R.id.my_codes:
-                        replaceFragment(new MyCodesFragment());
-                        break;
-
-                    case R.id.add_button:
-                        Intent scanIntent = new Intent(MainActivity.this, ScanCodePage.class);
-                        startActivityForResult(scanIntent, SCAN_ACTIVITY_REQUEST_CODE);
-                        break;
-
-                    case R.id.account_settings:
-                        replaceFragment(new ProfileFragment());
-                        break;
-
-                    case R.id.message:
-                        replaceFragment(new FriendsFragment());
-                        break;
-
-                    case R.id.maps:
-                        replaceFragment(new MapsFragment());
-                }
-
-                return true;
-            });
+            appStart();
         }
 
 
@@ -213,6 +189,48 @@ public class MainActivity extends AppCompatActivity implements FriendDetailsFrag
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.bottomNavBar, fragment );
         fragmentTransaction.commit();
+    }
+
+    public void appStart() {
+        setContentView(R.layout.activity_main); //This should be my_codes_page, not scan_code
+
+
+        replaceFragment(new MyCodesFragment());
+        bnView = findViewById(R.id.bottomNavView);
+        bnView.setSelectedItemId(R.id.my_codes);
+        bnView.setOnItemSelectedListener(item -> {
+
+            switch (item.getItemId()) {
+
+                case R.id.my_codes:
+                    replaceFragment(new MyCodesFragment());
+                    break;
+
+                case R.id.add_button:
+                    if (ifUserHasAName.equals("TestUser")) {
+                        Intent in = new Intent(MainActivity.this, CodeInterpreterActivity.class);
+                        in.putExtra("scanned_code", "99999999999999999999999999");
+                        startActivity(in);
+                    } else {
+                        Intent scanIntent = new Intent(MainActivity.this, ScanCodePage.class);
+                        startActivityForResult(scanIntent, SCAN_ACTIVITY_REQUEST_CODE);
+                    }
+                    break;
+
+                case R.id.account_settings:
+                    replaceFragment(new ProfileFragment());
+                    break;
+
+                case R.id.message:
+                    replaceFragment(new FriendsFragment());
+                    break;
+
+                case R.id.maps:
+                    replaceFragment(new MapsFragment());
+            }
+
+            return true;
+        });
     }
 
 
