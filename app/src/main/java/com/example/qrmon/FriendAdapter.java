@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FriendAdapter extends BaseAdapter {
@@ -26,6 +27,7 @@ public class FriendAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
+        if(friendsList==null) return 0;
         return friendsList.size();
     }
 

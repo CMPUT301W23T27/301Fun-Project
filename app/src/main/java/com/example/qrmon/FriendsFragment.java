@@ -1,8 +1,11 @@
 package com.example.qrmon;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -18,9 +21,12 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 //import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -47,6 +53,8 @@ public class FriendsFragment extends Fragment implements FriendDetailsFragment.O
     private String mParam2;
 
     private ArrayList<String> testList = new ArrayList<>(Arrays.asList("jbweller", "iharding", "mullane", "mostafa", "test"));
+
+    private ArrayList<String> friendsList1 = new ArrayList<>();
     private int friendImages[] = {};
 
     private Button addFriendsButton;
@@ -99,8 +107,8 @@ public class FriendsFragment extends Fragment implements FriendDetailsFragment.O
         addFriendsButton = view.findViewById(R.id.addFriendsButton);
         leaderboardsButton = view.findViewById(R.id.leaderboardsButton);
         friendsListView = view.findViewById(R.id.myFriendsListView);
-        friendAdapter = new FriendAdapter(getContext(), testList, friendImages );
-        friendsListView.setAdapter(friendAdapter);
+        fetchFriends();
+
 
         searchFriends = view.findViewById(R.id.searchFriends);
         searchFriends.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -226,5 +234,37 @@ public class FriendsFragment extends Fragment implements FriendDetailsFragment.O
             }
         });
     }
+
+    private void fetchFriends(){
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+        String username = sharedPref.getString("username", "no username");
+        DocumentReference currUserDocRef = db.collection("user-list").document(username);
+        currUserDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()){
+                    friendsList1 = (ArrayList<String>) documentSnapshot.get("friends");
+                    friendAdapter = new FriendAdapter(getContext(), friendsList1, friendImages );
+                    friendsListView.setAdapter(friendAdapter);
+                    friendAdapter.notifyDataSetChanged();
+
+                }
+                else {
+                    Toast.makeText(getContext(), "Document not found", Toast.LENGTH_LONG).show();
+                }
+            }
+        })
+        .addOnFailureListener(new OnFailureListener() {
+                                  @Override
+                                  public void onFailure(@NonNull Exception e) {
+                                      Toast.makeText(getContext(), "Failed to fetch data ", Toast.LENGTH_LONG).show();
+                                  }
+        });
+
+
+    }
+
 
 }
