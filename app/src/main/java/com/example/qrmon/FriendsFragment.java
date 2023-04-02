@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 
@@ -25,13 +26,14 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link FriendsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FriendsFragment extends Fragment {
+public class FriendsFragment extends Fragment implements FriendDetailsFragment.OnFriendDetailsActionListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -44,7 +46,7 @@ public class FriendsFragment extends Fragment {
     private SearchView searchFriends;
     private String mParam2;
 
-    private String testList[] = {"jbweller", "iharding", "mullane", "mostafa"};
+    private ArrayList<String> testList = new ArrayList<>(Arrays.asList("jbweller", "iharding", "mullane", "mostafa", "test"));
     private int friendImages[] = {};
 
     private Button addFriendsButton;
@@ -91,8 +93,8 @@ public class FriendsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-       View view =  inflater.inflate(R.layout.fragment_friends, container, false);
+        // Infla    te the layout for this fragment
+        View view =  inflater.inflate(R.layout.fragment_friends, container, false);
 
         addFriendsButton = view.findViewById(R.id.addFriendsButton);
         leaderboardsButton = view.findViewById(R.id.leaderboardsButton);
@@ -161,7 +163,15 @@ public class FriendsFragment extends Fragment {
         friendsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.i("Mostafa", "fragment");
+                String clickedFriend = testList.get(i);
+
+                FriendDetailsFragment friendDetailsFragment = FriendDetailsFragment.newInstance(clickedFriend);
+                friendDetailsFragment.setFriendDetailsActionListener(FriendsFragment.this);
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.hide(FriendsFragment.this);
+                fragmentTransaction.add(R.id.fragment_container, friendDetailsFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
 
         });
@@ -170,6 +180,31 @@ public class FriendsFragment extends Fragment {
 
         return view;
     }
+
+    public void removeFriendFromList(String friendUsername) {
+        int index = -1;
+        for (int i = 0; i < testList.size(); i++) {
+            if (testList.get(i).equals(friendUsername)) {
+                index = i;
+                break;
+            }
+        }
+        if (index != -1) {
+            testList.remove(index);
+            friendAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onFriendDetailsAction(int action, String friendUsername) {
+        Log.d("TAG", "Testing");
+        if (action == 1) {
+            // Handle "Delete" button action
+            Log.d("TAG", "Delete Intent Received.");
+            removeFriendFromList(friendUsername);
+        }
+    }
+
 
     private void performSearch(String query) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();

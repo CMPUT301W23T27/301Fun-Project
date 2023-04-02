@@ -9,13 +9,15 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.List;
+
 public class FriendAdapter extends BaseAdapter {
     Context context;
-    String friendsList[];
-    int imagesList[];
+    List<String> friendsList;
+    int[] imagesList;
     LayoutInflater inflater;
 
-    public FriendAdapter(Context ctx, String[] mFriendsList, int[] mFriendsImages){
+    public FriendAdapter(Context ctx, List<String> mFriendsList, int[] mFriendsImages) {
         this.context = ctx;
         this.friendsList = mFriendsList;
         this.imagesList = mFriendsImages;
@@ -24,7 +26,7 @@ public class FriendAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return friendsList.length;
+        return friendsList.size();
     }
 
     @Override
@@ -39,11 +41,11 @@ public class FriendAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        view =  inflater.inflate(R.layout.friend_item, null);
+        view = inflater.inflate(R.layout.friend_item, null);
         TextView txtview = view.findViewById(R.id.friendUsername);
         ImageView imgView = view.findViewById(R.id.friendVisualRepresentation);
-        txtview.setText(friendsList[i]);
-//        imgView.setImageResource(imagesList[i]);
+        txtview.setText(friendsList.get(i));
+        // imgView.setImageResource(imagesList[i]);
         return view;
     }
 }
