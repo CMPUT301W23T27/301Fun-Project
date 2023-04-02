@@ -24,18 +24,18 @@ public class CodeInterpreterTests {
      */
     @Test
     public void QRCodeGenerationTest() {
-        Integer testInteger = 5;
+        Integer testInteger = 9;
         CodeInterpreter codeInterpreter = new CodeInterpreter();
-        QRCode newQRCode = codeInterpreter.interpret("555555555555");
-        assertEquals("Greg Trump ", newQRCode.getName());
+        QRCode newQRCode = codeInterpreter.interpret("3333333333333333333");
+        assertEquals("Ian the IV ", newQRCode.getName());
         assertEquals(testInteger, newQRCode.getScore());
         assertEquals("https://api.dicebear.com/5.x/bottts/png?" +
-                "seed=Bandit", newQRCode.getUrl());
+                "seed=Maggie&eyes=frame1&mouth=grill02", newQRCode.getUrl());
         assertEquals(null, newQRCode.getVisual());
         assertEquals(null, newQRCode.getPicture());
         assertEquals("empty", newQRCode.getComment());
         assertEquals(null, newQRCode.getLongitude());
         assertEquals(null, newQRCode.getLatitude());
-        assertEquals("555555555555", newQRCode.getHash());
+        assertEquals("3333333333333333333", newQRCode.getHash());
     }
 }

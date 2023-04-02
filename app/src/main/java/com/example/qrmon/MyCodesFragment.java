@@ -116,7 +116,6 @@ public class MyCodesFragment extends Fragment {
     }
 
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -268,7 +267,7 @@ public class MyCodesFragment extends Fragment {
                             //image.setImageBitmap(imageBitmap);
                         }
                     }}, 1000);
-            }}, 1000);
+            }}, 500);
 
 
         codeAdapter.notifyDataSetChanged();
