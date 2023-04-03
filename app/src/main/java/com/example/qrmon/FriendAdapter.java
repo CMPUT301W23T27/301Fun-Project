@@ -1,7 +1,6 @@
 package com.example.qrmon;
 
 import android.content.Context;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +22,9 @@ public class FriendAdapter extends BaseAdapter {
         this.friendsList = mFriendsList;
         this.imagesList = mFriendsImages;
         inflater = LayoutInflater.from(ctx);
+    }
+
+    public FriendAdapter(Context context, ArrayList<QRCode> friendsList) {
     }
 
     @Override

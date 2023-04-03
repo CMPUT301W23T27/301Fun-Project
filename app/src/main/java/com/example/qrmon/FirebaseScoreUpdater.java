@@ -15,7 +15,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import java.util.Map;
 
 public class FirebaseScoreUpdater {
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    protected FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     //TODO: Make current user accurately reflect who is currently using the app
     private String currentUser = "Joel";

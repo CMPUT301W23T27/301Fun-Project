@@ -1,34 +1,27 @@
 package com.example.qrmon;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.ListView;
 
-import com.google.android.gms.tasks.Task;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import org.checkerframework.checker.units.qual.A;
-import org.checkerframework.common.returnsreceiver.qual.This;
 
 import java.util.ArrayList;
 
 public class Leaderboard extends AppCompatActivity {
 
     private ArrayList<DocumentSnapshot> rawList = new ArrayList<>();
-    private ArrayList<LeaderboardObject> leaderboardList = new ArrayList<>();
+    public ArrayList<LeaderboardObject> leaderboardList = new ArrayList<>();
 
     private ListView leaderboardListView;
 
-    private LeaderboardAdapter leaderboardAdapter;
+    public LeaderboardAdapter leaderboardAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +57,7 @@ public class Leaderboard extends AppCompatActivity {
     }
 
 
-    private void collectTopPlayerScores(int limit){
+    public void collectTopPlayerScores(int limit){
         CollectionReference playersRef = FirebaseFirestore.getInstance().collection("user-list");
         playersRef.orderBy("score", Query.Direction.DESCENDING).limit(limit).get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
@@ -89,7 +82,7 @@ public class Leaderboard extends AppCompatActivity {
                 });
     }
 
-    private void collectTopCodes(int limit){
+    public void collectTopCodes(int limit){
         Log.d("Leaderboard", "collectTopCodes run successfully");
         CollectionReference qrCodeRef = FirebaseFirestore.getInstance().collection("global-public-QRCodes");
         qrCodeRef.orderBy("score", Query.Direction.DESCENDING).limit(limit).get()
@@ -116,7 +109,7 @@ public class Leaderboard extends AppCompatActivity {
                 });
     }
 
-    private void updateLeaderboard(){
+    public void updateLeaderboard(){
         Log.d("Leaderboard", "UPDATE LEADERBOARD REACHED");
         leaderboardAdapter.notifyDataSetChanged();
     }
