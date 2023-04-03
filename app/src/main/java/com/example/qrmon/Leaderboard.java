@@ -196,7 +196,7 @@ public class Leaderboard extends AppCompatActivity {
                             leaderboardList.add(new LeaderboardObject("Your Overall Rank",
                                     documentSnapshot.getLong("score").intValue(),
                                     rank,
-                                    documentSnapshot.getString("visual")));
+                                    documentSnapshot.getString("avatar")));
                             runOnUiThread(() -> {
                                 leaderboardAdapter.notifyDataSetChanged();
                             });
