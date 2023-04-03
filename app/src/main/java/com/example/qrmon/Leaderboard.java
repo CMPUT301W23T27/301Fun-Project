@@ -32,6 +32,9 @@ import org.checkerframework.common.returnsreceiver.qual.This;
 
 import java.util.ArrayList;
 
+/**
+ * displays a list of users or codes with the highest scores
+ */
 public class Leaderboard extends AppCompatActivity {
 
     private ArrayList<DocumentSnapshot> rawList = new ArrayList<>();
@@ -58,6 +61,14 @@ public class Leaderboard extends AppCompatActivity {
 
     private Button backButton;
 
+    /**
+     * initializes the activity. clears the arrayList, retrieves username, connects to firebase
+     * and sets up the popup menu
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,6 +100,10 @@ public class Leaderboard extends AppCompatActivity {
 
     }
 
+    /**
+     * collects the top players by score from firebase
+     * @param limit the number of elements to be placed in the leaderboard
+     */
     private void collectTopPlayerScores(int limit) {
         leaderboardList.clear();
         isTopPlayerBoard = true;
@@ -100,12 +115,12 @@ public class Leaderboard extends AppCompatActivity {
                         Log.d("Leaderboard", "successfull database pull");
                         leaderboardList.add(new LeaderboardObject(documentSnapshot.getString("username"),
                                 documentSnapshot.getLong("score").intValue(), count,
-                                documentSnapshot.getString("visual")));
+                                documentSnapshot.getString("avatar")));
                         count++;
                         Log.d("Leaderboard", "username = " + documentSnapshot.getString("username"));
                         Log.d("Leaderboard", "score = " + documentSnapshot.getLong("score").intValue());
                         Log.d("Leaderboard", "rank = " + count);
-                        Log.d("Leaderboard", "visual = " + documentSnapshot.getString("visual"));
+                        Log.d("Leaderboard", "avatar = " + documentSnapshot.getString("visual"));
                     }
                     Log.d("LeaderboardTest", "Size of leaderboard list " + leaderboardList.size());;
                     collectUserPlacement();
@@ -115,6 +130,10 @@ public class Leaderboard extends AppCompatActivity {
                 });
     }
 
+    /**
+     * collects the top codes from firebase by score
+     * @param limit the number of elements to be placed in the scoreboard
+     */
     private void collectTopCodes(int limit) {
         leaderboardList.clear();
         isTopPlayerBoard = false;
@@ -142,6 +161,9 @@ public class Leaderboard extends AppCompatActivity {
                 });
     }
 
+    /**
+     * updates the adapter and changes the column titles to reflect the new leaderboard
+     */
     private void updateLeaderboard() {
         Log.d("LeaderboardTest", "UPDATE LEADERBOARD REACHED");
         if (isTopPlayerBoard){
@@ -157,6 +179,9 @@ public class Leaderboard extends AppCompatActivity {
         leaderboardAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * collects data on the users relative placement to be put at the end of the list
+     */
     public void collectUserPlacement() {
         currentUserRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -189,6 +214,9 @@ public class Leaderboard extends AppCompatActivity {
         });
     }
 
+    /**
+     * finds the users highest scoring code and shows its ranking relative to the top codes
+     */
     public void collectCodePlacement() {
         userqrCodeRef.orderBy("score", Query.Direction.DESCENDING).limit(1).get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
@@ -218,6 +246,9 @@ public class Leaderboard extends AppCompatActivity {
                 });
     }
 
+    /**
+     * this connects buttons, views, and adapters to their xml counterparts.
+     */
     private void adapterSetup(){
         column1 = findViewById(R.id.column1Text);
         column2 = findViewById(R.id.column2Text);
@@ -228,6 +259,11 @@ public class Leaderboard extends AppCompatActivity {
         backButton = findViewById(R.id.leaderboardBackButton);
     }
 
+    /**
+     * a pop up menu that allows the player to choose between viewing the different leaderboard
+     * options
+     * @param view
+     */
     private void showPopupMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(this, view);
         popupMenu.getMenuInflater().inflate(R.menu.leaderboard_menu, popupMenu.getMenu());

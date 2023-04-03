@@ -8,6 +8,13 @@ public class LeaderboardObject {
 
     private int rank;
 
+    /**
+     * represents leaderboard object to be used in leaderboard list
+     * @param name name of leaderboard object (name of player or code)
+     * @param score total score of player or score of code
+     * @param rank rank of code or player
+     * @param image players profile avatar or qr codes visual
+     */
     public LeaderboardObject(String name, int score, int rank, String image) {
         this.name = name;
         this.score = score;
