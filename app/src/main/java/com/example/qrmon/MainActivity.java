@@ -57,7 +57,7 @@ import java.util.Map;
 import java.util.jar.Attributes;
 
 /** Functionality behind interacting, sorting and viewing the data on the My Codes page
- * @author Joel Weller
+ * @author Joel Weller and Ian McCullough
  * @see ScanCodePage
  */
 public class MainActivity extends AppCompatActivity implements FriendDetailsFragment.OnFriendDetailsActionListener {
@@ -85,7 +85,14 @@ public class MainActivity extends AppCompatActivity implements FriendDetailsFrag
     public void onFriendDetailsAction(int action, String friendUsername) {
         // forward it to the FriendsFragment.
     }
-
+    /**
+     * This is used to enter the app for all users. If you enter a user name
+     * That is similar to another username or null it will prevent you from entering
+     * if your username is unique then it will allow you to access the app and
+     * remeber you locally for the next time you enter
+     * (except TestUser which is used to test QRcodes on emulators)
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
