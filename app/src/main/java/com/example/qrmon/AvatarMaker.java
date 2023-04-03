@@ -28,15 +28,15 @@ public class AvatarMaker {
     public String interpret(String user_name) {
         // Make avatar base from dicebear based on user_name position 0
         if (user_name.charAt(0) == '0') { base = "Harley"; }
-        else if (user_name.charAt(0) == 'a') { base = "Buster"; }
+        else if (user_name.charAt(0) == 'a') { base = "sdfsdfcx"; }
         else if (user_name.charAt(0) == 'b') { base = "Callie"; }
         else if (user_name.charAt(0) == 'c') { base = "Maggie"; }
-        else if (user_name.charAt(0) == 'd') { base = "Cuddles"; }
+        else if (user_name.charAt(0) == 'd') { base = "Mittens"; }
         else if (user_name.charAt(0) == 'e') { base = "Bandit"; }
         else if (user_name.charAt(0) == 'f') { base = "Midnight"; }
-        else if (user_name.charAt(0) == 'g') { base = "Jasmine";}
+        else if (user_name.charAt(0) == 'g') { base = "Snowball";}
         else if (user_name.charAt(0) == 'h') { base = "Bob"; }
-        else if (user_name.charAt(0) == 'i') { base = "Cali"; }
+        else if (user_name.charAt(0) == 'i') { base = "Samantha"; }
         else if (user_name.charAt(0) == 'j') { base = "Jasper"; }
         else if (user_name.charAt(0) == 'k') { base = "Coco"; }
         else if (user_name.charAt(0) == 'l') { base = "Bubba"; }
@@ -44,8 +44,8 @@ public class AvatarMaker {
         else if (user_name.charAt(0) == 'n') { base = "Peanut"; }
         else if (user_name.charAt(0) == 'o') { base = "Kiki"; }
         else if (user_name.charAt(0) == 'p') { base = "Zoe"; }
-        else if (user_name.charAt(0) == 'r') { base = "Molly"; }
-        else if (user_name.charAt(0) == 's') { base = "Baby"; }
+        else if (user_name.charAt(0) == 'r') { base = "Spooky"; }
+        else if (user_name.charAt(0) == 's') { base = "bet"; }
         else if (user_name.charAt(0) == 't') { base = "Cali"; }
         else { base = "Kitty"; } //(user_name.charAt(0) == 'f')
 
