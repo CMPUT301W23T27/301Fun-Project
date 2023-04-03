@@ -267,7 +267,7 @@ public class MyCodesFragment extends Fragment {
                             //image.setImageBitmap(imageBitmap);
                         }
                     }}, 1000);
-            }}, 500);
+            }}, 1000);
 
 
         codeAdapter.notifyDataSetChanged();
