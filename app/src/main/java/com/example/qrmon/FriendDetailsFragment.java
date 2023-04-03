@@ -146,7 +146,7 @@ public class FriendDetailsFragment extends Fragment {
                         String email = document.getString("Email");
                         String phone = document.getString("PhoneNumber");
                         String username = document.getString("username");
-                        String fullName = document.getId();
+                        String fullName = document.getString("FullName");
 
                         fullNameTextView.setText(fullName);
                         emailTextView.setText(email);
