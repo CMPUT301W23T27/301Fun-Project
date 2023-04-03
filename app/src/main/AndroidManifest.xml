@@ -50,9 +50,6 @@
             android:name=".geolocation"
             android:exported="false" />
         <activity
-            android:name=".MainActivitynew"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
