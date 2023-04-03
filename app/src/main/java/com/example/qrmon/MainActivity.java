@@ -83,7 +83,10 @@ public class MainActivity extends AppCompatActivity implements FriendDetailsFrag
 
     @Override
     public void onFriendDetailsAction(int action, String friendUsername) {
-        // forward it to the FriendsFragment.
+        FriendsFragment friendsFragment = (FriendsFragment) getSupportFragmentManager().findFragmentByTag("FriendsFragment");
+        if (friendsFragment != null) {
+            friendsFragment.onFriendDetailsAction(action, friendUsername);
+        }
     }
     /**
      * This is used to enter the app for all users. If you enter a user name
@@ -100,6 +103,7 @@ public class MainActivity extends AppCompatActivity implements FriendDetailsFrag
 
         // Save a value
         ifUserHasAName = sharedPref.getString("username", "no username");
+
 
         //If you have logged in before you will not go to the login page
         if (ifUserHasAName.equals("no username")){
