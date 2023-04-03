@@ -113,7 +113,7 @@ public class ProfileFragment extends Fragment {
         String fieldNameEmail = "Email";
         String fieldNamePhone = "PhoneNumber";
         String fieldNameName = "FullName";
-        String fieldNamePoints = "AccountScore";
+        String fieldNamePoints = "score";
         String fieldNameAvatar = "avatar";
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -124,14 +124,14 @@ public class ProfileFragment extends Fragment {
                         String EmailValueOne = document.getString(fieldNameEmail);
                         String PhoneValueOne = document.getString(fieldNamePhone);
                         String NameValueOne = document.getString(fieldNameName);
-                        String pointsValueOne = document.getString(fieldNamePoints);
+                        Long pointsValueOne = (Long) document.get(fieldNamePoints);
                         String avatarValueOne = document.getString(fieldNameAvatar);
                         Bitmap bitmap = StringToBitMap(avatarValueOne);
                         image.setImageBitmap(bitmap);
                         emailValueEdit.setText(EmailValueOne);
                         phoneValueEdit.setText(PhoneValueOne);
                         nameValueEdit.setText(NameValueOne);
-                        pointsvalueText.setText(new StringBuilder().append("Points: ").append(pointsValueOne).toString());
+                        pointsvalueText.setText(new StringBuilder().append("Points: ").append(Long.toString(pointsValueOne)).toString());
                     } else {
                         Log.d(TAG, "No such document");
                     }
