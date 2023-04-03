@@ -173,6 +173,11 @@ public class geolocation extends AppCompatActivity {
 
             FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+            if (geo) {
+                newQRCode.setLongitude(longTude);
+                newQRCode.setLatitude(latTude);
+            }
+
             // Add the QRCode object to the user's database
             db.collection("user-list").document(username).collection("QRcodes").document(newQRCode.getHash()).set(newQRCode)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -189,7 +194,7 @@ public class geolocation extends AppCompatActivity {
                     });
 
             // Add the QRCode object to the public database
-            if (newQRCode.getLatitude() != null) {
+            if (geo) {
                 db.collection("global-public-QRCodes").document(newQRCode.getHash()).set(newQRCode)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
@@ -231,40 +236,8 @@ public class geolocation extends AppCompatActivity {
                         finish();
                     }
                 }, 2000);
-
-
-
-        if(!geo){
-            //newQRCode.setLongitude(null);
-            //newQRCode.setLatitude(null);
-
-        } else {
-            newQRCode.setLongitude(longTude);
-            newQRCode.setLatitude(latTude);
-            Map<String, Object> User = new HashMap<>();
-            User.put("latitude", latTude);
-            User.put("longitude", longTude);
-            DocumentReference docRef =  db.collection("user-list").document(username).collection("QRcodes").document(newQRCode.getHash());
-            docRef.update(User)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Log.d(TAG, "DocumentSnapshot successfully written!");
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.w(TAG, "Error writing document", e);
-                        }
-                    });
-        }
-
-
-        }
+         }
     });
-
-
     }
 
 
