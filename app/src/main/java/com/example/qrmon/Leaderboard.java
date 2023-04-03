@@ -193,7 +193,7 @@ public class Leaderboard extends AppCompatActivity {
                         @Override
                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                             int rank = queryDocumentSnapshots.size() + 1;
-                            leaderboardList.add(new LeaderboardObject("your rank",
+                            leaderboardList.add(new LeaderboardObject("Your Overall Rank",
                                     documentSnapshot.getLong("score").intValue(),
                                     rank,
                                     documentSnapshot.getString("visual")));
@@ -232,7 +232,13 @@ public class Leaderboard extends AppCompatActivity {
                                 });
                             }
                         });
-                    } else {
+                    }
+                    else {
+                        leaderboardList.add(new LeaderboardObject("You Have No Codes",
+                                0, 0, "2"));
+                        runOnUiThread(() -> {
+                            leaderboardAdapter.notifyDataSetChanged();
+                        });
                     }
                 })
                 .addOnFailureListener(e -> {
