@@ -105,7 +105,6 @@ public class FriendsFragment extends Fragment implements FriendDetailsFragment.O
         friendsListView = view.findViewById(R.id.myFriendsListView);
         fetchFriends();
 
-
         searchFriends = view.findViewById(R.id.searchFriends);
         searchFriends.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -126,14 +125,15 @@ public class FriendsFragment extends Fragment implements FriendDetailsFragment.O
         addFriendsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String friendUsername = searchFriends.toString();
+                String friendUsername = searchFriends.getQuery().toString();
                 if (friendUsername.isEmpty()) {
                     // Show an error message if the search bar is empty
                     Toast.makeText(getContext(), "Please enter a username to search for", Toast.LENGTH_SHORT).show();
                 } else {
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
                     CollectionReference userListRef = db.collection("user-list");
-                    Query query = userListRef.whereEqualTo("username", friendUsername);
+                    Query query = userListRef.whereEqualTo("friends", friendUsername.toLowerCase());
+
                     query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                         @Override
                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
