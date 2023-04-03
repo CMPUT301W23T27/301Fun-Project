@@ -257,13 +257,11 @@ public class FriendsFragment extends Fragment implements FriendDetailsFragment.O
             }
         })
         .addOnFailureListener(new OnFailureListener() {
-                                  @Override
-                                  public void onFailure(@NonNull Exception e) {
-                                      Toast.makeText(getContext(), "Failed to fetch data ", Toast.LENGTH_LONG).show();
-                                  }
+          @Override
+          public void onFailure(@NonNull Exception e) {
+              Toast.makeText(getContext(), "Failed to fetch data ", Toast.LENGTH_LONG).show();
+          }
         });
-
-
     }
 
 
