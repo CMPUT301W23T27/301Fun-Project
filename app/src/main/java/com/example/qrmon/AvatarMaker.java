@@ -47,28 +47,30 @@ public class AvatarMaker {
         else if (user_name.charAt(0) == 'r') { base = "Spooky"; }
         else if (user_name.charAt(0) == 's') { base = "bet"; }
         else if (user_name.charAt(0) == 't') { base = "Cali"; }
+        else if (user_name.charAt(0) == 'u') { base = "James"; }
+        else if (user_name.charAt(0) == 'v') { base = "Jones"; }
         else { base = "Kitty"; } //(user_name.charAt(0) == 'f')
 
 
 
 
         // Make eyes based on user_name position 4
-        if (user_name.charAt(4) == '0') { eyes = "bulging"; }
-        else if (user_name.charAt(4) == '1') { eyes = "dizzy"; }
-        else if (user_name.charAt(4) == '2') { eyes = "eva"; }
-        else if (user_name.charAt(4) == '3') { eyes = "frame1"; }
-        else if (user_name.charAt(4) == '4') { eyes = "frame2"; }
-        else if (user_name.charAt(4) == '5') { eyes = "glow"; }
-        else if (user_name.charAt(4) == '6') { eyes = "happy"; }
-        else if (user_name.charAt(4) == '7') { eyes = "hearts";}
-        else if (user_name.charAt(4) == '8') { eyes = "robocop"; }
-        else if (user_name.charAt(4) == '9') { eyes = "round"; }
-        else if (user_name.charAt(4) == 'a') { eyes = "roundFrame01"; }
-        else if (user_name.charAt(4) == 'b') { eyes = "roundFrame02"; }
-        else if (user_name.charAt(4) == 'c') { eyes = "sensor"; }
-        else if (user_name.charAt(4) == 'd') { eyes = "shade01"; }
-        else if (user_name.charAt(4) == 'e') { eyes = "bulging"; }
-        else { eyes = "dizzy"; } //(user_name.charAt(2) == 'f')
+//        if (user_name.charAt(4) == '0') { eyes = "bulging"; }
+//        else if (user_name.charAt(4) == '1') { eyes = "dizzy"; }
+//        else if (user_name.charAt(4) == '2') { eyes = "eva"; }
+//        else if (user_name.charAt(4) == '3') { eyes = "frame1"; }
+//        else if (user_name.charAt(4) == '4') { eyes = "frame2"; }
+//        else if (user_name.charAt(4) == '5') { eyes = "glow"; }
+//        else if (user_name.charAt(4) == '6') { eyes = "happy"; }
+//        else if (user_name.charAt(4) == '7') { eyes = "hearts";}
+//        else if (user_name.charAt(4) == '8') { eyes = "robocop"; }
+//        else if (user_name.charAt(4) == '9') { eyes = "round"; }
+//        else if (user_name.charAt(4) == 'a') { eyes = "roundFrame01"; }
+//        else if (user_name.charAt(4) == 'b') { eyes = "roundFrame02"; }
+//        else if (user_name.charAt(4) == 'c') { eyes = "sensor"; }
+//        else if (user_name.charAt(4) == 'd') { eyes = "shade01"; }
+//        else if (user_name.charAt(4) == 'e') { eyes = "bulging"; }
+//        else { eyes = "dizzy"; } //(user_name.charAt(2) == 'f')
 
 
 
