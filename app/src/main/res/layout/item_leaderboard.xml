@@ -15,7 +15,8 @@
         android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:fontFamily="@font/montserrat_regular"/>
+        android:fontFamily="@font/montserrat_regular"
+        />
 
     <ImageView
         android:id="@+id/leaderboard_visual"
@@ -30,7 +31,7 @@
             android:layout_height="match_parent"
             android:text="Column2"
             android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             android:layout_weight="1"
             android:gravity="center"

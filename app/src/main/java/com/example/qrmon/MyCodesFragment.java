@@ -145,6 +145,7 @@ public class MyCodesFragment extends Fragment {
         statList.setAdapter(statAdapter);
         statList.setClickable(false);
 
+
        pos = -1;
 
         FirebaseFirestore db1 = FirebaseFirestore.getInstance();
@@ -178,6 +179,7 @@ public class MyCodesFragment extends Fragment {
                                 // These are a method which gets executed when the task is succeeded
                                 Log.d(TAG,"Data has been deleted successfully!");
                                 codeAdapter.notifyDataSetChanged();
+                                updateCodeStats();
                                 ((MainActivity)getActivity()).replaceFragment(new MyCodesFragment());
 
 
@@ -204,8 +206,6 @@ public class MyCodesFragment extends Fragment {
         });
 
 
-       //TODO: change currentUser to reflect who ever is using app
-       String currentUser = "Joel";
 
         /**
          * Retrieve code list from firestore
@@ -253,10 +253,9 @@ public class MyCodesFragment extends Fragment {
                         count++;
                     }
                     //Calls firebaseScoreUpdater with sum of scores
-                    Map<String, Object> totalScoreMap = new HashMap<>();
-                    totalScoreMap.put("score", totalScore);
-                    FirebaseScoreUpdater firebaseScoreUpdater = new FirebaseScoreUpdater();
-                    firebaseScoreUpdater.updateFirebaseScore(totalScoreMap);
+
+                    DocumentReference userRef = db.collection("user-list").document(username);
+                    userRef.update("score", totalScore);
                     updateCodeStats();
                 }
                 Handler handler2 = new Handler();
@@ -267,10 +266,11 @@ public class MyCodesFragment extends Fragment {
                             //image.setImageBitmap(imageBitmap);
                         }
                     }}, 1000);
-            }}, 500);
+            }}, 1000);
 
 
         codeAdapter.notifyDataSetChanged();
+
 
         filterButton.setOnClickListener(this::showPopupMenu);
 
@@ -283,8 +283,6 @@ public class MyCodesFragment extends Fragment {
      * @return Boolean
      */
     private void showPopupMenu(View view) {
-        //Toast here for debugging
-        Toast.makeText(getContext(), "Total Score = " + totalScore,Toast.LENGTH_SHORT).show();
         PopupMenu popupMenu = new PopupMenu(getContext(), view);
         popupMenu.getMenuInflater().inflate(R.menu.sorting_menu, popupMenu.getMenu());
 

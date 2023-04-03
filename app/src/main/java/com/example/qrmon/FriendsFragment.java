@@ -29,6 +29,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,7 +50,7 @@ public class FriendsFragment extends Fragment implements FriendDetailsFragment.O
     // TODO: Rename and change types of parameters
     private String mParam1;
 
-    private SearchView searchFriends;
+    private EditText searchFriends;
     private String mParam2;
 
     private ArrayList<String> testList = new ArrayList<>(Arrays.asList("jbweller", "iharding", "mullane", "mostafa", "test"));
@@ -108,42 +109,43 @@ public class FriendsFragment extends Fragment implements FriendDetailsFragment.O
         leaderboardsButton = view.findViewById(R.id.leaderboardsButton);
         friendsListView = view.findViewById(R.id.myFriendsListView);
 
-        SharedPreferences sharedPref = getActivity().getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
-        String username = sharedPref.getString("username", "no username");
-        fetchFriends();
-
         searchFriends = view.findViewById(R.id.searchFriends);
-        searchFriends.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                // Perform search when user submits query
-                performSearch(query);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                // Perform search as user types
-                performSearch(newText);
-                return true;
-            }
-        });
 
         addFriendsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String friendUsername = searchFriends.getQuery().toString();
+
+                String friendUsername = searchFriends.getText().toString();
                 if (friendUsername.isEmpty()) {
                     // Show an error message if the search bar is empty
                     Toast.makeText(getContext(), "Please enter a username to search for", Toast.LENGTH_SHORT).show();
                 } else {
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    db.collection("user-list").document(username).update("friends", FieldValue.arrayUnion(friendUsername)).addOnSuccessListener(aVoid -> Log.d(TAG, "Elements added to array field"))
-                            .addOnFailureListener(e -> Log.e(TAG, "Error adding elements to array field", e)); {
-                            }
-                        }
-                    };
-                });
+
+                    DocumentReference userListRef = db.collection("user-list").document(friendUsername);
+                    userListRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    if (documentSnapshot.exists()){
+                                            addFriend(friendUsername);
+                                            fetchFriends();
+                                    }
+                                    else {
+                                        Toast.makeText(getContext(), "Document not found", Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(getContext(), "Failed to fetch data ", Toast.LENGTH_LONG).show();
+                                }
+                            });
+
+                }
+            }
+        });
+
 
         leaderboardsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -199,28 +201,6 @@ public class FriendsFragment extends Fragment implements FriendDetailsFragment.O
         }
     }
 
-
-    public void performSearch(String query) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference usersRef = db.collection("user-list");
-
-        Query searchQuery = usersRef.whereEqualTo("username", query);
-        searchQuery.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot querySnapshot) {
-                if (querySnapshot.size() > 0) {
-                    // User found, add to friendsList and update adapter
-                    QRCode friend = querySnapshot.getDocuments().get(0).toObject(QRCode.class);
-                    friendsList.add(friend);
-                    friendAdapter.notifyDataSetChanged();
-                } else {
-                    // User not found, show error message
-                    Toast.makeText(getContext(), "User not found", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
-
     private void fetchFriends(){
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -243,14 +223,22 @@ public class FriendsFragment extends Fragment implements FriendDetailsFragment.O
             }
         })
         .addOnFailureListener(new OnFailureListener() {
-                                  @Override
-                                  public void onFailure(@NonNull Exception e) {
-                                      Toast.makeText(getContext(), "Failed to fetch data ", Toast.LENGTH_LONG).show();
-                                  }
+          @Override
+          public void onFailure(@NonNull Exception e) {
+              Toast.makeText(getContext(), "Failed to fetch data ", Toast.LENGTH_LONG).show();
+          }
         });
-
-
     }
+
+    private void addFriend(String friend){
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+        String username = sharedPref.getString("username", "no username");
+        DocumentReference currUserDocRef = db.collection("user-list").document(username);
+        currUserDocRef.update("friends", FieldValue.arrayUnion(friend));
+    }
+
 
 
 }

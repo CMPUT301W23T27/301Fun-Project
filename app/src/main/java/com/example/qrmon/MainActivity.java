@@ -10,7 +10,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -34,12 +38,16 @@ import com.google.firebase.firestore.Query;
 //import com.google.firebase.auth.FirebaseAuth;
 import android.view.View.OnFocusChangeListener;
 import android.text.TextUtils;
+import android.widget.TextView;
 //import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
 import java.util.ArrayList;
@@ -49,7 +57,7 @@ import java.util.Map;
 import java.util.jar.Attributes;
 
 /** Functionality behind interacting, sorting and viewing the data on the My Codes page
- * @author Joel Weller
+ * @author Joel Weller and Ian McCullough
  * @see ScanCodePage
  */
 public class MainActivity extends AppCompatActivity implements FriendDetailsFragment.OnFriendDetailsActionListener {
@@ -58,7 +66,9 @@ public class MainActivity extends AppCompatActivity implements FriendDetailsFrag
     private CodeAdapter codeAdapter;
     private ArrayList<QRCode> codesList = new ArrayList<>();
     public ArrayList<QRCode> testList;
-    Bitmap imageBitmap;
+    Bitmap bitmapImage;
+    String avString;
+    String imgUrl;
     ImageView image;
     String blankEmail = "123@gmail.com";
     BottomNavigationView bnView;
@@ -75,7 +85,14 @@ public class MainActivity extends AppCompatActivity implements FriendDetailsFrag
     public void onFriendDetailsAction(int action, String friendUsername) {
         // forward it to the FriendsFragment.
     }
-
+    /**
+     * This is used to enter the app for all users. If you enter a user name
+     * That is similar to another username or null it will prevent you from entering
+     * if your username is unique then it will allow you to access the app and
+     * remeber you locally for the next time you enter
+     * (except TestUser which is used to test QRcodes on emulators)
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,40 +139,52 @@ public class MainActivity extends AppCompatActivity implements FriendDetailsFrag
 
                             //bascially if the username is non empty and unqiue I create a new user and let you through
                             if (!TextUtils.isEmpty(newUserName) && !docBool) {
-                                editingTool.putString("username", newUserName);
-                                editingTool.apply();
-                                Newuser.put("username:", newUserName);
+                                AvatarMaker am = new AvatarMaker();
+                                imgUrl = am.interpret(newUserName);
+                                Log.d("Here in Mainactivity", imgUrl);
+                                new LoadImage().execute();
+
+                                Handler handler = new Handler();
+                                handler.postDelayed(new Runnable() {
+                                    public void run() {
+                                        Log.d("Here In run", "bitmap is used");
+                                        avString = BitMapToString(bitmapImage);
+                                        editingTool.putString("username", newUserName);
+                                        editingTool.apply();
+                                        Newuser.put("username:", newUserName);
+                                        Newuser.put("AccountScore","0");
+                                        Newuser.put("FullName","");
+                                        Newuser.put("PhoneNumber", "");
+                                        Newuser.put("Email", "");
+                                        Newuser.put("friends", myList);
+                                        Newuser.put("avatar", avString);
 
 
-                                Newuser.put("PhoneNumber", "");
-                                Newuser.put("Email", "");
-                                Newuser.put("friends", myList);
-
-
-                                db.collection("user-list")
-                                        .document(newUserName)
-                                        .set(Newuser)
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            //This is for the sub collection in the new user
-                                            public void onSuccess(Void aVoid) {
-                                                //db.collection("user-list")
+                                        db.collection("user-list")
+                                                .document(newUserName)
+                                                .set(Newuser)
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    //This is for the sub collection in the new user
+                                                    public void onSuccess(Void aVoid) {
+                                                        //db.collection("user-list")
                                                         //.document(newUserName)
                                                         //.collection("QRcodes")
                                                         //.document("first-QR")
                                                         //.set(new HashMap<String, Object>());
 
-                                            }
-                                        })
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                            }
-                                        });
-                                //Intent intent = new Intent(MainActivity.this, MainActivitynew.class);
-                                //startActivity(intent);
-                                ifUserHasAName = newUserName;
-                                appStart();
+                                                    }
+                                                })
+                                                .addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                    }
+                                                });
+                                        ifUserHasAName = newUserName;
+                                        appStart();
+                                    }
+                                 }, 2000);
+
                             }
                             else if (newUserName.equals("TestUser")) {
                                 editingTool.putString("username", newUserName);
@@ -164,6 +193,8 @@ public class MainActivity extends AppCompatActivity implements FriendDetailsFrag
                                 appStart();
                             }
                             else {
+                                TextView pleaseEnter = findViewById(R.id.Please);
+                                pleaseEnter.setText("Please enter a unique non empty username");
                             }
                         } else {
                             //Intent intent = new Intent(MainActivity.this, MainActivitynew.class);
@@ -233,6 +264,41 @@ public class MainActivity extends AppCompatActivity implements FriendDetailsFrag
         });
     }
 
+    public class LoadImage extends AsyncTask<Void, Void, Bitmap> {
 
+        @Override
+        protected Bitmap doInBackground(Void... params) {
+            Bitmap bitmap = null;
+            try {
+                bitmap = BitmapFactory.decodeStream((InputStream) new URL(imgUrl).getContent());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return bitmap;
+        }
+
+        @Override
+        protected void onPreExecute() {
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            if (bitmap != null) {
+                //newQRCode.setVisual(bitmap);
+                bitmapImage = bitmap;
+                Log.d("Here In onPost2", "bitmap is saved");
+                //progress.dismiss();
+            } else {
+            }
+        }
+    }
+
+    public String BitMapToString(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] b = baos.toByteArray();
+        String temp = Base64.encodeToString(b, Base64.DEFAULT);
+        return temp;
+    }
 
 }

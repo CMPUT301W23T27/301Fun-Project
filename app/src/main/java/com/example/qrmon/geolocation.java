@@ -63,6 +63,10 @@ public class geolocation extends AppCompatActivity {
 
     public Boolean geo;
 
+    public Double longTude;
+    public Double latTude;
+
+
     QRCode newQRCode;
 
 
@@ -105,12 +109,14 @@ public class geolocation extends AppCompatActivity {
                 for (Location location : locationResult.getLocations()) {
                     double latitude = location.getLatitude();
                     double longitude = location.getLongitude();
-
+                    longTude = location.getLongitude();
+                    latTude = location.getLatitude();
                     // Set geolocation to QRCode object
                     if (String.valueOf(latitude) != null) {
-                        latitudeTextView.setText("Latitude: " + String.valueOf(latitude));
-                        newQRCode.setLongitude(location.getLongitude());
-                        newQRCode.setLatitude(location.getLatitude());
+                        //latitudeTextView.setText("Latitude: " + String.valueOf(latitude));
+
+                        //newQRCode.setLongitude(null);
+                        //newQRCode.setLatitude(null);
                         //longitudeTextView.setText("Longitude: " + String.valueOf(longitude));
                     }
 
@@ -145,6 +151,19 @@ public class geolocation extends AppCompatActivity {
             }
         });
 
+        ToggleButton tog = findViewById(R.id.on_off_toggle);
+        geo = false;
+        tog.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            //Not used now but will be used to check weither geo is on or off
+            @Override
+            public void onCheckedChanged(CompoundButton b, boolean On) {
+                if (On) {
+                    geo = true;
+                } else {
+                    geo = false;
+                }
+            }
+        });
     postButton.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -186,6 +205,22 @@ public class geolocation extends AppCompatActivity {
                             }
                         });
             }
+            EditText comment = findViewById(R.id.my_text_box);
+            String commentValue = comment.getText().toString();
+            if(commentValue != null) {
+                DocumentReference docRef = db.collection("user-list").document(username).collection("QRcodes").document(newQRCode.getHash());
+                Map<String, Object> User = new HashMap<>();
+                String fieldNameComment = "comment";
+                User.put(fieldNameComment, commentValue);
+                docRef.update(User)
+                        .addOnSuccessListener(aVoid -> Log.d(TAG, "Comment added "))
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "Error updating document", e);
+                            }
+                        });
+            }
 
                 Handler handler = new Handler();
 
@@ -196,21 +231,38 @@ public class geolocation extends AppCompatActivity {
                         finish();
                     }
                 }, 2000);
-            }
-    });
 
-        ToggleButton tog = findViewById(R.id.on_off_toggle);
-        tog.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            //Not used now but will be used to check weither geo is on or off
-            @Override
-            public void onCheckedChanged(CompoundButton b, boolean On) {
-                if (On) {
-                    geo = true;
-                } else {
-                    geo = false;
-                }
-            }
-        });
+
+
+        if(!geo){
+            //newQRCode.setLongitude(null);
+            //newQRCode.setLatitude(null);
+
+        } else {
+            newQRCode.setLongitude(longTude);
+            newQRCode.setLatitude(latTude);
+            Map<String, Object> User = new HashMap<>();
+            User.put("latitude", latTude);
+            User.put("longitude", longTude);
+            DocumentReference docRef =  db.collection("user-list").document(username).collection("QRcodes").document(newQRCode.getHash());
+            docRef.update(User)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d(TAG, "DocumentSnapshot successfully written!");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w(TAG, "Error writing document", e);
+                        }
+                    });
+        }
+
+
+        }
+    });
 
 
     }
@@ -233,8 +285,8 @@ public class geolocation extends AppCompatActivity {
 
             //If its not granted
             } else {
-                latitudeTextView.setText("Location permission has been denied");
-                longitudeTextView.setText("Location permission has been denied");
+                //latitudeTextView.setText("Location permission has been denied");
+                //longitudeTextView.setText("Location permission has been denied");
             }
         }
     }
