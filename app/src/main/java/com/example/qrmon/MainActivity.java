@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements FriendDetailsFrag
                     //im just initalizing things here
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
                     CollectionReference usersRef = db.collection("user-list");
-                    Query query = usersRef.orderBy("username:");
+                    Query query = usersRef.orderBy("username");
                     Map<String, Object> Newuser = new HashMap<>();
                     String newUserName = usernameInput.getText().toString();
                     List<String> myList = new ArrayList<>();
@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements FriendDetailsFrag
 
                             boolean docBool = false;
                             for (QueryDocumentSnapshot docu : task.getResult()) {
-                                String doc = docu.getString("username:");
+                                String doc = docu.getString("username");
                                 if (doc.equals(newUserName)) {
                                     // A document with the same name already exists
                                     docBool = true;
@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements FriendDetailsFrag
                                         avString = BitMapToString(bitmapImage);
                                         editingTool.putString("username", newUserName);
                                         editingTool.apply();
-                                        Newuser.put("username:", newUserName);
+                                        Newuser.put("username", newUserName);
                                         Newuser.put("AccountScore","0");
                                         Newuser.put("FullName","");
                                         Newuser.put("PhoneNumber", "");
