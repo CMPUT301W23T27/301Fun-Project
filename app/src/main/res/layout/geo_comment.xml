@@ -112,7 +112,7 @@
             android:id="@+id/latitude"
             android:layout_width="match_parent"
             android:layout_height="39dp"
-            android:text="Loading Geolocation"
+            android:text=""
             android:textAlignment="center"
             android:textSize="10sp" />
 

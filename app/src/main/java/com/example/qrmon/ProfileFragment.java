@@ -82,6 +82,11 @@ public class ProfileFragment extends Fragment {
 
     }
 
+    /**
+     * This is used to update the setting to firestore and grab the
+     *current settings from firestore
+     * author is Ian McCullough (mostly)
+     */
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
