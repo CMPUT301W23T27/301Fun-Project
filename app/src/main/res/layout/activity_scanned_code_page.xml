@@ -40,14 +40,27 @@
 
     <TextView
         android:id="@+id/name"
-        android:layout_width="184dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="0"
         android:text="Monster name"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
         android:textAlignment="center"
-        android:fontFamily="@font/montserrat_regular"/>
+        android:fontFamily="@font/montserrat_regular"
+        android:layout_marginBottom="12dp"/>
 
     <TextView
+        android:id="@+id/worth"
+        android:layout_width="147dp"
+        android:layout_height="wrap_content"
+        android:text="Worth"
+        android:layout_margin="8dp"
+        android:textAlignment="center" />
+
+    <TextView
+        android:id="@+id/score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="SCORE"
@@ -63,10 +76,11 @@
         android:fontFamily="@font/montserrat_semibold"/>
 
     <TextView
-        android:id="@+id/score"
+        android:id="@+id/points"
         android:layout_width="147dp"
         android:layout_height="wrap_content"
-        android:text="Monster score"
+        android:text="Points"
+        android:layout_margin="8dp"
         android:textAlignment="center" />
 
     <LinearLayout

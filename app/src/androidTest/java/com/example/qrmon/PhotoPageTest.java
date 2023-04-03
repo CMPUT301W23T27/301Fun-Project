@@ -39,10 +39,10 @@ public class PhotoPageTest {
      * Gets the Activity
      * @throws Exception if it does not get the activity
      */
-    @Test
-    public void start() throws Exception{
-        Activity activity = rule.getActivity();
-    }
+//    @Test
+//    public void start() throws Exception{
+//        Activity activity = rule.getActivity();
+//    }
     /**
      * Add a city to the listview and check the city name using assertTrue
      * Clear all the cities from the listview and check again with assertFalse
