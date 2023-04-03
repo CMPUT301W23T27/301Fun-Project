@@ -8,14 +8,7 @@
     android:backgroundTint="#FCFCFC"
     android:orientation="vertical">
 
-    <SearchView
-        android:id="@+id/searchBarMyCodes"
-        android:layout_width="381dp"
-        android:layout_height="71dp"
-        android:backgroundTint="#D8D6D6"
-        android:iconifiedByDefault="false"
-        android:queryHint="Search"
-        android:background="@drawable/rounded_corners"/>
+
 
     <LinearLayout
         android:layout_width="match_parent"

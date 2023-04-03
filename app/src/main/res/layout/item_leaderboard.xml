@@ -6,15 +6,15 @@
     android:padding="8dp">
 
     <TextView
-        android:paddingStart="15dp"
         android:id="@+id/rank"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingStart="15dp"
         android:text="rank"
-        android:layout_gravity="center_vertical"
         android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:layout_gravity="center_vertical"
         android:fontFamily="@font/montserrat_regular"
         />
 
@@ -24,29 +24,27 @@
         android:layout_height="60dp"
         android:src="@drawable/account_navbar_icon"/>
 
-
-        <TextView
-            android:id="@+id/secondColumn"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Column2"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:fontFamily="@font/montserrat_medium"/>
-
+    <TextView
+        android:id="@+id/secondColumn"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:text="Column2"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:fontFamily="@font/montserrat_medium"/>
 
     <TextView
         android:id="@+id/thirdColumn"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:text="Column3"
+        android:text="pts"
         android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:layout_weight="1"
+        android:layout_weight="0.3"
         android:gravity="center"
         android:paddingEnd="15dp"
         android:fontFamily="@font/montserrat_regular"/>
