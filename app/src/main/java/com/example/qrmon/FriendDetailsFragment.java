@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -47,6 +48,7 @@ public class FriendDetailsFragment extends Fragment {
         super.onAttach(context);
         if (context instanceof OnFriendDetailsActionListener) {
             mListener = (OnFriendDetailsActionListener) context;
+            Log.d("TAG", "Listener attached"); // Add this line
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFriendDetailsActionListener");
@@ -120,7 +122,12 @@ public class FriendDetailsFragment extends Fragment {
                 if (mListener != null) {
                     mListener.onFriendDetailsAction(0, friendUsername);
                 }
-                getActivity().getSupportFragmentManager().popBackStack();
+                // Create a new FriendsFragment and replace the current fragment with it
+                FriendsFragment newFriendsFragment = FriendsFragment.newInstance("", "");
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, newFriendsFragment, "FriendsFragment");
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
         });
     }
@@ -136,8 +143,8 @@ public class FriendDetailsFragment extends Fragment {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document != null && document.exists()) {
-                        String email = document.getString("email");
-                        String phone = document.getString("phone");
+                        String email = document.getString("Email");
+                        String phone = document.getString("PhoneNumber");
                         String username = document.getString("username");
                         String fullName = document.getId();
 
@@ -166,6 +173,7 @@ public class FriendDetailsFragment extends Fragment {
             return;
         }
 
+        Log.d("TAG", "Deleting Friend");
         removeFriendFromCurrentUser(currentUserUsername);
     }
 
@@ -174,6 +182,7 @@ public class FriendDetailsFragment extends Fragment {
         DocumentReference currentUserDocRef = db.collection("user-list").document(currentUserUsername);
 
 
+        Log.d("TAG", "Current user: " + currentUserUsername + ", Friend to remove: " + friendUsername);
         currentUserDocRef.update("friends", FieldValue.arrayRemove(friendUsername))
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -181,11 +190,17 @@ public class FriendDetailsFragment extends Fragment {
                         Log.d("TAG", "Friend successfully removed!");
                         // Remove the friend from the list in FriendsFragment
 
-                        getActivity().getSupportFragmentManager().popBackStack();
                         if (mListener != null) {
                             mListener.onFriendDetailsAction(1, friendUsername);
                             Log.d("TAG", "Delete Intent Sent");
                         }
+                        // Create a new FriendsFragment and replace the current fragment with it
+                        FriendsFragment newFriendsFragment = FriendsFragment.newInstance("", "");
+                        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.fragment_container, newFriendsFragment, "FriendsFragment");
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
