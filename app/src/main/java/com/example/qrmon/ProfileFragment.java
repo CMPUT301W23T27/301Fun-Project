@@ -3,6 +3,8 @@ package com.example.qrmon;
 import static android.content.ContentValues.TAG;
 
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,12 +13,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -105,10 +109,12 @@ public class ProfileFragment extends Fragment {
         EditText phoneValueEdit = view.findViewById(R.id.phone_value_edit);
         EditText nameValueEdit = view.findViewById(R.id.name_value_edit);
         TextView pointsvalueText= view.findViewById(R.id.points_textview);
+        ImageView image = view.findViewById(R.id.avatar_image);
         String fieldNameEmail = "Email";
         String fieldNamePhone = "PhoneNumber";
         String fieldNameName = "FullName";
         String fieldNamePoints = "AccountScore";
+        String fieldNameAvatar = "avatar";
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -119,6 +125,9 @@ public class ProfileFragment extends Fragment {
                         String PhoneValueOne = document.getString(fieldNamePhone);
                         String NameValueOne = document.getString(fieldNameName);
                         String pointsValueOne = document.getString(fieldNamePoints);
+                        String avatarValueOne = document.getString(fieldNameAvatar);
+                        Bitmap bitmap = StringToBitMap(avatarValueOne);
+                        image.setImageBitmap(bitmap);
                         emailValueEdit.setText(EmailValueOne);
                         phoneValueEdit.setText(PhoneValueOne);
                         nameValueEdit.setText(NameValueOne);
@@ -165,5 +174,16 @@ public class ProfileFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    public Bitmap StringToBitMap(String encodedString) {
+        try {
+            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        } catch (Exception e) {
+            e.getMessage();
+            return null;
+        }
     }
 }
