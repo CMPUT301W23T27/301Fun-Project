@@ -158,6 +158,7 @@ public class MainActivity extends AppCompatActivity implements FriendDetailsFrag
                                         Newuser.put("Email", "");
                                         Newuser.put("friends", myList);
                                         Newuser.put("avatar", avString);
+                                        Newuser.put("score", 0);
 
 
                                         db.collection("user-list")
