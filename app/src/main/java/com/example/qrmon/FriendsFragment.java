@@ -1,5 +1,7 @@
 package com.example.qrmon;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,6 +25,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -103,6 +106,9 @@ public class FriendsFragment extends Fragment implements FriendDetailsFragment.O
         addFriendsButton = view.findViewById(R.id.addFriendsButton);
         leaderboardsButton = view.findViewById(R.id.leaderboardsButton);
         friendsListView = view.findViewById(R.id.myFriendsListView);
+
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+        String username = sharedPref.getString("username", "no username");
         fetchFriends();
 
         searchFriends = view.findViewById(R.id.searchFriends);
@@ -131,11 +137,9 @@ public class FriendsFragment extends Fragment implements FriendDetailsFragment.O
                     Toast.makeText(getContext(), "Please enter a username to search for", Toast.LENGTH_SHORT).show();
                 } else {
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    CollectionReference userListRef = db.collection("user-list");
-                    Query query = userListRef.whereEqualTo("friends", friendUsername.toLowerCase());
-
-                    query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                        @Override
+                    db.collection("user-list").document(username).update("friends", FieldValue.arrayUnion(friendUsername)).addOnSuccessListener(aVoid -> Log.d(TAG, "Elements added to array field"))
+                            .addOnFailureListener(e -> Log.e(TAG, "Error adding elements to array field", e)); {
+                        /*@Override
                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                             if (!queryDocumentSnapshots.isEmpty()) {
                                 // The user with the searched username exists in the database
@@ -147,13 +151,13 @@ public class FriendsFragment extends Fragment implements FriendDetailsFragment.O
                                 Toast.makeText(getContext(), "Added " + friendUsername + " to your friends list", Toast.LENGTH_SHORT).show();
                             } else {
                                 // Show an error message if the user with the searched username does not exist in the database
-                                Toast.makeText(getContext(), "No user found with username " + friendUsername, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "No user found with username " + friendUsername, Toast.LENGTH_SHORT).show();*/
                             }
                         }
-                    });
-                }
-            }
-        });
+                    };
+                });
+
+
 
         leaderboardsButton.setOnClickListener(new View.OnClickListener() {
             @Override
