@@ -106,24 +106,24 @@ public class Leaderboard extends AppCompatActivity {
      */
     private void collectTopPlayerScores(int limit) {
         leaderboardList.clear();
+        runOnUiThread(() -> {
+            leaderboardAdapter.notifyDataSetChanged();
+        });
         isTopPlayerBoard = true;
         playersRef.orderBy("score", Query.Direction.DESCENDING).limit(limit).get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
-                    Log.d("Leaderboard", "Number of documents retrieved: " + queryDocumentSnapshots.size());
                     int count = 1;
                     for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                        Log.d("Leaderboard", "successfull database pull");
                         leaderboardList.add(new LeaderboardObject(documentSnapshot.getString("username"),
                                 documentSnapshot.getLong("score").intValue(), count,
                                 documentSnapshot.getString("avatar")));
                         count++;
-                        Log.d("Leaderboard", "username = " + documentSnapshot.getString("username"));
-                        Log.d("Leaderboard", "score = " + documentSnapshot.getLong("score").intValue());
-                        Log.d("Leaderboard", "rank = " + count);
-                        Log.d("Leaderboard", "avatar = " + documentSnapshot.getString("visual"));
                     }
-                    Log.d("LeaderboardTest", "Size of leaderboard list " + leaderboardList.size());;
                     collectUserPlacement();
+                    runOnUiThread(() -> {
+                        leaderboardAdapter.notifyDataSetChanged();
+                    });
+                    updateLeaderboard();
                 })
                 .addOnFailureListener(e -> {
                     throw new RuntimeException("Failure to retrieve score from firebase");
@@ -136,25 +136,25 @@ public class Leaderboard extends AppCompatActivity {
      */
     private void collectTopCodes(int limit) {
         leaderboardList.clear();
+        runOnUiThread(() -> {
+            leaderboardAdapter.notifyDataSetChanged();
+        });
         isTopPlayerBoard = false;
-        Log.d("Leaderboard", "collectTopCodes run successfully");
         qrCodeRef.orderBy("score", Query.Direction.DESCENDING).limit(limit).get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     int count = 1;
-                    Log.d("Leaderboard", "Number of documents retrieved: " + queryDocumentSnapshots.size());
                     for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                        Log.d("Leaderboard", "successfull database pull in collectTopCodes");
                         leaderboardList.add(new LeaderboardObject(documentSnapshot.getString("name"),
                                 documentSnapshot.getLong("score").intValue(),
                                 count,
                                 documentSnapshot.getString("visual")));
-                        Log.d("Leaderboard", "name = " + documentSnapshot.getString("name"));
-                        Log.d("Leaderboard", "score = " + documentSnapshot.getLong("score").intValue());
-                        Log.d("Leaderboard", "rank = " + count);
-                        Log.d("Leaderboard", "visual = " + documentSnapshot.getString("visual"));
                         count++;
                     }
                     collectCodePlacement();
+                    runOnUiThread(() -> {
+                        leaderboardAdapter.notifyDataSetChanged();
+                    });
+                    updateLeaderboard();
                 })
                 .addOnFailureListener(e -> {
                     throw new RuntimeException("Failure to retrieve score from firebase");
@@ -165,7 +165,6 @@ public class Leaderboard extends AppCompatActivity {
      * updates the adapter and changes the column titles to reflect the new leaderboard
      */
     private void updateLeaderboard() {
-        Log.d("LeaderboardTest", "UPDATE LEADERBOARD REACHED");
         if (isTopPlayerBoard){
             column1.setText("Top Rated");
             column2.setText("Player");
@@ -176,7 +175,6 @@ public class Leaderboard extends AppCompatActivity {
             column2.setText("Code");
             column3.setText("Points");
         }
-        leaderboardAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -189,22 +187,19 @@ public class Leaderboard extends AppCompatActivity {
                 if (documentSnapshot.exists()) {
                     // Access the "score" field and do something with it
                     long userscore = documentSnapshot.getLong("score");
-                    Log.d("LeaderboardUser", "score = " + userscore);
-
                     Query query = playersRef.whereGreaterThan("score", userscore).
                             orderBy("score", Query.Direction.DESCENDING);
                     query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                         @Override
                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                             int rank = queryDocumentSnapshots.size() + 1;
-                            Log.d("LeaderboardUser", "rank = " + rank);
                             leaderboardList.add(new LeaderboardObject("your rank",
                                     documentSnapshot.getLong("score").intValue(),
                                     rank,
                                     documentSnapshot.getString("visual")));
-                            Log.d("LeaderboardTest", "Current user relative placement added");
-                            Log.d("LeaderboardTest", "Size of leaderboard list " + leaderboardList.size());
-                            updateLeaderboard();
+                            runOnUiThread(() -> {
+                                leaderboardAdapter.notifyDataSetChanged();
+                            });
                         }
                     });
                 } else {
@@ -223,7 +218,6 @@ public class Leaderboard extends AppCompatActivity {
                     if (!queryDocumentSnapshots.isEmpty()) {
                         QueryDocumentSnapshot highestScoreQRCodeDoc = (QueryDocumentSnapshot) queryDocumentSnapshots.getDocuments().get(0);
                         int highestScore = highestScoreQRCodeDoc.getLong("score").intValue();
-                        Log.d("LeaderboardPlacement", "User " + " highest score QR code score = " + highestScore);
 
                         Query query = qrCodeRef.whereGreaterThan("score", highestScore).
                                 orderBy("score", Query.Direction.DESCENDING);
@@ -231,14 +225,14 @@ public class Leaderboard extends AppCompatActivity {
                             @Override
                             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                                 int rank = queryDocumentSnapshots.size() + 1;
-                                Log.d("LeaderboardPlacement", "rank = " + rank);
                                 leaderboardList.add(new LeaderboardObject(highestScoreQRCodeDoc.getString("name"),
                                         highestScore, rank, highestScoreQRCodeDoc.getString("visual")));
-                                updateLeaderboard();
+                                runOnUiThread(() -> {
+                                    leaderboardAdapter.notifyDataSetChanged();
+                                });
                             }
                         });
                     } else {
-                        Log.d("LeaderboardPlacement", "User " + " has no QR codes.");
                     }
                 })
                 .addOnFailureListener(e -> {

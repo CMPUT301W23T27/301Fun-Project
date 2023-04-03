@@ -79,6 +79,7 @@ public class LeaderboardAdapter extends ArrayAdapter<LeaderboardObject> {
         }
         catch (Exception e){
             e.getMessage();
+            return convertView;
         }
 
         codeNameTextView.setText(leaderboardObject.getName());
