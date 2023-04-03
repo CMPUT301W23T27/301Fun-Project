@@ -24,6 +24,11 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+/**
+
+ * FriendDetailsFragment is a fragment that displays details about a friend. It includes the friend's
+ * full name, email, and username, as well as a button to delete the friend and navigate back to FriendsFragment.
+ */
 public class FriendDetailsFragment extends Fragment {
 
     private static final String ARG_FRIEND_USERNAME = "friend_username";
@@ -37,7 +42,15 @@ public class FriendDetailsFragment extends Fragment {
     private Button deleteFriendButton;
 
     // testing
+    /**
+     * Interface for handling friend details actions.
+     */
     public interface OnFriendDetailsActionListener {
+        /**
+         * Called when a friend details action is performed.
+         * @param action The action to perform.
+         * @param friendUsername The username of the friend being affected.
+         */
         void onFriendDetailsAction(int action, String friendUsername);
     }
 
@@ -71,6 +84,11 @@ public class FriendDetailsFragment extends Fragment {
         mListener = listener;
     }
 
+    /**
+     * Creates a new instance of FriendDetailsFragment.
+     * @param friendUsername The username of the friend to display details for.
+     * @return A new instance of FriendDetailsFragment.
+     */
     public static FriendDetailsFragment newInstance(String friendUsername) {
         FriendDetailsFragment fragment = new FriendDetailsFragment();
         Bundle args = new Bundle();
@@ -87,6 +105,14 @@ public class FriendDetailsFragment extends Fragment {
         }
     }
 
+    /**
+     * Called when the fragment is created. Sets up the UI elements and fetches the friend's details
+     * from the database.
+     * @param inflater The layout inflater.
+     * @param container The parent view.
+     * @param savedInstanceState The previously saved instance state of the fragment.
+     * @return The created view.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -110,6 +136,11 @@ public class FriendDetailsFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Called when the fragment's view is created. Sets up the back button click listener.
+     * @param view The created view.
+     * @param savedInstanceState The previously saved instance state of the fragment.
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -133,6 +164,9 @@ public class FriendDetailsFragment extends Fragment {
     }
 
 
+    /**
+     * Fetches the friend's details from the database and updates the UI with the details.
+     */
     private void fetchFriendDetails() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("user-list").document(friendUsername);
@@ -161,6 +195,10 @@ public class FriendDetailsFragment extends Fragment {
         });
     }
 
+    /**
+     * Deletes the friend from the current user's friends list and removes the friend from the list
+     * in FriendsFragment.
+     */
     private void deleteFriend() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -177,6 +215,10 @@ public class FriendDetailsFragment extends Fragment {
         removeFriendFromCurrentUser(currentUserUsername);
     }
 
+    /**
+     * Removes the friend from the current user's friends list.
+     * @param currentUserUsername The username of the current user.
+     */
     private void removeFriendFromCurrentUser(String currentUserUsername) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference currentUserDocRef = db.collection("user-list").document(currentUserUsername);
