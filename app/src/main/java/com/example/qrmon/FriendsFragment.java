@@ -34,9 +34,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link FriendsFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * This class is the friends page or fragment in which users can see their friends
+ * add friends and delete friends from a firebase database
+ * Each user has a unique profile picture
+ * @Author Martin, Grace, Joel
  */
 public class FriendsFragment extends Fragment implements FriendDetailsFragment.OnFriendDetailsActionListener {
 
@@ -139,25 +140,10 @@ public class FriendsFragment extends Fragment implements FriendDetailsFragment.O
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
                     db.collection("user-list").document(username).update("friends", FieldValue.arrayUnion(friendUsername)).addOnSuccessListener(aVoid -> Log.d(TAG, "Elements added to array field"))
                             .addOnFailureListener(e -> Log.e(TAG, "Error adding elements to array field", e)); {
-                        /*@Override
-                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                            if (!queryDocumentSnapshots.isEmpty()) {
-                                // The user with the searched username exists in the database
-                                // Add the user to the friendsList ArrayList and update the list view
-                                QRCode newFriend = new QRCode(friendUsername, null, null, null, null, null, null, null, null);
-                                friendsList.add(newFriend);
-                                friendAdapter.notifyDataSetChanged();
-                                // Show a success message
-                                Toast.makeText(getContext(), "Added " + friendUsername + " to your friends list", Toast.LENGTH_SHORT).show();
-                            } else {
-                                // Show an error message if the user with the searched username does not exist in the database
-                                Toast.makeText(getContext(), "No user found with username " + friendUsername, Toast.LENGTH_SHORT).show();*/
                             }
                         }
                     };
                 });
-
-
 
         leaderboardsButton.setOnClickListener(new View.OnClickListener() {
             @Override
