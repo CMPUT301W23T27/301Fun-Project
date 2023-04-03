@@ -162,12 +162,7 @@
                     String clickedFriend = friendsList1.get(i);
 
                     FriendDetailsFragment friendDetailsFragment = FriendDetailsFragment.newInstance(clickedFriend);
-                    friendDetailsFragment.setFriendDetailsActionListener(FriendsFragment.this);
-                    FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.hide(FriendsFragment.this);
-                    fragmentTransaction.add(R.id.fragment_container, friendDetailsFragment);
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
+                    ((MainActivity)getActivity()).replaceFragment(friendDetailsFragment);
                 }
 
             });

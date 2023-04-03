@@ -123,11 +123,7 @@ public class FriendDetailsFragment extends Fragment {
                     mListener.onFriendDetailsAction(0, friendUsername);
                 }
                 // Create a new FriendsFragment and replace the current fragment with it
-                FriendsFragment newFriendsFragment = FriendsFragment.newInstance("", "");
-                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, newFriendsFragment, "FriendsFragment");
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                ((MainActivity)getActivity()).replaceFragment(new FriendsFragment());
             }
         });
     }
@@ -195,11 +191,7 @@ public class FriendDetailsFragment extends Fragment {
                             Log.d("TAG", "Delete Intent Sent");
                         }
                         // Create a new FriendsFragment and replace the current fragment with it
-                        FriendsFragment newFriendsFragment = FriendsFragment.newInstance("", "");
-                        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.fragment_container, newFriendsFragment, "FriendsFragment");
-                        fragmentTransaction.addToBackStack(null);
-                        fragmentTransaction.commit();
+                        ((MainActivity)getActivity()).replaceFragment(new FriendsFragment());
 
                     }
                 })
